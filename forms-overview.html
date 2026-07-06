@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forms Overview – SeaTrace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f5f5f5; }
+
+    /* Navbar */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 52px; background: #fff;
+      border-bottom: 1px solid #DFE2E6; position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand-text { font-size: 15px; font-weight: 800; color: #111; letter-spacing: 1px; text-transform: uppercase; }
+    .brand-text .sea { color: #5189F3; }
+    .nav-icons { display: flex; align-items: center; gap: 2px; }
+    .icon-btn {
+      width: 36px; height: 36px; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #5E5E60; border-radius: 0; transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover, .icon-btn.active { background: #E4EEFF; color: #5189F3; }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    /* Page */
+    .page { min-height: calc(100vh - 52px); padding: 32px; display: flex; justify-content: center; align-items: flex-start; }
+    .container { width: 100%; max-width: 1000px; background: #fff; }
+
+    /* Compact banner */
+    .detail-banner {
+      padding: 24px 32px 22px;
+      background: linear-gradient(135deg, #0D1B36 0%, #1B3460 60%, #1E4080 100%);
+    }
+    .detail-crumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px;
+    }
+    .detail-crumb a { color: inherit; text-decoration: none; transition: color 0.12s; }
+    .detail-crumb a:hover { color: rgba(255,255,255,0.85); }
+    .detail-crumb .sep { font-size: 9px; }
+    .banner-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+    .banner-left { flex: 1; }
+    .detail-tag {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #7fb2ff; background: rgba(81,137,243,0.15);
+      border: 1px solid rgba(81,137,243,0.3); padding: 2px 9px; border-radius: 2px; margin-bottom: 7px;
+    }
+    .banner-title { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 4px; }
+    .banner-sub { font-size: 12px; color: rgba(255,255,255,0.45); }
+    .banner-stats { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+    .dstat {
+      display: flex; align-items: center; gap: 5px; font-size: 11px;
+      color: rgba(255,255,255,0.65); padding: 4px 10px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+    }
+    .dstat svg { width: 11px; height: 11px; opacity: 0.7; }
+
+    /* Course stage: video + lesson panel */
+    .course-stage {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      border-bottom: 1px solid #DFE2E6;
+    }
+
+    /* Video */
+    .video-col { background: #0a1220; }
+    .video-player {
+      position: relative; width: 100%; padding-top: 56.25%;
+      background: #0a1220; overflow: hidden; cursor: pointer;
+    }
+    .video-player::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(81,137,243,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .video-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+    /* Idle */
+    .vp-idle { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 20px; }
+    .vp-idle-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .vp-idle-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.3; max-width: 280px; }
+    .vp-play-ring {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2); background: rgba(81,137,243,0.25);
+      display: flex; align-items: center; justify-content: center; margin-top: 4px;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .vp-play-ring:hover { background: #5189F3; border-color: #5189F3; transform: scale(1.08); }
+    .vp-play-ring svg { width: 22px; height: 22px; color: #fff; margin-left: 3px; }
+    .vp-idle-hint { font-size: 11px; color: rgba(255,255,255,0.25); }
+
+    /* Playing */
+    .vp-playing { display: none; flex-direction: column; width: 100%; height: 100%; position: relative; }
+    .vp-playing.active { display: flex; }
+    .vp-playing-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #0f2040 0%, #0a1628 50%, #071020 100%); }
+    .vp-playing-content { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .vp-wave { display: flex; align-items: flex-end; gap: 4px; height: 48px; }
+    .vp-bar { width: 4px; background: rgba(81,137,243,0.6); border-radius: 2px; animation: wave 1.2s ease-in-out infinite; }
+    .vp-bar:nth-child(1) { animation-delay: 0s;    height: 20px; }
+    .vp-bar:nth-child(2) { animation-delay: 0.1s;  height: 35px; }
+    .vp-bar:nth-child(3) { animation-delay: 0.2s;  height: 28px; }
+    .vp-bar:nth-child(4) { animation-delay: 0.15s; height: 42px; }
+    .vp-bar:nth-child(5) { animation-delay: 0.05s; height: 24px; }
+    .vp-bar:nth-child(6) { animation-delay: 0.25s; height: 38px; }
+    .vp-bar:nth-child(7) { animation-delay: 0.1s;  height: 18px; }
+    @keyframes wave { 0%,100%{transform:scaleY(1);opacity:0.6} 50%{transform:scaleY(1.8);opacity:1} }
+    .vp-controls {
+      position: relative; padding: 10px 16px 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    }
+    .vp-lesson-label { font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+    .vp-lesson-name { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vp-progress-track { height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
+    .vp-progress-fill { height: 100%; background: #5189F3; border-radius: 2px; width: 0%; transition: width 0.5s linear; }
+    .vp-ctrl-row { display: flex; align-items: center; justify-content: space-between; }
+    .vp-ctrl-btn { background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.75); display: flex; align-items: center; transition: color 0.15s; }
+    .vp-ctrl-btn:hover { color: #fff; }
+    .vp-ctrl-btn svg { width: 16px; height: 16px; }
+    .vp-time { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+    /* Lesson panel */
+    .lesson-panel { background: #fff; border-left: 1px solid #DFE2E6; display: flex; flex-direction: column; }
+    .lesson-panel-header {
+      padding: 12px 16px; border-bottom: 1px solid #F0F0F0;
+      font-size: 11px; font-weight: 700; color: #888;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lesson-panel-count { font-size: 11px; color: #bbb; font-weight: 600; }
+    .lesson-scroll { overflow-y: auto; flex: 1; max-height: 340px; }
+    .lp-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #F8F8F8;
+      transition: background 0.12s;
+    }
+    .lp-item:hover { background: #F8FAFF; }
+    .lp-item.active { background: #EEF3FF; border-left: 3px solid #5189F3; padding-left: 11px; }
+    .lp-item.done { opacity: 0.65; }
+    .lp-icon {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid #DFE2E6; color: #aaa; transition: all 0.15s;
+    }
+    .lp-item.active .lp-icon { background: #5189F3; border-color: #5189F3; color: #fff; }
+    .lp-item.done .lp-icon { background: #E8F5EE; border-color: #4CAF50; color: #4CAF50; }
+    .lp-icon svg { width: 9px; height: 9px; }
+    .lp-info { flex: 1; min-width: 0; }
+    .lp-num { font-size: 10px; color: #bbb; font-weight: 600; }
+    .lp-title { font-size: 12px; color: #333; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lp-item.active .lp-title { color: #1a3fa0; font-weight: 700; }
+    .lp-dur { font-size: 11px; color: #ccc; flex-shrink: 0; }
+
+    /* Quick Guide button */
+    .qg-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 16px; background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.25); color: #fff;
+      font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700;
+      cursor: pointer; border-radius: 2px; transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .qg-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.5); }
+    .qg-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Quick Guide modal */
+    .qg-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(10,20,40,0.6);
+      z-index: 500; align-items: center; justify-content: center; padding: 20px;
+      backdrop-filter: blur(2px);
+    }
+    .qg-overlay.open { display: flex; animation: qg-in 0.2s both; }
+    @keyframes qg-in { from { opacity:0; } to { opacity:1; } }
+    .qg-modal {
+      background: #fff; width: 100%; max-width: 500px; max-height: 82vh;
+      border-radius: 4px; display: flex; flex-direction: column;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3); overflow: hidden;
+      animation: qg-rise 0.22s both;
+    }
+    @keyframes qg-rise { from { transform:translateY(16px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+    .qg-modal-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; background: linear-gradient(135deg,#0D1B36,#1B3460);
+      flex-shrink: 0;
+    }
+    .qg-modal-title { font-size: 14px; font-weight: 800; color: #fff; }
+    .qg-modal-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+    .qg-modal-close {
+      width: 30px; height: 30px; background: rgba(255,255,255,0.1); border: none;
+      cursor: pointer; color: rgba(255,255,255,0.8); border-radius: 2px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      font-size: 17px; line-height: 1; transition: background 0.12s;
+    }
+    .qg-modal-close:hover { background: rgba(255,255,255,0.22); color: #fff; }
+    .qg-modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+    .qg-intro {
+      background: #F0F6FF; border-left: 3px solid #5189F3;
+      padding: 12px 14px; border-radius: 0 4px 4px 0;
+      font-size: 13px; color: #1B3460; line-height: 1.65; margin-bottom: 18px;
+    }
+    .qg-section-label {
+      font-size: 10px; font-weight: 800; color: #AAB0BA; text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 8px;
+    }
+    .qg-field-row {
+      display: flex; margin-bottom: 6px; border: 1px solid #E8EBF0;
+      border-radius: 2px; overflow: hidden;
+    }
+    .qg-field-name {
+      width: 130px; flex-shrink: 0; padding: 9px 12px;
+      background: #F5F7FA; border-right: 1px solid #E8EBF0;
+      font-size: 11px; font-weight: 800; color: #333;
+    }
+    .qg-field-hint { flex: 1; padding: 9px 12px; font-size: 12px; color: #555; line-height: 1.45; }
+    .qg-empty { text-align: center; padding: 36px 20px; color: #bbb; font-size: 13px; }
+
+    /* Now playing bar */
+    .now-playing-bar {
+      padding: 10px 32px; background: #F8FAFF; border-bottom: 1px solid #DFE2E6;
+      display: none; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .np-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .np-dot { width: 7px; height: 7px; border-radius: 50%; background: #5189F3; flex-shrink: 0; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+    .np-label { font-size: 11px; color: #888; }
+    .np-title { font-size: 13px; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 380px; }
+    .np-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .np-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid #DFE2E6; padding: 5px 12px;
+      font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600; color: #555;
+      cursor: pointer; border-radius: 2px; transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .np-btn:hover { background: #E4EEFF; border-color: #5189F3; color: #5189F3; }
+    .np-btn svg { width: 12px; height: 12px; }
+    .np-btn:disabled { opacity: 0.35; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand" onclick="window.location.href='knowledge-hub.html'">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="15.5" stroke="#111" stroke-width="1.3"/>
+        <path d="M10 22 C12 16 14.5 11 17 17 C19.5 23 22 18 24 12" stroke="#111" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        <circle cx="17" cy="17" r="1.6" fill="#111"/>
+      </svg>
+      <span class="brand-text"><span class="sea">SEA</span>TRACE</span>
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn active" title="Knowledge Hub" onclick="window.location.href='knowledge-hub.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Exit">
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M7 3H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12 6l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 9H7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Home" onclick="window.location.href='knowledge-hub.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="page">
+    <div class="container">
+
+      <!-- Banner -->
+      <div class="detail-banner">
+        <div class="detail-crumb">
+          <a href="knowledge-hub.html">Knowledge Hub</a>
+          <span class="sep">›</span>
+          <a href="forms-module.html">Forms</a>
+          <span class="sep">›</span>
+          <span id="crumbModule" style="color:rgba(255,255,255,0.75)">Beheading</span>
+        </div>
+        <div class="banner-row">
+          <div class="banner-left">
+            <div class="detail-tag">Forms Module</div>
+            <div class="banner-title" id="bannerTitle">Beheading</div>
+            <div class="banner-sub" id="bannerSub">Module 1 of 9 · Forms</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0">
+            <button class="qg-btn" onclick="openQuickGuide()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              Quick Guide
+            </button>
+            <div class="banner-stats" id="bannerStats"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video + Lesson panel -->
+      <div class="course-stage">
+        <div class="video-col">
+          <div class="video-player" id="videoPlayer" onclick="handlePlayerClick()">
+            <div class="video-inner">
+
+              <!-- Idle -->
+              <div class="vp-idle" id="vpIdle">
+                <div class="vp-idle-label" id="vpIdleLabel">Forms Module</div>
+                <div class="vp-idle-title" id="vpIdleTitle">Beheading</div>
+                <div class="vp-play-ring">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+                <div class="vp-idle-hint">Click to start the course</div>
+              </div>
+
+              <!-- Playing -->
+              <div class="vp-playing" id="vpPlaying">
+                <div class="vp-playing-bg"></div>
+                <div class="vp-playing-content">
+                  <div class="vp-wave">
+                    <div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div>
+                    <div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div>
+                    <div class="vp-bar"></div>
+                  </div>
+                </div>
+                <div class="vp-controls">
+                  <div class="vp-lesson-label" id="vpLessonLabel">Lesson 1</div>
+                  <div class="vp-lesson-name" id="vpLessonName"></div>
+                  <div class="vp-progress-track" onclick="event.stopPropagation()">
+                    <div class="vp-progress-fill" id="vpProgress"></div>
+                  </div>
+                  <div class="vp-ctrl-row">
+                    <div>
+                      <button class="vp-ctrl-btn" onclick="togglePlayPause(event)">
+                        <svg id="vpPauseIcon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        <svg id="vpPlayIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="5,3 19,12 5,21"/></svg>
+                      </button>
+                    </div>
+                    <span class="vp-time" id="vpTime">0:00</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Lesson panel -->
+        <div class="lesson-panel">
+          <div class="lesson-panel-header">
+            Course Content
+            <span class="lesson-panel-count" id="lessonCount"></span>
+          </div>
+          <div class="lesson-scroll" id="lessonPanel"></div>
+        </div>
+      </div>
+
+      <!-- Now playing bar -->
+      <div class="now-playing-bar" id="nowPlayingBar">
+        <div class="np-info">
+          <div class="np-dot"></div>
+          <div>
+            <div class="np-label">Now Playing</div>
+            <div class="np-title" id="npTitle"></div>
+          </div>
+        </div>
+        <div class="np-nav" id="npNav">
+          <button class="np-btn" id="npPrev" onclick="prevLesson()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Prev
+          </button>
+          <button class="np-btn" id="npNext" onclick="nextLesson()">
+            Next
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Module data ── */
+    const MODULES = [
+      {
+        name: 'Beheading', level: 'Beginner', duration: '8 min', lessons_count: 1,
+        lessons: [{ title: 'Beheading Process – Complete Guide', duration: '8 min', seconds: 480 }]
+      },
+      {
+        name: 'Grading', level: 'Beginner', duration: '38 min', lessons_count: 5,
+        lessons: [
+          { title: 'Introduction to Shrimp Grading', duration: '6 min', seconds: 360 },
+          { title: 'Size Classification Standards', duration: '8 min', seconds: 480 },
+          { title: 'Using Grading Equipment', duration: '10 min', seconds: 600 },
+          { title: 'Quality Assessment Criteria', duration: '8 min', seconds: 480 },
+          { title: 'Grading Documentation', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'Peeling & Cutting', level: 'Intermediate', duration: '52 min', lessons_count: 6,
+        lessons: [
+          { title: 'Cut Types Overview', duration: '7 min', seconds: 420 },
+          { title: 'Peeling Techniques', duration: '10 min', seconds: 600 },
+          { title: 'Butterfly & Specialty Cuts', duration: '12 min', seconds: 720 },
+          { title: 'Equipment Maintenance', duration: '8 min', seconds: 480 },
+          { title: 'Yield Optimisation', duration: '9 min', seconds: 540 },
+          { title: 'Form Completion', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'Soaking', level: 'Beginner', duration: '30 min', lessons_count: 4,
+        lessons: [
+          { title: 'Soaking Chemistry Basics', duration: '8 min', seconds: 480 },
+          { title: 'Solution Preparation', duration: '7 min', seconds: 420 },
+          { title: 'Process Control & Monitoring', duration: '9 min', seconds: 540 },
+          { title: 'Documentation', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'Nobashi', level: 'Intermediate', duration: '40 min', lessons_count: 5,
+        lessons: [
+          { title: 'Introduction to Nobashi', duration: '6 min', seconds: 360 },
+          { title: 'Line Setup', duration: '8 min', seconds: 480 },
+          { title: 'Stretching Technique', duration: '12 min', seconds: 720 },
+          { title: 'QC & Sizing', duration: '8 min', seconds: 480 },
+          { title: 'Records & Forms', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'IQF', level: 'Intermediate', duration: '35 min', lessons_count: 5,
+        lessons: [
+          { title: 'IQF Principles', duration: '7 min', seconds: 420 },
+          { title: 'Equipment Operation', duration: '9 min', seconds: 540 },
+          { title: 'Temperature Monitoring', duration: '7 min', seconds: 420 },
+          { title: 'Glazing & Packaging', duration: '6 min', seconds: 360 },
+          { title: 'Documentation', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'Leftover', level: 'Beginner', duration: '20 min', lessons_count: 3,
+        lessons: [
+          { title: 'Leftover Classification', duration: '6 min', seconds: 360 },
+          { title: 'Storage & Disposal Procedures', duration: '8 min', seconds: 480 },
+          { title: 'End-of-Shift Logging', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'Cold Store - Inward', level: 'Beginner', duration: '28 min', lessons_count: 4,
+        lessons: [
+          { title: 'Inward Goods Overview', duration: '6 min', seconds: 360 },
+          { title: 'Temperature & Condition Checks', duration: '8 min', seconds: 480 },
+          { title: 'Storage Allocation', duration: '8 min', seconds: 480 },
+          { title: 'Inward Form Completion', duration: '6 min', seconds: 360 },
+        ]
+      },
+      {
+        name: 'Cold Store - Outward', level: 'Beginner', duration: '25 min', lessons_count: 4,
+        lessons: [
+          { title: 'Outward Dispatch Overview', duration: '5 min', seconds: 300 },
+          { title: 'Pick List Verification', duration: '7 min', seconds: 420 },
+          { title: 'Loading & Temperature Checks', duration: '7 min', seconds: 420 },
+          { title: 'Dispatch Form Completion', duration: '6 min', seconds: 360 },
+        ]
+      },
+    ];
+
+    /* ── Read idx from URL ── */
+    const idx = parseInt(new URLSearchParams(window.location.search).get('idx')) || 0;
+    const mod = MODULES[idx] || MODULES[0];
+
+    /* ── State ── */
+    let currentLesson = 0;
+    let isPlaying     = false;
+    let isPaused      = false;
+    let progressTimer = null;
+    let progressSecs  = 0;
+    const single      = mod.lessons.length === 1;
+
+    /* ── Populate banner ── */
+    const clockSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+    const booksSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
+    const levelSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`;
+
+    document.getElementById('crumbModule').textContent  = mod.name;
+    document.getElementById('bannerTitle').textContent  = mod.name;
+    document.getElementById('bannerSub').textContent    = `Module ${idx + 1} of ${MODULES.length} · Forms`;
+    document.getElementById('vpIdleTitle').textContent  = mod.name;
+    document.getElementById('lessonCount').textContent  = single ? '1 lesson' : mod.lessons_count + ' lessons';
+    document.getElementById('bannerStats').innerHTML = [
+      { icon: booksSVG, label: mod.lessons_count + ' Lesson' + (single ? '' : 's') },
+      { icon: clockSVG, label: mod.duration },
+      { icon: levelSVG, label: mod.level },
+    ].map(s => `<div class="dstat">${s.icon}${s.label}</div>`).join('');
+
+    if (single) document.getElementById('npNav').style.display = 'none';
+
+    /* ── Render lesson panel ── */
+    function renderPanel() {
+      const playIcon  = `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>`;
+      const checkIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      document.getElementById('lessonPanel').innerHTML = mod.lessons.map((l, i) => {
+        const done   = isPlaying && i < currentLesson;
+        const active = isPlaying && i === currentLesson;
+        const cls    = done ? 'lp-item done' : active ? 'lp-item active' : 'lp-item';
+        return `
+          <div class="${cls}" onclick="jumpTo(${i})">
+            <div class="lp-icon">${done ? checkIcon : playIcon}</div>
+            <div class="lp-info">
+              <div class="lp-num">Lesson ${i + 1}</div>
+              <div class="lp-title">${l.title}</div>
+            </div>
+            <span class="lp-dur">${l.duration}</span>
+          </div>`;
+      }).join('');
+    }
+
+    renderPanel();
+
+    /* ── Player controls ── */
+    function handlePlayerClick() { if (!isPlaying) startCourse(); }
+
+    function startCourse() {
+      isPlaying = true; isPaused = false;
+      document.getElementById('vpIdle').style.display = 'none';
+      document.getElementById('vpPlaying').classList.add('active');
+      document.getElementById('nowPlayingBar').style.display = 'flex';
+      loadLesson(0);
+    }
+
+    function loadLesson(i) {
+      currentLesson = i;
+      progressSecs  = 0;
+      stopTimer();
+      const l = mod.lessons[i];
+      document.getElementById('vpLessonLabel').textContent = `Lesson ${i + 1} of ${mod.lessons.length}`;
+      document.getElementById('vpLessonName').textContent  = l.title;
+      document.getElementById('npTitle').textContent       = l.title;
+      document.getElementById('vpProgress').style.width   = '0%';
+      document.getElementById('vpTime').textContent        = `0:00 / ${l.duration}`;
+      document.getElementById('vpPauseIcon').style.display = '';
+      document.getElementById('vpPlayIcon').style.display  = 'none';
+      document.getElementById('npPrev').disabled = i === 0;
+      document.getElementById('npNext').disabled = i === mod.lessons.length - 1;
+      renderPanel();
+      if (!isPaused) startTimer();
+    }
+
+    function jumpTo(i) { if (!isPlaying) startCourse(); isPaused = false; loadLesson(i); }
+    function prevLesson() { if (currentLesson > 0) loadLesson(currentLesson - 1); }
+    function nextLesson() { if (currentLesson < mod.lessons.length - 1) loadLesson(currentLesson + 1); }
+
+    function togglePlayPause(e) {
+      e.stopPropagation();
+      if (!isPlaying) { startCourse(); return; }
+      if (isPaused) {
+        isPaused = false;
+        document.getElementById('vpPauseIcon').style.display = '';
+        document.getElementById('vpPlayIcon').style.display  = 'none';
+        startTimer();
+      } else {
+        isPaused = true;
+        document.getElementById('vpPauseIcon').style.display = 'none';
+        document.getElementById('vpPlayIcon').style.display  = '';
+        stopTimer();
+      }
+    }
+
+    function startTimer() {
+      stopTimer();
+      const total = mod.lessons[currentLesson].seconds;
+      const dur   = mod.lessons[currentLesson].duration;
+      progressTimer = setInterval(() => {
+        progressSecs++;
+        const pct = Math.min((progressSecs / total) * 100, 100);
+        document.getElementById('vpProgress').style.width = pct + '%';
+        document.getElementById('vpTime').textContent = `${fmt(progressSecs)} / ${dur}`;
+        if (progressSecs >= total) {
+          stopTimer();
+          if (currentLesson < mod.lessons.length - 1) setTimeout(() => loadLesson(currentLesson + 1), 600);
+        }
+      }, 200);
+    }
+
+    function stopTimer() { clearInterval(progressTimer); progressTimer = null; }
+    function fmt(s) { return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
+
+    /* ── Quick Guide ── */
+    function openQuickGuide() {
+      var guides = {};
+      try { guides = JSON.parse(localStorage.getItem('seatrace_quick_guides') || '{}'); } catch(e) {}
+      var guide = guides[mod.name];
+      var body = document.getElementById('qgModalBody');
+      document.getElementById('qgModalSub').textContent = mod.name + ' Form';
+
+      if (!guide || (!guide.intro && (!guide.fields || !guide.fields.length))) {
+        body.innerHTML = '<div class="qg-empty">No guide has been set up for this module yet.<br>' +
+          '<span style="font-size:12px">Your admin can add one from the Quick Guides section.</span></div>';
+      } else {
+        var html = '';
+        if (guide.intro) {
+          html += '<div class="qg-intro">' + guide.intro.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+        }
+        if (guide.fields && guide.fields.length) {
+          html += '<div class="qg-section-label">Field Reference</div>';
+          guide.fields.forEach(function(f) {
+            html += '<div class="qg-field-row">' +
+              '<div class="qg-field-name">' + f.name.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</div>' +
+              '<div class="qg-field-hint">' + f.hint.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</div>' +
+              '</div>';
+          });
+        }
+        body.innerHTML = html;
+      }
+      document.getElementById('qgOverlay').classList.add('open');
+    }
+
+    function closeQuickGuide() {
+      document.getElementById('qgOverlay').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeQuickGuide(); });
+  </script>
+
+  <!-- Quick Guide Modal -->
+  <div class="qg-overlay" id="qgOverlay" onclick="if(event.target===this)closeQuickGuide()">
+    <div class="qg-modal">
+      <div class="qg-modal-hdr">
+        <div>
+          <div class="qg-modal-title">Quick Guide</div>
+          <div class="qg-modal-sub" id="qgModalSub"></div>
+        </div>
+        <button class="qg-modal-close" onclick="closeQuickGuide()">&#x2715;</button>
+      </div>
+      <div class="qg-modal-body" id="qgModalBody"></div>
+    </div>
+  </div>
+
+</body>
+</html>

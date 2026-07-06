@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Class Viewer — SeaTrace LMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Nunito',sans-serif;background:#F7F8FA;color:#111;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+    /* ── Navbar ── */
+    .topbar{position:relative;z-index:100;background:#fff;border-bottom:1px solid #DFE2E6;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;flex-shrink:0}
+    .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .brand-name-cv{font-size:15px;font-weight:900;letter-spacing:.01em}
+    .brand-name-cv .sea{color:#5189F3}
+    .brand-name-cv .trace{color:#111}
+    .nav-sep{width:1px;height:22px;background:#DFE2E6;margin:0 14px;flex-shrink:0}
+    .nav-role-badge{font-size:11px;font-weight:700;color:#059669;background:#ECFDF5;border:1px solid #bbf7d0;padding:3px 10px;border-radius:2px;letter-spacing:.06em;text-transform:uppercase}
+    .nav-icon-btn{width:36px;height:36px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5E5E60;border-radius:0;transition:background .15s,color .15s}
+    .nav-icon-btn:hover{background:#E4EEFF;color:#5189F3}
+    .nav-icon-btn svg{width:18px;height:18px}
+
+    /* ── Layout ── */
+    .main-layout{display:flex;flex:1;overflow:hidden}
+
+    /* ── Sidebar ── */
+    .sidebar{width:220px;flex-shrink:0;background:#fff;border-right:1px solid #DFE2E6;display:flex;flex-direction:column;overflow-y:auto;padding:16px 0 0}
+    .sb-section-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#9CA3AF;text-transform:uppercase;padding:0 16px;margin-bottom:6px;margin-top:4px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;border-radius:0;font-size:13px;font-weight:700;color:#6B7280;text-decoration:none;transition:background .12s;border:none;background:none;font-family:inherit;width:100%;text-align:left}
+    .sb-item:hover{background:#F7F8FA;color:#111}
+    .sb-item.active{background:#EEF3FF;color:#5189F3}
+    .sb-item.active .sb-mod-dot{box-shadow:0 0 0 2px #5189F3}
+    .sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .sb-mod-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .sb-count{margin-left:auto;font-size:11px;font-weight:800;background:#F0F2F5;color:#9CA3AF;border-radius:10px;padding:1px 7px}
+    .sb-item.active .sb-count{background:#C7D7FD;color:#5189F3}
+    .sb-divider{height:1px;background:#F0F2F5;margin:10px 0}
+    .sb-footer{padding:12px 16px;border-top:1px solid #DFE2E6;margin-top:auto}
+    .sb-tour-btn{width:100%;border:1.5px dashed #DFE2E6;background:none;border-radius:2px;padding:8px 12px;font-size:12px;font-weight:700;color:#9CA3AF;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px}
+    .sb-tour-btn:hover{border-color:#5189F3;color:#5189F3}
+
+    /* ── Main content area ── */
+    .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .close-btn{width:28px;height:28px;border:1px solid #DFE2E6;background:#F9FAFB;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6B7280;font-family:inherit}
+    .close-btn:hover{background:#F3F4F6;color:#111}
+    .breadcrumb{font-size:12px;font-weight:700;color:#9CA3AF;display:flex;align-items:center;gap:6px}
+    .breadcrumb .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+    .breadcrumb .sep{color:#DFE2E6;font-size:14px}
+
+    /* ── Hero ── */
+    .hero{background:#fff;border-bottom:1px solid #DFE2E6;padding:28px 32px 24px;position:relative}
+    .hero-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .hero-mod-dot{width:10px;height:10px;border-radius:50%}
+    .hero-mod-label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+    .hero-title{font-size:26px;font-weight:900;color:#111;letter-spacing:-.02em;line-height:1.2;margin-bottom:6px}
+    .hero-desc{font-size:14px;color:#6B7280;font-weight:600;line-height:1.5}
+    .hero-status{position:absolute;top:28px;right:32px;display:flex;flex-direction:column;align-items:center;gap:6px}
+    .status-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .status-label{font-size:11px;font-weight:800;letter-spacing:.02em}
+
+    /* ── Page body ── */
+    .page-body{max-width:900px;width:100%;margin:0 auto;padding:28px 32px;display:flex;flex-direction:column;gap:32px;flex:1}
+
+    /* ── Section ── */
+    .section-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#9CA3AF;text-transform:uppercase;margin-bottom:14px}
+
+    /* ── Content tabs ── */
+    .tab-bar{display:flex;align-items:center;gap:0;border-bottom:1px solid #DFE2E6;margin-bottom:16px}
+    .tab-btn{background:none;border:none;padding:10px 16px;font-size:13px;font-weight:700;color:#9CA3AF;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px;font-family:inherit;transition:color .15s}
+    .tab-btn.active{color:#111;border-bottom-color:var(--col)}
+    .tab-count{font-size:11px;font-weight:800;background:#F0F2F5;color:#6B7280;border-radius:10px;padding:1px 7px}
+    .tab-btn.active .tab-count{background:var(--col-light);color:var(--col)}
+
+    /* ── Content item ── */
+    .content-item{display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border:1px solid #DFE2E6;border-radius:2px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+    .content-item:hover{border-color:#B0BEFF;box-shadow:0 2px 8px rgba(81,137,243,.08)}
+    .content-icon{width:44px;height:44px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .content-info{flex:1;min-width:0}
+    .content-title{font-size:14px;font-weight:800;color:#111;margin-bottom:3px}
+    .content-meta{font-size:12px;color:#9CA3AF;font-weight:600}
+    .content-status{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+    .done-circle{width:36px;height:36px;border-radius:50%;background:#ECFDF5;border:2px solid #16a34a;display:flex;align-items:center;justify-content:center}
+    .play-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #DFE2E6}
+    .content-status-label{font-size:10px;font-weight:700}
+    .empty-tab{padding:32px;text-align:center;color:#B0B7C3;font-size:13px;font-weight:600;border:1px dashed #DFE2E6;border-radius:2px}
+
+    /* ── Key terms ── */
+    .section-subtitle{font-size:13px;color:#6B7280;font-weight:600;margin-bottom:14px}
+    .terms-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .term-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:14px 16px}
+    .term-title{font-size:13px;font-weight:800;margin-bottom:4px}
+    .term-def{font-size:12px;color:#6B7280;font-weight:600;line-height:1.5}
+
+    /* ── Assessment ── */
+    .assessment-empty{border:1.5px dashed #DFE2E6;border-radius:2px;padding:28px;text-align:center;color:#9CA3AF;font-size:13px;font-weight:700}
+    .assessment-locked{background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:20px 24px;display:flex;align-items:center;gap:14px}
+    .assessment-locked-icon{width:40px;height:40px;border-radius:2px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .assessment-ready{background:#EEF3FF;border:1px solid #C7D7FD;border-radius:2px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .assessment-meta{flex:1}
+    .assessment-title{font-size:14px;font-weight:800;color:#111;margin-bottom:3px}
+    .assessment-sub{font-size:12px;color:#6B7280;font-weight:600}
+    .btn-start-quiz{background:#5189F3;color:#fff;border:none;border-radius:2px;padding:10px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap}
+    .btn-start-quiz:hover{background:#3b6fd4}
+
+    /* ── Quiz ── */
+    .quiz-progress{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .quiz-prog-bar-wrap{flex:1;height:4px;background:#E5E7EB;border-radius:3px;overflow:hidden;margin:0 14px}
+    .quiz-prog-bar{height:100%;background:#5189F3;border-radius:3px;transition:width .3s}
+    .quiz-prog-label{font-size:11px;font-weight:700;color:#9CA3AF;white-space:nowrap}
+    .quiz-q-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:22px 24px}
+    .quiz-q-type{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9CA3AF;margin-bottom:10px}
+    .quiz-q-text{font-size:15px;font-weight:800;color:#111;line-height:1.45;margin-bottom:20px}
+    .quiz-options{display:flex;flex-direction:column;gap:8px}
+    .quiz-option{background:#F9FAFB;border:1.5px solid #DFE2E6;border-radius:2px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;text-align:left;font-family:inherit;color:#111;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:10px}
+    .quiz-option:hover{border-color:#5189F3;background:#EEF3FF}
+    .quiz-option.selected{border-color:#5189F3;background:#EEF3FF;color:#5189F3}
+    .quiz-option.correct{border-color:#16a34a;background:#ECFDF5;color:#16a34a}
+    .quiz-option.wrong{border-color:#EF4444;background:#FEF2F2;color:#EF4444}
+    .quiz-opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid #DFE2E6;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+    .quiz-option.selected .quiz-opt-radio,.quiz-option.correct .quiz-opt-radio{border-color:currentColor}
+    .quiz-option.selected .quiz-opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#5189F3}
+    .quiz-option.correct .quiz-opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#16a34a}
+    .quiz-option.wrong .quiz-opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#EF4444}
+    .quiz-tf-wrap{display:flex;gap:10px}
+    .quiz-tf-btn{flex:1;border:1.5px solid #DFE2E6;border-radius:2px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;background:#F9FAFB;font-family:inherit;color:#111;transition:all .15s}
+    .quiz-tf-btn:hover{border-color:#5189F3}
+    .quiz-tf-btn.selected{border-color:#5189F3;background:#EEF3FF;color:#5189F3}
+    .quiz-tf-btn.correct{border-color:#16a34a;background:#ECFDF5;color:#16a34a}
+    .quiz-tf-btn.wrong{border-color:#EF4444;background:#FEF2F2;color:#EF4444}
+    .quiz-nav{display:flex;justify-content:flex-end;margin-top:14px}
+    .btn-next-q{background:#5189F3;color:#fff;border:none;border-radius:2px;padding:9px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+    .btn-next-q:disabled{background:#E5E7EB;color:#9CA3AF;cursor:default}
+
+    /* ── Results ── */
+    .result-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:28px 24px;text-align:center}
+    .result-circle{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;font-weight:900}
+    .result-title{font-size:18px;font-weight:900;margin-bottom:6px}
+    .result-sub{font-size:13px;color:#6B7280;font-weight:600;margin-bottom:20px}
+    .result-stats{display:flex;justify-content:center;gap:24px;margin-bottom:20px}
+    .result-stat{text-align:center}
+    .result-stat-num{font-size:20px;font-weight:900}
+    .result-stat-label{font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+    .result-actions{display:flex;gap:10px;justify-content:center}
+    .btn-outline{border:1px solid #DFE2E6;background:#fff;color:#555;border-radius:2px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+    .btn-outline:hover{background:#F9FAFB}
+    .btn-primary{background:#5189F3;color:#fff;border:none;border-radius:2px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+
+    /* ── Footer nav ── */
+    .page-footer{background:#fff;border-top:1px solid #DFE2E6;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .nav-btn{display:flex;align-items:center;gap:8px;border:1px solid #DFE2E6;background:#fff;border-radius:2px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:#111;transition:background .15s}
+    .nav-btn:hover{background:#F9FAFB}
+    .nav-btn:disabled{opacity:.4;cursor:default}
+    .nav-btn.next{background:#5189F3;color:#fff;border-color:#5189F3}
+    .nav-btn.next:hover:not(:disabled){background:#3b6fd4}
+
+    /* ── Video Overlay ── */
+    .voverlay{position:fixed;inset:0;background:rgba(8,18,36,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
+    .voverlay.open{display:flex}
+    .vbox{background:#fff;border-radius:2px;width:100%;max-width:780px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.3);overflow:hidden}
+    .vbox-header{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #DFE2E6;gap:12px;flex-shrink:0}
+    .vbox-header-left{display:flex;align-items:flex-start;gap:10px;min-width:0}
+    .vbox-close{flex-shrink:0;width:28px;height:28px;border:1px solid #DFE2E6;background:#F9FAFB;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6B7280;font-family:inherit;margin-top:1px}
+    .vbox-close:hover{background:#F3F4F6;color:#111}
+    .vbox-title-block .vt{font-size:14px;font-weight:800;color:#111;line-height:1.25}
+    .vbox-title-block .vb{font-size:11px;color:#9CA3AF;font-weight:600;margin-top:2px}
+    .vbox-live{font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:2px;border:1.5px solid #16a34a;color:#16a34a;text-transform:uppercase;flex-shrink:0;margin-top:2px}
+    .vbox-video{flex:1;min-height:280px;background:#F0F2F5;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+    .vbox-placeholder-icon{color:#C9D1DC}
+    .vbox-placeholder-text{font-size:13px;color:#B0B7C3;font-weight:600}
+    .vbox-fs{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(0,0,0,.15);border:none;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff}
+    .vbox-fs:hover{background:rgba(0,0,0,.28)}
+    .vbox-footer{padding:14px 20px;border-top:1px solid #DFE2E6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#fff}
+    .vbox-mark-btn{background:#16a34a;color:#fff;border:none;border-radius:2px;padding:9px 20px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+    .vbox-mark-btn:hover{background:#15803d}
+    .vbox-mark-btn:disabled{background:#9CA3AF;cursor:default}
+    .vbox-done-tag{font-size:12px;font-weight:700;color:#16a34a;display:flex;align-items:center;gap:6px}
+
+    /* Attempt info badge */
+    .att-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:2px;font-size:12px;font-weight:700;margin-bottom:14px}
+
+    /* ── Video overlay details ── */
+    .vbox-details{padding:16px 20px;border-top:1px solid #DFE2E6;background:#fff;flex-shrink:0}
+    .vbox-details-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#9CA3AF;text-transform:uppercase;margin-bottom:10px}
+    .vbox-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .vbox-detail-card{border:1px solid #DFE2E6;border-radius:2px;padding:10px 14px}
+    .vbox-detail-card-label{font-size:10px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;text-transform:uppercase;margin-bottom:3px}
+    .vbox-detail-card-value{font-size:13px;font-weight:700;color:#111}
+    .vbox-detail-card-value.live{color:#16a34a}
+  </style>
+</head>
+<body>
+
+  <!-- Navbar (matches knowledge-hub style exactly) -->
+  <header class="topbar">
+    <a class="nav-brand" href="knowledge-hub.html">
+      <img src="Assets/Seatrace logo.png" alt="SeaTrace" style="height:30px;object-fit:contain"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span class="brand-name-cv" style="display:none"><span class="sea">SEA</span><span class="trace">TRACE</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="nav-role-badge">Learner</span>
+      <div style="display:flex;align-items:center;gap:2px">
+        <button class="nav-icon-btn" title="Profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <button class="nav-icon-btn" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <button class="nav-icon-btn" title="Logout" onclick="_learnerLogout()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar + Content -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sb-section-label">Overview</div>
+      <a class="sb-item" href="knowledge-hub.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Journey
+      </a>
+      <div class="sb-divider"></div>
+      <div class="sb-section-label">Knowledge Hub</div>
+      <div id="sbModules"></div>
+      <div class="sb-divider"></div>
+      <div class="sb-section-label">Team</div>
+      <a class="sb-item" href="knowledge-hub.html#certifications">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Certifications
+      </a>
+      <a class="sb-item" href="knowledge-hub.html#leaderboard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="20" width="4" height="1"/><rect x="9" y="15" width="4" height="6"/><rect x="16" y="11" width="4" height="10"/></svg>
+        Leaderboard
+      </a>
+      <div class="sb-footer">
+        <button class="sb-tour-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Take a Tour
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="main-content">
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-status" id="heroStatus"></div>
+
+        <!-- Breadcrumb row (no back button here) -->
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#9CA3AF;margin-bottom:12px">
+          <span id="tbDot" style="width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0"></span>
+          <span id="tbMod" style="color:#6B7280"></span>
+          <span style="color:#DFE2E6">›</span>
+          <span id="tbClassNum" style="font-weight:600"></span>
+        </div>
+
+        <!-- Back button + Title on same row -->
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
+          <button onclick="history.length>1?history.back():window.close()"
+                  title="Back"
+                  style="width:36px;height:36px;border-radius:8px;border:1.5px solid #E5E7EB;background:#fff;color:#6B7280;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s,color .15s"
+                  onmouseover="this.style.borderColor='#5189F3';this.style.color='#5189F3'"
+                  onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#6B7280'">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 class="hero-title" id="heroTitle" style="margin-bottom:0"></h1>
+        </div>
+
+        <p class="hero-desc" id="heroDesc"></p>
+      </div>
+
+      <!-- Page body -->
+      <div class="page-body">
+
+        <!-- CONTENT -->
+        <div>
+          <div class="section-label">Content</div>
+          <div class="tab-bar" id="tabBar"></div>
+          <div id="contentList"></div>
+        </div>
+
+        <!-- KEY TERMS -->
+        <div id="keyTermsSection">
+          <div class="section-label">Key Terms</div>
+          <div class="section-subtitle">Quick read before your assessment — key terms used in this class.</div>
+          <div class="terms-grid" id="termsGrid"></div>
+        </div>
+
+        <!-- ASSESSMENT -->
+        <div>
+          <div class="section-label">Assessment</div>
+          <div id="assessmentBody"></div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="page-footer">
+        <button class="nav-btn prev" id="btnPrev" onclick="navClass('prev')" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <span id="btnPrevLabel">Previous</span>
+        </button>
+        <button class="nav-btn next" id="btnNext" onclick="navClass('next')" disabled>
+          <span id="btnNextLabel">Next</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </footer>
+
+    </div><!-- /main-content -->
+  </div><!-- /main-layout -->
+
+  <!-- Video Overlay -->
+  <div class="voverlay" id="voverlay" onclick="_vovClick(event)">
+    <div class="vbox" id="vbox">
+      <div class="vbox-header">
+        <div class="vbox-header-left">
+          <button class="vbox-close" onclick="closeVideo()" title="Back to class" style="width:auto;padding:0 10px;gap:6px;display:flex;align-items:center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+          </button>
+          <div class="vbox-title-block">
+            <div class="vt" id="vTitle"></div>
+            <div class="vb" id="vBreadcrumb"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+          <div class="vbox-live">Live</div>
+          <button class="vbox-close" onclick="closeVideo()" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="vbox-video">
+        <video id="vboxVideo" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#111;z-index:1" controls></video>
+        <svg class="vbox-placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="15" height="12" rx="2"/><polygon points="17 10 22 7 22 17 17 14"/></svg>
+        <div class="vbox-placeholder-text" id="vboxPlaceholderText">No file uploaded — preview unavailable</div>
+        <button class="vbox-fs" id="vFsBtn" onclick="toggleVFs()" style="z-index:2">
+          <svg id="vFsIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+      <!-- Details -->
+      <div class="vbox-details">
+        <div class="vbox-details-label">Details</div>
+        <div class="vbox-detail-grid">
+          <div class="vbox-detail-card"><div class="vbox-detail-card-label">Module</div><div class="vbox-detail-card-value" id="vdModule">—</div></div>
+          <div class="vbox-detail-card"><div class="vbox-detail-card-label">Class</div><div class="vbox-detail-card-value" id="vdClass">—</div></div>
+          <div class="vbox-detail-card"><div class="vbox-detail-card-label">Duration</div><div class="vbox-detail-card-value" id="vdDuration">—</div></div>
+          <div class="vbox-detail-card"><div class="vbox-detail-card-label">Status</div><div class="vbox-detail-card-value live">live</div></div>
+        </div>
+      </div>
+
+      <div class="vbox-footer">
+        <div id="vWatchedTag" class="vbox-done-tag" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Watched
+        </div>
+        <div style="flex:1"></div>
+        <button class="vbox-mark-btn" id="vMarkBtn" onclick="markWatched()">Mark as Watched</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var LS = 'st_kh_arjun';
+    var D  = {};       // class data from sessionStorage
+
+    /* Mark this session as having visited class-viewer (suppresses auto-guide on return) */
+    try { sessionStorage.setItem('cv_visited', '1'); } catch(e) {}
+
+    function _learnerLogout() {
+      sessionStorage.removeItem('seatrace_role');
+      window.location.href = 'index.html';
+    }
+
+    /* ── IndexedDB helpers (same DB as admin.html for cross-page file access) ── */
+    function _openLibDB() {
+      return new Promise(function(res, rej) {
+        var req = indexedDB.open('st_media_lib', 1);
+        req.onupgradeneeded = function(e) { e.target.result.createObjectStore('files', { keyPath: 'id' }); };
+        req.onsuccess = function(e) { res(e.target.result); };
+        req.onerror = function() { rej(); };
+      });
+    }
+    function _getMediaBlobUrl(id) {
+      return _openLibDB().then(function(db) {
+        return new Promise(function(res) {
+          var tx = db.transaction('files', 'readonly');
+          var req = tx.objectStore('files').get(id);
+          req.onsuccess = function(e) {
+            var entry = e.target.result;
+            res(entry ? URL.createObjectURL(entry.file) : null);
+          };
+          req.onerror = function() { res(null); };
+        });
+      }).catch(function() { return null; });
+    }
+    var _vp = 0;       // current video progress
+    var _vExpanded = false;
+    var _activeTab  = 'video';
+    var _quizPhase  = 'idle'; // idle | taking | done
+    var _questions  = [];
+    var _answers    = [];     // null until answered
+    var _currentQ   = 0;
+    var _attNum     = 1;
+
+    /* ── Bootstrap ── */
+    (function init() {
+      try { D = JSON.parse(sessionStorage.getItem('cv_class') || '{}'); } catch(e) { D = {}; }
+      if (!D.mod) { document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#9CA3AF;font-size:14px">No class data found. Please open this page from the LMS.</div>'; return; }
+
+      _vp = D.vp || 0;
+      _questions = D.questions || [];
+      _attNum = D.a2 ? (D.a2.pass ? 3 : 3) : (D.a1 ? 2 : 1);
+      // If a1 passed → certified, a2 passed → certified
+      // Clamp attNum to what's actually available
+      if (D.a1 && D.a1.pass) _attNum = 99; // certified
+      if (D.a2 && D.a2.pass) _attNum = 99;
+
+      var col = D.col || '#5189F3';
+      document.documentElement.style.setProperty('--col', col);
+      document.documentElement.style.setProperty('--col-light', col + '18');
+
+      document.title = D.cls + ' — SeaTrace LMS';
+      document.getElementById('tbDot').style.background = col;
+      document.getElementById('tbMod').textContent = D.mod;
+      document.getElementById('tbClassNum').textContent = 'Class ' + (D.clsIdx + 1) + ' of ' + D.totalCls;
+      document.getElementById('heroTitle').textContent = D.cls;
+      document.getElementById('heroDesc').textContent = D.desc || '';
+
+      renderSidebar();
+      renderHeroStatus();
+      renderTabs();
+      renderContent('video');
+      renderTerms();
+      renderAssessment();
+      renderFooter();
+    })();
+
+    /* ── Sidebar ── */
+    function renderSidebar() {
+      var mods = D.modules || [];
+      var el = document.getElementById('sbModules');
+      if (!el) return;
+      el.innerHTML = mods.map(function(m) {
+        var isActive = m.name === D.mod;
+        return '<button class="sb-item' + (isActive ? ' active' : '') + '" onclick="sbNavMod(\'' + esc(m.name) + '\')" style="' + (isActive ? '--active-col:' + m.color : '') + '">'
+          + '<div class="sb-mod-dot" style="background:' + m.color + (isActive ? ';box-shadow:0 0 0 2px ' + m.color : '') + '"></div>'
+          + m.name
+          + '</button>';
+      }).join('');
+    }
+    function sbNavMod(name) {
+      // Navigate back to knowledge-hub and open that module
+      sessionStorage.setItem('cv_nav_mod', name);
+      window.close();
+    }
+
+    /* ── Hero status ── */
+    function renderHeroStatus() {
+      var col = D.col || '#5189F3';
+      var el = document.getElementById('heroStatus');
+      var isCert = (_attNum === 99) || (D.a1 && D.a1.pass) || (D.a2 && D.a2.pass);
+      if (isCert) {
+        el.innerHTML = '<div class="status-circle" style="background:#ECFDF5;border:2px solid #16a34a"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="status-label" style="color:#16a34a">Complete</div>';
+      } else if (_vp >= 90) {
+        el.innerHTML = '<div class="status-circle" style="background:' + col + '18;border:2px solid ' + col + '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="' + col + '" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="status-label" style="color:' + col + '">Quiz Ready</div>';
+      } else if (_vp > 0) {
+        el.innerHTML = '<div class="status-circle" style="background:' + col + '18;border:2px solid ' + col + '"><span style="font-size:14px;font-weight:900;color:' + col + '">' + _vp + '%</span></div><div class="status-label" style="color:' + col + '">In Progress</div>';
+      } else {
+        el.innerHTML = '<div class="status-circle" style="background:#F3F4F6;border:2px solid #DFE2E6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="status-label" style="color:#9CA3AF">Not Started</div>';
+      }
+    }
+
+    /* ── Tabs ── */
+    function renderTabs() {
+      var col = D.col || '#5189F3';
+      var vCount = (D.adminVideos && D.adminVideos.length) ? D.adminVideos.length : 1;
+      var voCount = (D.adminVoices && D.adminVoices.length) ? D.adminVoices.length : 1;
+      var dCount  = (D.adminDocs  && D.adminDocs.length)  ? D.adminDocs.length  : 0;
+      var tabs = [
+        { key:'video', icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="15" height="12" rx="2"/><polygon points="17 10 22 7 22 17 17 14"/></svg>', label:'Video', count:vCount },
+        { key:'voice', icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>', label:'Voice Over', count:voCount },
+        { key:'doc',   icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>', label:'Document', count:dCount }
+      ];
+      document.getElementById('tabBar').innerHTML = tabs.map(function(t) {
+        return '<button class="tab-btn' + (t.key === _activeTab ? ' active' : '') + '" onclick="switchTab(\'' + t.key + '\')" style="' + (t.key === _activeTab ? '--col:' + col : '') + '">' + t.icon + ' ' + t.label + (t.count ? ' <span class="tab-count">' + t.count + '</span>' : '') + '</button>';
+      }).join('');
+    }
+
+    function switchTab(key) {
+      _activeTab = key;
+      renderTabs();
+      renderContent(key);
+    }
+
+    /* ── Content list ── */
+    function _contentItemVideo(title, dur, isFirst, itemId) {
+      var col = D.col || '#5189F3';
+      var vDone = isFirst && _vp >= 90;
+      var idArg = itemId ? ',\'' + esc(itemId) + '\'' : '';
+      return '<div class="content-item" onclick="openVideo(\'' + esc(title) + '\',\'video\',\'' + esc(dur||'—') + '\'' + idArg + ')">'
+        + '<div class="content-icon" style="background:' + col + '18"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="' + col + '" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="15" height="12" rx="2"/><polygon points="17 10 22 7 22 17 17 14"/></svg></div>'
+        + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">Video · ' + (dur||'—') + '</div></div>'
+        + '<div class="content-status">'
+        + (vDone
+            ? '<div class="done-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="content-status-label" style="color:#16a34a">Done</div>'
+            : '<div class="play-circle" style="border-color:' + col + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="' + col + '"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="content-status-label" style="color:' + col + '">' + (isFirst && _vp > 0 ? _vp + '%' : 'Watch') + '</div>')
+        + '</div></div>';
+    }
+
+    function _contentItemVoice(title, dur, itemId) {
+      var idArg = itemId ? ',\'' + esc(itemId) + '\'' : '';
+      return '<div class="content-item" onclick="openVideo(\'' + esc(title) + '\',\'voice\',\'' + esc(dur||'5 min') + '\'' + idArg + ')">'
+        + '<div class="content-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>'
+        + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">Voice Over · ' + (dur||'5 min') + '</div></div>'
+        + '<div class="content-status"><div class="play-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="#9CA3AF"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="content-status-label" style="color:#9CA3AF">Listen</div></div>'
+        + '</div>';
+    }
+
+    function _contentItemDoc(title, docType, version) {
+      return '<div class="content-item" onclick="openVideo(\'' + esc(title) + '\',\'doc\',\'—\')">'
+        + '<div class="content-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>'
+        + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">' + (docType||'Document') + (version ? ' · ' + version : '') + '</div></div>'
+        + '<div class="content-status"><div class="play-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="#9CA3AF"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="content-status-label" style="color:#9CA3AF">View</div></div>'
+        + '</div>';
+    }
+
+    function renderContent(tab) {
+      var el = document.getElementById('contentList');
+      if (tab === 'video') {
+        var adminV = D.adminVideos && D.adminVideos.length ? D.adminVideos : null;
+        if (adminV) {
+          el.innerHTML = adminV.map(function(v,i){ return _contentItemVideo(v.title, v.duration, i===0, v.id); }).join('');
+        } else {
+          el.innerHTML = _contentItemVideo(D.videoTitle || D.cls + ' Training', D.dur, true);
+        }
+      } else if (tab === 'voice') {
+        var adminVo = D.adminVoices && D.adminVoices.length ? D.adminVoices : null;
+        if (adminVo) {
+          el.innerHTML = adminVo.map(function(v){ return _contentItemVoice(v.title, v.duration, v.id); }).join('');
+        } else {
+          el.innerHTML = _contentItemVoice(D.voiceTitle || D.cls + ' Introduction', '5 min');
+        }
+      } else {
+        var adminD = D.adminDocs && D.adminDocs.length ? D.adminDocs : null;
+        if (adminD) {
+          el.innerHTML = adminD.map(function(v){ return _contentItemDoc(v.title, v.docType, v.version); }).join('');
+        } else {
+          el.innerHTML = '<div class="empty-tab">No documents attached to this class yet.</div>';
+        }
+      }
+    }
+
+    /* ── Key terms ── */
+    function renderTerms() {
+      var col = D.col || '#5189F3';
+      var terms = D.terms || [];
+      var el = document.getElementById('termsGrid');
+      if (!terms.length) { document.getElementById('keyTermsSection').style.display = 'none'; return; }
+      el.innerHTML = terms.map(function(t) {
+        return '<div class="term-card"><div class="term-title" style="color:' + col + '">' + t.t + '</div><div class="term-def">' + t.d + '</div></div>';
+      }).join('');
+    }
+
+    /* ── Assessment ── */
+    function renderAssessment() {
+      var el = document.getElementById('assessmentBody');
+      var col = D.col || '#5189F3';
+      var isCert = (D.a1 && D.a1.pass) || (D.a2 && D.a2.pass);
+      var exhausted = D.a2 && !D.a2.pass;
+
+      if (isCert) {
+        var pass = D.a1 && D.a1.pass ? D.a1 : D.a2;
+        el.innerHTML = _resultHTML(pass.pct, true, pass.c, D.questions ? D.questions.length : 0, pass.date);
+        return;
+      }
+      if (exhausted) {
+        el.innerHTML = '<div class="assessment-empty" style="border-color:#FECACA;background:#FEF2F2;color:#EF4444">All attempts used. Contact your supervisor to request a 3rd attempt.</div>';
+        return;
+      }
+      if (!_questions.length) {
+        el.innerHTML = '<div class="assessment-empty">No quiz assigned to this class.</div>';
+        return;
+      }
+      if (_vp < 90) {
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Watch video to unlock assessment</div><div style="font-size:12px;color:#B45309;font-weight:600">Complete at least 90% of the video content to enable the quiz.</div></div></div>';
+        return;
+      }
+
+      // Cooldown check for att2
+      if (D.a1 && !D.a1.pass && _attNum === 2) {
+        if (D.cd) {
+          var cdEnd = new Date(D.cd).getTime() + 24*60*60*1000;
+          var now = Date.now();
+          if (now < cdEnd) {
+            var remMs = cdEnd - now;
+            var remH = Math.floor(remMs/3600000);
+            var remM = Math.floor((remMs%3600000)/60000);
+            el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + D.a1.pct + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in ' + (remH ? remH + 'h ' : '') + remM + 'm</div></div></div>';
+            return;
+          }
+        }
+      }
+
+      el.innerHTML = '<div class="assessment-ready">'
+        + '<div class="assessment-meta">'
+        + '<div class="assessment-title">' + (D.a1 && !D.a1.pass ? 'Attempt 2 — Re-Assessment' : 'Class Assessment') + '</div>'
+        + '<div class="assessment-sub">' + _questions.length + ' questions · Pass mark: ' + D.passMark + '% · Approx. ' + Math.ceil(_questions.length * 1.5) + ' min</div>'
+        + (D.a1 && !D.a1.pass ? '<div style="margin-top:6px;font-size:11px;font-weight:700;color:#EF4444">Attempt 1: ' + D.a1.pct + '% — did not pass</div>' : '')
+        + '</div>'
+        + '<button class="btn-start-quiz" onclick="startQuiz()">Start Assessment →</button>'
+        + '</div>';
+    }
+
+    /* ── Quiz ── */
+    function startQuiz() {
+      _quizPhase = 'taking';
+      _currentQ  = 0;
+      _answers   = new Array(_questions.length).fill(null);
+      renderQuiz();
+    }
+
+    function renderQuiz() {
+      if (_currentQ >= _questions.length) { submitQuiz(); return; }
+      var q   = _questions[_currentQ];
+      var col = D.col || '#5189F3';
+      var pct = Math.round((_currentQ / _questions.length) * 100);
+      var isTF = q.type === 'tf';
+      var answered = _answers[_currentQ] !== null;
+
+      var optionsHTML = '';
+      if (isTF) {
+        var tSel = _answers[_currentQ] === 'true', fSel = _answers[_currentQ] === 'false';
+        optionsHTML = '<div class="quiz-tf-wrap">'
+          + '<button class="quiz-tf-btn' + (tSel ? ' selected' : '') + '" onclick="selectTF(\'true\')">✓ True</button>'
+          + '<button class="quiz-tf-btn' + (fSel ? ' selected' : '') + '" onclick="selectTF(\'false\')">✗ False</button>'
+          + '</div>';
+      } else {
+        optionsHTML = '<div class="quiz-options">' + q.options.map(function(opt, i) {
+          var sel = _answers[_currentQ] === i;
+          return '<button class="quiz-option' + (sel ? ' selected' : '') + '" onclick="selectMCQ(' + i + ')">'
+            + '<div class="quiz-opt-radio"></div>' + opt + '</button>';
+        }).join('') + '</div>';
+      }
+
+      document.getElementById('assessmentBody').innerHTML = '<div style="display:flex;flex-direction:column;gap:12px">'
+        + '<div class="quiz-progress"><span class="quiz-prog-label">Q' + (_currentQ+1) + ' of ' + _questions.length + '</span><div class="quiz-prog-bar-wrap"><div class="quiz-prog-bar" style="width:' + pct + '%;background:' + col + '"></div></div><span class="quiz-prog-label">' + pct + '%</span></div>'
+        + '<div class="quiz-q-card">'
+          + '<div class="quiz-q-type">' + (isTF ? 'True / False' : 'Multiple Choice') + '</div>'
+          + '<div class="quiz-q-text">' + q.text + '</div>'
+          + optionsHTML
+        + '</div>'
+        + '<div class="quiz-nav"><button class="btn-next-q" onclick="nextQ()" ' + (!answered ? 'disabled' : '') + ' id="btnNextQ">' + (_currentQ === _questions.length-1 ? 'Submit →' : 'Next →') + '</button></div>'
+        + '</div>';
+    }
+
+    function selectMCQ(i) {
+      _answers[_currentQ] = i;
+      renderQuiz();
+    }
+    function selectTF(v) {
+      _answers[_currentQ] = v;
+      renderQuiz();
+    }
+    function nextQ() {
+      if (_answers[_currentQ] === null) return;
+      _currentQ++;
+      if (_currentQ >= _questions.length) { submitQuiz(); } else { renderQuiz(); }
+    }
+
+    function submitQuiz() {
+      var correct = 0;
+      _questions.forEach(function(q, i) {
+        var ans = _answers[i];
+        if (q.type === 'mcq' && ans === q.correct) correct++;
+        else if (q.type === 'tf' && ans === q.correct) correct++;
+      });
+      var total = _questions.length;
+      var pct = total ? Math.round((correct / total) * 100) : 0;
+      var pass = pct >= (D.passMark || 70);
+      var today = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+      var attKey = 'a' + _attNum;
+
+      // Save to localStorage (shared with knowledge-hub.html)
+      try {
+        var st = JSON.parse(localStorage.getItem(LS) || '{}');
+        if (!st[D.mod]) st[D.mod] = {};
+        if (!st[D.mod][D.cls]) st[D.mod][D.cls] = {};
+        st[D.mod][D.cls][attKey] = { pass: pass, pct: pct, date: today, c: correct, t: total };
+        if (!pass && _attNum === 1) st[D.mod][D.cls].cd = new Date().toISOString();
+        localStorage.setItem(LS, JSON.stringify(st));
+        // Update D so re-render shows result
+        D[attKey] = { pass: pass, pct: pct, date: today, c: correct, t: total };
+        if (!pass && _attNum === 1) D.cd = new Date().toISOString();
+      } catch(e) {}
+
+      if (pass) { D.a1 = D.a1 || {}; if (_attNum === 1) D.a1 = D[attKey]; else D.a2 = D[attKey]; }
+      renderHeroStatus();
+      document.getElementById('assessmentBody').innerHTML = _resultHTML(pct, pass, correct, total, today);
+    }
+
+    function _resultHTML(pct, pass, correct, total, date) {
+      var col = pass ? '#16a34a' : '#EF4444';
+      var bg  = pass ? '#ECFDF5' : '#FEF2F2';
+      return '<div class="result-card">'
+        + '<div class="result-circle" style="background:' + bg + ';border:2px solid ' + col + '">'
+          + (pass ? '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="' + col + '" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                  : '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="' + col + '" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>')
+        + '</div>'
+        + '<div class="result-title" style="color:' + col + '">' + (pass ? 'Assessment Passed!' : 'Not Passed') + '</div>'
+        + '<div class="result-sub">' + (pass ? 'You\'ve successfully completed this class.' : 'Review the material and try again.') + '</div>'
+        + '<div class="result-stats">'
+          + '<div class="result-stat"><div class="result-stat-num" style="color:' + col + '">' + pct + '%</div><div class="result-stat-label">Your Score</div></div>'
+          + '<div class="result-stat"><div class="result-stat-num">' + (D.passMark || 70) + '%</div><div class="result-stat-label">Pass Mark</div></div>'
+          + '<div class="result-stat"><div class="result-stat-num">' + correct + '/' + total + '</div><div class="result-stat-label">Correct</div></div>'
+        + '</div>'
+        + '<div style="font-size:11px;color:#9CA3AF;font-weight:600;margin-bottom:16px">Completed: ' + date + '</div>'
+        + (pass ? '' : '<div class="result-actions"><button class="btn-outline" onclick="startQuiz()">Retry Assessment</button></div>')
+        + '</div>';
+    }
+
+    /* ── Footer nav ── */
+    function renderFooter() {
+      var prev = document.getElementById('btnPrev');
+      var next = document.getElementById('btnNext');
+      if (D.prevCls) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Class ' + D.clsIdx + ': ' + D.prevCls; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
+      if (D.nextCls) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Class ' + (D.clsIdx+2) + ': ' + D.nextCls; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
+    }
+
+    function navClass(dir) {
+      var cls = dir === 'next' ? D.nextCls : D.prevCls;
+      if (!cls) return;
+      // Re-open this page with the sibling class
+      var newIdx = dir === 'next' ? D.clsIdx + 1 : D.clsIdx - 1;
+      var mc = {};
+      // Build minimal data for the next class from what we have
+      var allCls = [];
+      for (var i = 0; i < D.totalCls; i++) { /* approximate */ }
+      // Best: instruct user to use knowledge-hub
+      // For now: pass the new class name, same mod
+      var LS_val = {};
+      try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
+      var s = (LS_val[D.mod] || {})[cls] || {};
+      // Reuse meta fields — class-viewer won't have CLASS_META; send minimal session data
+      var nd = Object.assign({}, D, {
+        cls: cls, clsIdx: newIdx,
+        prevCls: newIdx > 0 ? (dir === 'next' ? D.cls : D.prevCls) : null,
+        nextCls: newIdx < D.totalCls - 1 ? (dir === 'next' ? D.nextCls : D.cls) : null,
+        desc: '', videoTitle: cls + ' Training', voiceTitle: cls + ' Introduction',
+        terms: [], questions: [],
+        vp: s.vp || 0, a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null
+      });
+      sessionStorage.setItem('cv_class', JSON.stringify(nd));
+      location.reload();
+    }
+
+    /* ── Video overlay ── */
+    function openVideo(title, type, dur, itemId) {
+      document.getElementById('vTitle').textContent = title;
+      document.getElementById('vBreadcrumb').textContent = D.mod + ' › ' + D.cls;
+      document.getElementById('vdModule').textContent   = D.mod || '—';
+      document.getElementById('vdClass').textContent    = D.cls || '—';
+      document.getElementById('vdDuration').textContent = dur || D.dur || '—';
+      // Reset video state
+      var vEl = document.getElementById('vboxVideo');
+      var vPh = document.getElementById('vboxPlaceholderText');
+      if (vEl) { vEl.pause(); vEl.removeAttribute('src'); vEl.style.display = 'none'; }
+      if (vPh) vPh.textContent = 'No file uploaded — preview unavailable';
+      // Try to load actual file from IndexedDB
+      if (itemId && (type === 'video' || type === 'voice')) {
+        if (vPh) vPh.textContent = 'Loading…';
+        _getMediaBlobUrl(itemId).then(function(url) {
+          if (url) {
+            var v2 = document.getElementById('vboxVideo');
+            if (v2) { v2.src = url; v2.style.display = 'block'; }
+            if (vPh) vPh.style.display = 'none';
+          } else {
+            if (vPh) { vPh.textContent = 'No file uploaded — preview unavailable'; vPh.style.display = ''; }
+          }
+        });
+      }
+      var btn = document.getElementById('vMarkBtn');
+      var tag = document.getElementById('vWatchedTag');
+      if (_vp >= 90) { btn.disabled = true; btn.style.display = 'none'; tag.style.display = 'flex'; }
+      else { btn.disabled = false; btn.style.display = 'block'; tag.style.display = 'none'; }
+      document.getElementById('voverlay').classList.add('open');
+    }
+    function closeVideo() {
+      document.getElementById('voverlay').classList.remove('open');
+      var vEl = document.getElementById('vboxVideo');
+      if (vEl) { vEl.pause(); vEl.removeAttribute('src'); vEl.style.display = 'none'; }
+      var vPh = document.getElementById('vboxPlaceholderText');
+      if (vPh) { vPh.textContent = 'No file uploaded — preview unavailable'; vPh.style.display = ''; }
+      _vExpanded = false;
+      document.getElementById('vbox').style.maxWidth = '780px';
+      document.getElementById('vbox').style.maxHeight = '92vh';
+      document.getElementById('vbox').style.borderRadius = '2px';
+      document.getElementById('vFsIcon').innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>';
+    }
+    function _vovClick(e) { if (e.target === document.getElementById('voverlay')) closeVideo(); }
+    function toggleVFs() {
+      _vExpanded = !_vExpanded;
+      var b = document.getElementById('vbox');
+      b.style.maxWidth = _vExpanded ? '100%' : '780px';
+      b.style.maxHeight = _vExpanded ? '100%' : '92vh';
+      b.style.borderRadius = _vExpanded ? '0' : '2px';
+      document.getElementById('vFsIcon').innerHTML = _vExpanded
+        ? '<path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/>'
+        : '<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>';
+    }
+
+    function markWatched() {
+      _vp = 100;
+      // Persist to localStorage
+      try {
+        var st = JSON.parse(localStorage.getItem(LS) || '{}');
+        if (!st[D.mod]) st[D.mod] = {};
+        if (!st[D.mod][D.cls]) st[D.mod][D.cls] = {};
+        st[D.mod][D.cls].vp = 100;
+        localStorage.setItem(LS, JSON.stringify(st));
+        D.vp = 100;
+      } catch(e) {}
+      document.getElementById('vMarkBtn').style.display = 'none';
+      document.getElementById('vWatchedTag').style.display = 'flex';
+      closeVideo();
+      renderHeroStatus();
+      renderContent(_activeTab);
+      renderAssessment();
+    }
+
+    /* ── ESC ── */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        if (document.getElementById('voverlay').classList.contains('open')) { closeVideo(); return; }
+        window.close();
+      }
+    });
+
+    /* ── Utility ── */
+    function esc(s) { return (s||'').replace(/'/g,"\\'"); }
+  </script>
+</body>
+</html>

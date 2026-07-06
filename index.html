@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeaTrace LMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background: #F7F8FA;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* subtle grid pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(81,137,243,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(81,137,243,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    /* ── brand ── */
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-logo {
+      height: 36px;
+      object-fit: contain;
+    }
+    .brand-wordmark {
+      font-size: 11px;
+      font-weight: 700;
+      color: #bbb;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .brand-headline {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -.01em;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-size: 13px;
+      color: #888;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* ── role cards ── */
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .role-card {
+      position: relative;
+      background: #fff;
+      border-radius: 2px;
+      padding: 28px 24px 24px;
+      border: 1px solid #DFE2E6;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      text-decoration: none;
+      transition: border-color .15s, box-shadow .15s;
+      overflow: hidden;
+    }
+    .role-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    }
+    .role-card.admin:hover  { border-color: #5189F3; }
+    .role-card.learner:hover { border-color: #059669; }
+
+    /* accent stripe at top */
+    .role-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 0;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    .role-card:hover::before { opacity: 1; }
+    .role-card.admin::before  { background: #5189F3; }
+    .role-card.learner::before { background: #059669; }
+
+    .role-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .admin  .role-icon { background: #EEF3FF; color: #5189F3; }
+    .learner .role-icon { background: #ECFDF5; color: #059669; }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .admin  .role-label { color: #5189F3; }
+    .learner .role-label { color: #059669; }
+
+    .role-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 8px;
+      letter-spacing: -.01em;
+    }
+    .role-desc {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .role-cta {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      padding: 9px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: opacity .15s;
+      text-decoration: none;
+    }
+    .role-cta:hover { opacity: .88; }
+    .admin  .role-cta { background: #5189F3; color: #fff; }
+    .learner .role-cta { background: #059669; color: #fff; }
+
+    .role-features {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .role-feature {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+    }
+    .role-feature-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .admin  .role-feature-dot { background: #5189F3; }
+    .learner .role-feature-dot { background: #059669; }
+
+    .role-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+    .admin  .role-badge { background: #EEF3FF; color: #5189F3; }
+    .learner .role-badge { background: #ECFDF5; color: #059669; }
+
+    /* ── footer ── */
+    .footer {
+      font-size: 11px;
+      font-weight: 600;
+      color: #C4C9D4;
+      letter-spacing: .04em;
+    }
+
+    @media (max-width: 600px) {
+      .roles { grid-template-columns: 1fr; }
+      .brand-headline { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Brand -->
+    <div class="brand">
+      <img src="Assets/Seatrace logo.png" alt="SeaTrace" class="brand-logo"
+           onerror="this.style.display='none'">
+      <div class="brand-wordmark">SeaTrace</div>
+      <div>
+        <div class="brand-headline">Learning Management Platform</div>
+        <div class="brand-sub">Select how you'd like to access the platform</div>
+      </div>
+    </div>
+
+    <!-- Role cards -->
+    <div class="roles">
+
+      <!-- Admin -->
+      <div class="role-card admin" onclick="sessionStorage.setItem('seatrace_role','admin');window.location.href='admin.html'">
+        <span class="role-badge">Admin</span>
+        <div class="role-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="role-label">Administration</div>
+        <div class="role-title">Admin Portal</div>
+        <div class="role-desc">Manage users, upload content, configure quizzes, issue certifications, and track learner progress across all modules.</div>
+        <div class="role-features">
+          <div class="role-feature"><span class="role-feature-dot"></span>Upload &amp; manage videos, documents</div>
+          <div class="role-feature"><span class="role-feature-dot"></span>Create &amp; manage quizzes</div>
+          <div class="role-feature"><span class="role-feature-dot"></span>Issue certificates &amp; track progress</div>
+          <div class="role-feature"><span class="role-feature-dot"></span>Full leaderboard &amp; user journey view</div>
+        </div>
+        <span class="role-cta">
+          Enter as Admin
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+
+      <!-- Learner -->
+      <a class="role-card learner" href="knowledge-hub.html" onclick="sessionStorage.setItem('seatrace_role','learner')">
+        <span class="role-badge">Open Access</span>
+        <div class="role-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <div class="role-label">Learner</div>
+        <div class="role-title">Learning Hub</div>
+        <div class="role-desc">Access your training modules, watch videos, take quizzes, earn certifications, and track your own learning journey.</div>
+        <div class="role-features">
+          <div class="role-feature"><span class="role-feature-dot"></span>Watch training videos &amp; voiceovers</div>
+          <div class="role-feature"><span class="role-feature-dot"></span>Take module quizzes</div>
+          <div class="role-feature"><span class="role-feature-dot"></span>Earn &amp; view your certificates</div>
+          <div class="role-feature"><span class="role-feature-dot"></span>Track your own progress</div>
+        </div>
+        <span class="role-cta">
+          Enter as Learner
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+
+    </div>
+
+    <div class="footer">SeaTrace &copy; 2026 &nbsp;·&nbsp; Internal Training Platform</div>
+  </div>
+
+  <script></script>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forms Module – SeaTrace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f5f5f5; }
+
+    /* Navbar */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 52px; background: #fff;
+      border-bottom: 1px solid #DFE2E6; position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand-text { font-size: 15px; font-weight: 800; color: #111; letter-spacing: 1px; text-transform: uppercase; }
+    .brand-text .sea { color: #5189F3; }
+    .nav-icons { display: flex; align-items: center; gap: 2px; }
+    .icon-btn {
+      width: 36px; height: 36px; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #5E5E60; border-radius: 0; transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover, .icon-btn.active { background: #E4EEFF; color: #5189F3; }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    /* Page */
+    .page { min-height: calc(100vh - 52px); padding: 32px; display: flex; justify-content: center; align-items: flex-start; }
+    .container { width: 100%; max-width: 1000px; background: #fff; padding: 32px; }
+
+    /* Header */
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .page-title { font-size: 16px; font-weight: 700; color: #111; }
+    .back-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; background: none; border: 1px solid #DFE2E6;
+      cursor: pointer; color: #555; border-radius: 2px; text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .back-btn:hover { background: #E4EEFF; border-color: #5189F3; color: #5189F3; }
+    .back-btn svg { width: 14px; height: 14px; }
+
+    /* Search */
+    .search-wrap { position: relative; width: 220px; }
+    .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888; pointer-events: none; }
+    .search-wrap input {
+      width: 100%; height: 32px; padding: 0 12px 0 32px;
+      border: 1px solid #d9d9d9; border-radius: 2px;
+      font-family: 'Nunito', sans-serif; font-size: 14px; color: #111; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-wrap input:focus { border-color: #5189F3; box-shadow: 0 0 0 2px rgba(81,137,243,0.15); }
+    .search-wrap input::placeholder { color: #bbb; }
+
+    /* Module rows */
+    .module-list { display: flex; flex-direction: column; gap: 10px; }
+    .module-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #F8FAFF; border: 1px solid #DFE2E6; height: 52px;
+      padding: 0 20px; cursor: pointer; text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .module-row:hover { background: #edf1ff; border-color: #a8bfff; box-shadow: 0 2px 6px rgba(81,137,243,0.08); }
+    .module-row-left { display: flex; align-items: center; gap: 16px; }
+    .module-num { font-size: 13px; font-weight: 600; color: #888; min-width: 80px; }
+    .module-name { font-size: 14px; font-weight: 500; color: #111; }
+    .module-arrow { color: #888; display: flex; align-items: center; transition: color 0.15s, transform 0.15s; }
+    .module-row:hover .module-arrow { color: #5189F3; transform: translate(2px, -2px); }
+    .module-arrow svg { width: 16px; height: 16px; }
+
+    /* Empty */
+    .empty { text-align: center; padding: 48px 0; color: #aaa; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand" onclick="window.location.href='knowledge-hub.html'">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="15.5" stroke="#111" stroke-width="1.3"/>
+        <path d="M10 22 C12 16 14.5 11 17 17 C19.5 23 22 18 24 12" stroke="#111" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        <circle cx="17" cy="17" r="1.6" fill="#111"/>
+      </svg>
+      <span class="brand-text"><span class="sea">SEA</span>TRACE</span>
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn active" title="Knowledge Hub" onclick="window.location.href='knowledge-hub.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Exit">
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M7 3H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12 6l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 9H7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Home" onclick="window.location.href='knowledge-hub.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="page">
+    <div class="container">
+
+      <div class="page-header">
+        <div class="header-left">
+          <a class="back-btn" href="knowledge-hub.html" title="Back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </a>
+          <h2 class="page-title">Forms Module</h2>
+        </div>
+        <div class="search-wrap">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search modules..." oninput="filterModules()" />
+        </div>
+      </div>
+
+      <div class="module-list" id="moduleList"></div>
+
+    </div>
+  </div>
+
+  <script>
+    const MODULES = [
+      'Beheading',
+      'Grading',
+      'Peeling & Cutting',
+      'Soaking',
+      'Nobashi',
+      'IQF',
+      'Leftover',
+      'Cold Store - Inward',
+      'Cold Store - Outward',
+    ];
+
+    const arrowSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+    </svg>`;
+
+    function renderModules(list) {
+      document.getElementById('moduleList').innerHTML = list.map((name, i) => `
+        <a class="module-row" href="forms-overview.html?idx=${MODULES.indexOf(name)}" data-name="${name.toLowerCase()}">
+          <div class="module-row-left">
+            <span class="module-num">Module - ${MODULES.indexOf(name) + 1}</span>
+            <span class="module-name">${name}</span>
+          </div>
+          <span class="module-arrow">${arrowSVG}</span>
+        </a>
+      `).join('');
+    }
+
+    renderModules(MODULES);
+
+    function filterModules() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = MODULES.filter(n => n.toLowerCase().includes(q));
+      renderModules(filtered);
+
+      const existing = document.getElementById('emptyState');
+      if (filtered.length === 0) {
+        if (!existing) {
+          const el = document.createElement('p');
+          el.id = 'emptyState'; el.className = 'empty';
+          el.textContent = 'No modules found.';
+          document.getElementById('moduleList').appendChild(el);
+        }
+      } else if (existing) existing.remove();
+    }
+  </script>
+
+</body>
+</html>

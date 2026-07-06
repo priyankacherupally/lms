@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knowledge Hub – SeaTrace LMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f5f5f5; }
+
+    /* ── Navbar ── */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 52px; background: #fff;
+      border-bottom: 1px solid #DFE2E6; position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand-text { font-size: 15px; font-weight: 800; color: #111; letter-spacing: 1px; text-transform: uppercase; }
+    .brand-text .sea { color: #5189F3; }
+    .nav-icons { display: flex; align-items: center; gap: 2px; }
+    .icon-btn {
+      width: 36px; height: 36px; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #5E5E60; border-radius: 0; transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover, .icon-btn.active { background: #E4EEFF; color: #5189F3; }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    /* ── Page shell ── */
+    .page { min-height: calc(100vh - 52px); padding: 32px; display: flex; justify-content: center; align-items: flex-start; }
+    .container { width: 100%; max-width: 1000px; background: #fff; padding: 32px; }
+
+    /* ── Shared header ── */
+    .hub-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .hub-title { font-size: 16px; font-weight: 700; color: #111; }
+    .back-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; background: none; border: 1px solid #DFE2E6;
+      cursor: pointer; color: #555; border-radius: 2px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .back-btn:hover { background: #E4EEFF; border-color: #5189F3; color: #5189F3; }
+    .back-btn svg { width: 14px; height: 14px; }
+
+    /* ── Search ── */
+    .search-wrap { position: relative; width: 220px; }
+    .search-wrap .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888; pointer-events: none; }
+    .search-wrap input {
+      width: 100%; height: 32px; padding: 0 12px 0 32px;
+      border: 1px solid #d9d9d9; border-radius: 2px;
+      font-family: 'Nunito', sans-serif; font-size: 14px; color: #111; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-wrap input:focus { border-color: #5189F3; box-shadow: 0 0 0 2px rgba(81,137,243,0.15); }
+    .search-wrap input::placeholder { color: #bbb; }
+
+    /* ── Views ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── View 1: Category cards ── */
+    .cards { display: flex; flex-direction: column; gap: 16px; }
+    .card {
+      background: #F8FAFF; border: 1px solid #d8d8d8; height: 170px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .card:hover { background: #edf1ff; border-color: #a8bfff; box-shadow: 0 2px 8px rgba(81,137,243,0.1); }
+    .card-label { font-size: 14px; font-weight: 500; color: #111; letter-spacing: 0.01em; }
+
+    /* ── View 2: Module rows ── */
+    .module-list { display: flex; flex-direction: column; gap: 10px; }
+    .module-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #F8FAFF; border: 1px solid #DFE2E6; height: 52px;
+      padding: 0 20px; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .module-row:hover { background: #edf1ff; border-color: #a8bfff; box-shadow: 0 2px 6px rgba(81,137,243,0.08); }
+    .module-row-left { display: flex; align-items: center; gap: 16px; }
+    .module-num { font-size: 13px; font-weight: 600; color: #888; min-width: 80px; }
+    .module-name { font-size: 14px; font-weight: 500; color: #111; }
+    .module-arrow { color: #888; display: flex; align-items: center; flex-shrink: 0; transition: color 0.15s, transform 0.15s; }
+    .module-row:hover .module-arrow { color: #5189F3; transform: translate(2px, -2px); }
+    .module-arrow svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════
+       VIEW 3: Module Detail
+    ══════════════════════════════════════ */
+
+    /* Compact banner */
+    .detail-banner {
+      margin: -32px -32px 0 -32px;
+      padding: 24px 32px 22px;
+      background: linear-gradient(135deg, #0D1B36 0%, #1B3460 60%, #1E4080 100%);
+    }
+    .detail-crumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px;
+    }
+    .detail-crumb span { cursor: pointer; transition: color 0.12s; }
+    .detail-crumb span:hover { color: rgba(255,255,255,0.85); }
+    .detail-crumb .sep { font-size: 9px; }
+
+    .detail-banner-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+    .detail-banner-left { flex: 1; }
+    .detail-tag {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #7fb2ff; background: rgba(81,137,243,0.15);
+      border: 1px solid rgba(81,137,243,0.3); padding: 2px 9px; border-radius: 2px; margin-bottom: 7px;
+    }
+    .detail-banner-title { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 4px; }
+    .detail-banner-sub { font-size: 12px; color: rgba(255,255,255,0.45); }
+    .detail-banner-stats { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+    .dstat {
+      display: flex; align-items: center; gap: 5px; font-size: 11px;
+      color: rgba(255,255,255,0.65); padding: 4px 10px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+    }
+    .dstat svg { width: 11px; height: 11px; opacity: 0.7; }
+
+    /* ── Video + Lesson panel (side by side) ── */
+    .course-stage {
+      margin: 0 -32px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      border-bottom: 1px solid #DFE2E6;
+    }
+
+    /* Video column */
+    .video-col { background: #0a1220; position: relative; }
+
+    .video-player {
+      position: relative; width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #0a1220; overflow: hidden; cursor: pointer;
+    }
+
+    /* subtle dot-grid texture */
+    .video-player::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(81,137,243,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .video-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+    /* IDLE state */
+    .vp-idle { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 20px; }
+    .vp-idle-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .vp-idle-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.3; max-width: 280px; }
+    .vp-play-ring {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(81,137,243,0.25);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      margin-top: 4px;
+    }
+    .vp-play-ring:hover { background: #5189F3; border-color: #5189F3; transform: scale(1.08); }
+    .vp-play-ring svg { width: 22px; height: 22px; color: #fff; margin-left: 3px; }
+    .vp-idle-hint { font-size: 11px; color: rgba(255,255,255,0.25); }
+
+    /* PLAYING state */
+    .vp-playing { display: none; flex-direction: column; width: 100%; height: 100%; position: relative; }
+    .vp-playing.active { display: flex; }
+
+    .vp-playing-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #0f2040 0%, #0a1628 50%, #071020 100%);
+    }
+    .vp-playing-content {
+      position: relative; flex: 1; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* wave bars animation */
+    .vp-wave { display: flex; align-items: flex-end; gap: 4px; height: 48px; }
+    .vp-bar {
+      width: 4px; background: rgba(81,137,243,0.6); border-radius: 2px;
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .vp-bar:nth-child(1) { animation-delay: 0s;    height: 20px; }
+    .vp-bar:nth-child(2) { animation-delay: 0.1s;  height: 35px; }
+    .vp-bar:nth-child(3) { animation-delay: 0.2s;  height: 28px; }
+    .vp-bar:nth-child(4) { animation-delay: 0.15s; height: 42px; }
+    .vp-bar:nth-child(5) { animation-delay: 0.05s; height: 24px; }
+    .vp-bar:nth-child(6) { animation-delay: 0.25s; height: 38px; }
+    .vp-bar:nth-child(7) { animation-delay: 0.1s;  height: 18px; }
+
+    @keyframes wave {
+      0%, 100% { transform: scaleY(1); opacity: 0.6; }
+      50%       { transform: scaleY(1.8); opacity: 1; }
+    }
+
+    /* controls overlay */
+    .vp-controls {
+      position: relative; padding: 10px 16px 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    }
+    .vp-lesson-label { font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+    .vp-lesson-name { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vp-progress-track {
+      height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px;
+      margin-bottom: 8px; cursor: pointer; overflow: hidden;
+    }
+    .vp-progress-fill {
+      height: 100%; background: #5189F3; border-radius: 2px;
+      width: 0%; transition: width 0.5s linear;
+    }
+    .vp-ctrl-row { display: flex; align-items: center; justify-content: space-between; }
+    .vp-ctrl-left { display: flex; align-items: center; gap: 10px; }
+    .vp-ctrl-btn {
+      background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.75);
+      display: flex; align-items: center; justify-content: center; padding: 0;
+      transition: color 0.15s;
+    }
+    .vp-ctrl-btn:hover { color: #fff; }
+    .vp-ctrl-btn svg { width: 16px; height: 16px; }
+    .vp-time { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+    /* Lesson list panel */
+    .lesson-panel {
+      background: #fff; border-left: 1px solid #DFE2E6;
+      display: flex; flex-direction: column;
+    }
+    .lesson-panel-header {
+      padding: 12px 16px; border-bottom: 1px solid #F0F0F0;
+      font-size: 11px; font-weight: 700; color: #888;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lesson-panel-count { font-size: 11px; color: #bbb; font-weight: 600; }
+    .lesson-scroll { overflow-y: auto; flex: 1; max-height: 340px; }
+
+    .lp-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #F8F8F8;
+      transition: background 0.12s;
+    }
+    .lp-item:hover { background: #F8FAFF; }
+    .lp-item.active { background: #EEF3FF; border-left: 3px solid #5189F3; padding-left: 11px; }
+    .lp-item.done { opacity: 0.65; }
+
+    .lp-icon {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid #DFE2E6; color: #aaa;
+      transition: all 0.15s;
+    }
+    .lp-item.active .lp-icon { background: #5189F3; border-color: #5189F3; color: #fff; }
+    .lp-item.done .lp-icon { background: #E8F5EE; border-color: #4CAF50; color: #4CAF50; }
+    .lp-icon svg { width: 9px; height: 9px; }
+
+    .lp-info { flex: 1; min-width: 0; }
+    .lp-num { font-size: 10px; color: #bbb; font-weight: 600; }
+    .lp-title { font-size: 12px; color: #333; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lp-item.active .lp-title { color: #1a3fa0; font-weight: 700; }
+    .lp-dur { font-size: 11px; color: #ccc; flex-shrink: 0; }
+
+    /* ── Now playing bar ── */
+    .now-playing-bar {
+      margin: 0 -32px;
+      padding: 10px 32px;
+      background: #F8FAFF; border-bottom: 1px solid #DFE2E6;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .np-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .np-dot { width: 7px; height: 7px; border-radius: 50%; background: #5189F3; flex-shrink: 0; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+    .np-label { font-size: 11px; color: #888; white-space: nowrap; }
+    .np-title { font-size: 13px; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 380px; }
+    .np-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .np-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid #DFE2E6; padding: 5px 12px;
+      font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600; color: #555;
+      cursor: pointer; border-radius: 2px; transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .np-btn:hover { background: #E4EEFF; border-color: #5189F3; color: #5189F3; }
+    .np-btn svg { width: 12px; height: 12px; }
+    .np-btn:disabled { opacity: 0.35; pointer-events: none; }
+
+    /* ── Detail body ── */
+    .detail-body { display: grid; grid-template-columns: 1fr 260px; gap: 32px; padding-top: 28px; }
+    .detail-section { margin-bottom: 24px; }
+    .detail-section-title {
+      font-size: 12px; font-weight: 700; color: #999; margin-bottom: 10px;
+      padding-bottom: 7px; border-bottom: 1px solid #F0F0F0;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .detail-desc { font-size: 13px; color: #555; line-height: 1.75; }
+    .learn-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .learn-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #444; line-height: 1.5; }
+    .learn-check { color: #5189F3; flex-shrink: 0; margin-top: 2px; }
+    .learn-check svg { width: 12px; height: 12px; }
+
+    /* Info card */
+    .module-info-card { border: 1px solid #DFE2E6; padding: 18px; position: sticky; top: 72px; align-self: start; }
+    .info-card-title { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .info-stats { display: flex; flex-direction: column; gap: 11px; margin-bottom: 18px; }
+    .info-stat { display: flex; align-items: center; gap: 10px; }
+    .info-stat-icon { width: 28px; height: 28px; background: #F0F4FF; border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-stat-icon svg { width: 13px; height: 13px; color: #5189F3; }
+    .info-stat-text strong { display: block; font-size: 13px; font-weight: 700; color: #111; }
+    .info-stat-text span { font-size: 11px; color: #999; }
+
+    /* Empty */
+    .empty { text-align: center; padding: 48px 0; color: #aaa; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="brand" onclick="goHome()">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="15.5" stroke="#111" stroke-width="1.3"/>
+        <path d="M10 22 C12 16 14.5 11 17 17 C19.5 23 22 18 24 12" stroke="#111" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        <circle cx="17" cy="17" r="1.6" fill="#111"/>
+      </svg>
+      <span class="brand-text"><span class="sea">SEA</span>TRACE</span>
+    </div>
+    <div class="nav-icons">
+      <button class="icon-btn active" title="Knowledge Hub" onclick="goHome()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Exit">
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M7 3H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12 6l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 9H7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Home" onclick="goHome()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="page">
+    <div class="container">
+
+      <!-- ── View 1: Knowledge Hub ── -->
+      <div id="view-hub" class="view active">
+        <div class="hub-header">
+          <div class="header-left"><h2 class="hub-title">Knowledge Hub</h2></div>
+          <div class="search-wrap">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="hubSearch" placeholder="Search..." oninput="filterCards()" />
+          </div>
+        </div>
+        <div class="cards" id="cardList">
+          <div class="card" data-label="Forms" onclick="openCategory('forms')"><span class="card-label">Forms</span></div>
+          <div class="card" data-label="Master Forms" onclick="openCategory('master-forms')"><span class="card-label">Master Forms</span></div>
+          <div class="card" data-label="Quality Control" onclick="openCategory('quality-control')"><span class="card-label">Quality Control</span></div>
+        </div>
+      </div>
+
+      <!-- ── View 2: Module list ── -->
+      <div id="view-modules" class="view">
+        <div class="hub-header">
+          <div class="header-left">
+            <button class="back-btn" onclick="goHome()" title="Back">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <h2 class="hub-title" id="moduleTitle">Forms Module</h2>
+          </div>
+          <div class="search-wrap">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="moduleSearch" placeholder="Search modules..." oninput="filterModules()" />
+          </div>
+        </div>
+        <div class="module-list" id="moduleList"></div>
+      </div>
+
+      <!-- ── View 3: Module detail ── -->
+      <div id="view-detail" class="view">
+
+        <!-- Compact banner -->
+        <div class="detail-banner">
+          <div class="detail-crumb">
+            <span onclick="goHome()">Knowledge Hub</span>
+            <span class="sep">›</span>
+            <span id="detailCrumbCat" onclick="backToModules()">Forms</span>
+            <span class="sep">›</span>
+            <span id="detailCrumbMod" style="color:rgba(255,255,255,0.75)">Beheading</span>
+          </div>
+          <div class="detail-banner-row">
+            <div class="detail-banner-left">
+              <div class="detail-tag" id="detailTag">Forms Module</div>
+              <div class="detail-banner-title" id="detailTitle">Beheading</div>
+              <div class="detail-banner-sub" id="detailSub">Module 1 of 9 · Forms</div>
+            </div>
+            <div class="detail-banner-stats" id="detailBannerStats"></div>
+          </div>
+        </div>
+
+        <!-- Video player + lesson panel -->
+        <div class="course-stage">
+
+          <!-- Video column -->
+          <div class="video-col">
+            <div class="video-player" id="videoPlayer" onclick="handlePlayerClick()">
+              <div class="video-inner">
+
+                <!-- IDLE state -->
+                <div class="vp-idle" id="vpIdle">
+                  <div class="vp-idle-label" id="vpIdleLabel">Forms Module</div>
+                  <div class="vp-idle-title" id="vpIdleTitle">Beheading</div>
+                  <div class="vp-play-ring" title="Start Learning">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                  </div>
+                  <div class="vp-idle-hint">Click to start the course</div>
+                </div>
+
+                <!-- PLAYING state -->
+                <div class="vp-playing" id="vpPlaying">
+                  <div class="vp-playing-bg"></div>
+                  <div class="vp-playing-content">
+                    <div class="vp-wave">
+                      <div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div>
+                      <div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div>
+                      <div class="vp-bar"></div>
+                    </div>
+                  </div>
+                  <div class="vp-controls">
+                    <div class="vp-lesson-label" id="vpLessonLabel">Lesson 1</div>
+                    <div class="vp-lesson-name" id="vpLessonName">Introduction to the Beheading Process</div>
+                    <div class="vp-progress-track" onclick="event.stopPropagation()">
+                      <div class="vp-progress-fill" id="vpProgress"></div>
+                    </div>
+                    <div class="vp-ctrl-row">
+                      <div class="vp-ctrl-left">
+                        <button class="vp-ctrl-btn" id="vpPlayPauseBtn" onclick="togglePlayPause(event)">
+                          <svg id="vpPauseIcon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                          <svg id="vpPlayIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="5,3 19,12 5,21"/></svg>
+                        </button>
+                      </div>
+                      <span class="vp-time" id="vpTime">0:00 / 8:00</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson list panel -->
+          <div class="lesson-panel">
+            <div class="lesson-panel-header">
+              Course Content
+              <span class="lesson-panel-count" id="lessonPanelCount">7 lessons</span>
+            </div>
+            <div class="lesson-scroll" id="lessonPanel"></div>
+          </div>
+
+        </div>
+
+        <!-- Now playing bar (visible only when playing) -->
+        <div class="now-playing-bar" id="nowPlayingBar" style="display:none">
+          <div class="np-info">
+            <div class="np-dot"></div>
+            <div>
+              <div class="np-label">Now Playing</div>
+              <div class="np-title" id="npTitle">Introduction to the Beheading Process</div>
+            </div>
+          </div>
+          <div class="np-nav" id="npNav">
+            <button class="np-btn" id="npPrevBtn" onclick="prevLesson()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Prev
+            </button>
+            <button class="np-btn" id="npNextBtn" onclick="nextLesson()">
+              Next
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+
+      </div><!-- /view-detail -->
+
+    </div><!-- /container -->
+  </div><!-- /page -->
+
+  <script>
+    /* ══════════════════════════════
+       DATA
+    ══════════════════════════════ */
+    const CATEGORIES = {
+      'forms': {
+        title: 'Forms',
+        modules: [
+          {
+            name: 'Beheading', level: 'Beginner', duration: '8 min', lessons_count: 1,
+            description: 'This module covers the complete beheading process used in shrimp processing.',
+            objectives: ['Understand equipment setup for beheading operations','Apply correct beheading technique','Complete the required Beheading Form accurately'],
+            lessons: [
+              { title: 'Beheading Process – Complete Guide', duration: '8 min', seconds: 480 },
+            ]
+          },
+          {
+            name: 'Grading', level: 'Beginner', duration: '38 min', lessons_count: 5,
+            description: 'Learn the shrimp grading process — size classification, quality assessment, and sorting to meet export standards.',
+            objectives: ['Identify shrimp size grades and classifications','Use grading equipment correctly','Apply quality assessment criteria','Record grading data accurately'],
+            lessons: [
+              { title: 'Introduction to Shrimp Grading', duration: '6 min', seconds: 360 },
+              { title: 'Size Classification Standards', duration: '8 min', seconds: 480 },
+              { title: 'Using Grading Equipment', duration: '10 min', seconds: 600 },
+              { title: 'Quality Assessment Criteria', duration: '8 min', seconds: 480 },
+              { title: 'Grading Documentation', duration: '6 min', seconds: 360 },
+            ]
+          },
+          { name: 'Peeling & Cutting', level: 'Intermediate', duration: '52 min', lessons_count: 6, description: 'Master the peeling and cutting techniques for various shrimp cuts including PD, PUD, and butterfly cuts.', objectives: ['Identify cut types and specifications','Operate peeling equipment safely','Achieve target yield per cut type','Document output correctly'], lessons: [{ title: 'Cut Types Overview', duration: '7 min', seconds: 420 },{ title: 'Peeling Techniques', duration: '10 min', seconds: 600 },{ title: 'Butterfly & Specialty Cuts', duration: '12 min', seconds: 720 },{ title: 'Equipment Maintenance', duration: '8 min', seconds: 480 },{ title: 'Yield Optimisation', duration: '9 min', seconds: 540 },{ title: 'Form Completion', duration: '6 min', seconds: 360 }] },
+          { name: 'Soaking', level: 'Beginner', duration: '30 min', lessons_count: 4, description: 'Understand soaking parameters, chemical concentrations, and time controls for compliant soaking operations.', objectives: ['Mix soaking solutions to specification','Monitor temperature and time','Inspect soaked product quality','Record soaking data'], lessons: [{ title: 'Soaking Chemistry Basics', duration: '8 min', seconds: 480 },{ title: 'Solution Preparation', duration: '7 min', seconds: 420 },{ title: 'Process Control & Monitoring', duration: '9 min', seconds: 540 },{ title: 'Documentation', duration: '6 min', seconds: 360 }] },
+          { name: 'Nobashi', level: 'Intermediate', duration: '40 min', lessons_count: 5, description: 'Learn the Nobashi stretching technique used to prepare elongated shrimp for foodservice and retail markets.', objectives: ['Set up the Nobashi line correctly','Apply stretching without breakage','Meet size and weight specs','Complete QC checks'], lessons: [{ title: 'Introduction to Nobashi', duration: '6 min', seconds: 360 },{ title: 'Line Setup', duration: '8 min', seconds: 480 },{ title: 'Stretching Technique', duration: '12 min', seconds: 720 },{ title: 'QC & Sizing', duration: '8 min', seconds: 480 },{ title: 'Records & Forms', duration: '6 min', seconds: 360 }] },
+          { name: 'IQF', level: 'Intermediate', duration: '35 min', lessons_count: 5, description: 'Understand Individual Quick Freezing (IQF) parameters, equipment operation, and product handling.', objectives: ['Operate IQF equipment correctly','Monitor freezing temperatures','Handle glazing and packaging','Log IQF records'], lessons: [{ title: 'IQF Principles', duration: '7 min', seconds: 420 },{ title: 'Equipment Operation', duration: '9 min', seconds: 540 },{ title: 'Temperature Monitoring', duration: '7 min', seconds: 420 },{ title: 'Glazing & Packaging', duration: '6 min', seconds: 360 },{ title: 'Documentation', duration: '6 min', seconds: 360 }] },
+          { name: 'Leftover', level: 'Beginner', duration: '20 min', lessons_count: 3, description: 'Manage leftover product correctly at end-of-shift to prevent wastage and compliance issues.', objectives: ['Classify leftover product types','Follow disposal/storage procedures','Complete leftover logs'], lessons: [{ title: 'Leftover Classification', duration: '6 min', seconds: 360 },{ title: 'Storage & Disposal Procedures', duration: '8 min', seconds: 480 },{ title: 'End-of-Shift Logging', duration: '6 min', seconds: 360 }] },
+          { name: 'Cold Store - Inward', level: 'Beginner', duration: '28 min', lessons_count: 4, description: 'Learn inward goods procedures for the cold store including receiving, temperature logging, and storage allocation.', objectives: ['Receive and verify incoming stock','Log temperatures on arrival','Allocate storage correctly','Raise inward transfer forms'], lessons: [{ title: 'Inward Goods Overview', duration: '6 min', seconds: 360 },{ title: 'Temperature & Condition Checks', duration: '8 min', seconds: 480 },{ title: 'Storage Allocation', duration: '8 min', seconds: 480 },{ title: 'Inward Form Completion', duration: '6 min', seconds: 360 }] },
+          { name: 'Cold Store - Outward', level: 'Beginner', duration: '25 min', lessons_count: 4, description: 'Understand outward dispatch procedures — pick-list verification, loading checks, and outward documentation.', objectives: ['Verify pick lists against stock','Perform loading temperature checks','Complete dispatch documentation','Handle customer returns'], lessons: [{ title: 'Outward Dispatch Overview', duration: '5 min', seconds: 300 },{ title: 'Pick List Verification', duration: '7 min', seconds: 420 },{ title: 'Loading & Temperature Checks', duration: '7 min', seconds: 420 },{ title: 'Dispatch Form Completion', duration: '6 min', seconds: 360 }] },
+        ]
+      },
+      'master-forms': {
+        title: 'Master Forms',
+        modules: [
+          { name: 'Raw Material Entry', level: 'Beginner', duration: '30 min', lessons_count: 4, description: 'Record and verify incoming raw material details including species, grade, weight and temperature.', objectives: ['Check species and grade','Log weight and temperature','Raise raw material form'], lessons: [{ title: 'Introduction', duration: '6 min', seconds: 360 },{ title: 'Species Verification', duration: '8 min', seconds: 480 },{ title: 'Weighing & Temperature', duration: '10 min', seconds: 600 },{ title: 'Form Completion', duration: '6 min', seconds: 360 }] },
+          { name: 'Supplier Management', level: 'Beginner', duration: '25 min', lessons_count: 3, description: 'Maintain and update supplier records, conduct compliance audits and manage vendor data.', objectives: ['Register new suppliers','Audit supplier compliance','Update supplier master'], lessons: [{ title: 'Supplier Registration', duration: '9 min', seconds: 540 },{ title: 'Compliance Checks', duration: '8 min', seconds: 480 },{ title: 'Master Record Update', duration: '8 min', seconds: 480 }] },
+          { name: 'Product Catalog', level: 'Beginner', duration: '22 min', lessons_count: 3, description: 'Manage the product catalog entries and SKU data across all product lines.', objectives: ['Create new product SKUs','Update product specs','Retire discontinued items'], lessons: [{ title: 'SKU Creation', duration: '8 min', seconds: 480 },{ title: 'Spec Updates', duration: '7 min', seconds: 420 },{ title: 'Product Retirement', duration: '7 min', seconds: 420 }] },
+          { name: 'Batch Records', level: 'Intermediate', duration: '35 min', lessons_count: 5, description: 'Create and maintain production batch records end-to-end from opening to sign-off.', objectives: ['Open a batch record','Log process parameters','Link sub-batches','Close and sign off'], lessons: [{ title: 'Batch Record Basics', duration: '7 min', seconds: 420 },{ title: 'Opening a Record', duration: '7 min', seconds: 420 },{ title: 'Process Logging', duration: '8 min', seconds: 480 },{ title: 'Sub-batch Linking', duration: '7 min', seconds: 420 },{ title: 'Sign-off & Closure', duration: '6 min', seconds: 360 }] },
+          { name: 'Inventory Tracking', level: 'Intermediate', duration: '32 min', lessons_count: 4, description: 'Track stock movements in real time using the inventory master forms.', objectives: ['Post stock movements','Reconcile discrepancies','Generate stock reports'], lessons: [{ title: 'Stock Movement Types', duration: '8 min', seconds: 480 },{ title: 'Posting Movements', duration: '9 min', seconds: 540 },{ title: 'Discrepancy Reconciliation', duration: '8 min', seconds: 480 },{ title: 'Reports & Exports', duration: '7 min', seconds: 420 }] },
+          { name: 'Yield Management', level: 'Intermediate', duration: '28 min', lessons_count: 4, description: 'Record and analyse yield data to drive efficiency improvements across the processing floor.', objectives: ['Calculate input vs output yield','Identify yield loss causes','Submit yield reports'], lessons: [{ title: 'Yield Calculations', duration: '7 min', seconds: 420 },{ title: 'Loss Analysis', duration: '8 min', seconds: 480 },{ title: 'Improvement Actions', duration: '7 min', seconds: 420 },{ title: 'Yield Report Form', duration: '6 min', seconds: 360 }] },
+          { name: 'Packaging Specs', level: 'Beginner', duration: '20 min', lessons_count: 3, description: 'Define and apply correct packaging specifications per SKU and verify on the production line.', objectives: ['Read packaging spec sheets','Verify materials on line','Log packaging records'], lessons: [{ title: 'Spec Sheet Overview', duration: '7 min', seconds: 420 },{ title: 'Line Verification', duration: '7 min', seconds: 420 },{ title: 'Packaging Records', duration: '6 min', seconds: 360 }] },
+        ]
+      },
+      'quality-control': {
+        title: 'Quality Control',
+        modules: [
+          { name: 'Incoming Inspection', level: 'Beginner', duration: '32 min', lessons_count: 4, description: 'Inspect incoming raw materials against quality standards before acceptance into the facility.', objectives: ['Check sensory attributes','Perform micro sampling','Accept or reject batches','Log inspection results'], lessons: [{ title: 'Inspection Standards', duration: '8 min', seconds: 480 },{ title: 'Sensory Checks', duration: '9 min', seconds: 540 },{ title: 'Micro Sampling', duration: '8 min', seconds: 480 },{ title: 'Acceptance & Logging', duration: '7 min', seconds: 420 }] },
+          { name: 'In-Process Checks', level: 'Intermediate', duration: '38 min', lessons_count: 5, description: 'Carry out in-process quality checks at each critical control point on the production line.', objectives: ['Identify CCPs on the line','Perform checks at frequency','Record out-of-spec events','Escalate to QC supervisor'], lessons: [{ title: 'CCP Overview', duration: '7 min', seconds: 420 },{ title: 'Check Frequency & Sampling', duration: '8 min', seconds: 480 },{ title: 'In-Process Logging', duration: '8 min', seconds: 480 },{ title: 'Out-of-Spec Handling', duration: '8 min', seconds: 480 },{ title: 'Escalation Procedure', duration: '7 min', seconds: 420 }] },
+          { name: 'Final Inspection', level: 'Intermediate', duration: '35 min', lessons_count: 5, description: 'Perform final product inspection before dispatch to ensure compliance with customer and regulatory standards.', objectives: ['Use AQL sampling tables','Check labelling and packaging','Approve or hold product','Issue CoA'], lessons: [{ title: 'AQL Sampling Basics', duration: '7 min', seconds: 420 },{ title: 'Label & Pack Checks', duration: '7 min', seconds: 420 },{ title: 'Product Approval', duration: '7 min', seconds: 420 },{ title: 'Hold Procedure', duration: '7 min', seconds: 420 },{ title: 'Certificate of Analysis', duration: '7 min', seconds: 420 }] },
+          { name: 'Lab Testing', level: 'Advanced', duration: '45 min', lessons_count: 6, description: 'Conduct microbiological and chemical lab tests in line with food safety requirements and export standards.', objectives: ['Prepare test samples correctly','Run micro tests','Interpret results','Log and report findings'], lessons: [{ title: 'Lab Safety', duration: '6 min', seconds: 360 },{ title: 'Sample Preparation', duration: '8 min', seconds: 480 },{ title: 'Micro Testing', duration: '10 min', seconds: 600 },{ title: 'Chemical Testing', duration: '9 min', seconds: 540 },{ title: 'Results Interpretation', duration: '7 min', seconds: 420 },{ title: 'Lab Report Form', duration: '5 min', seconds: 300 }] },
+          { name: 'Non-Conformance Report', level: 'Intermediate', duration: '30 min', lessons_count: 4, description: 'Raise and manage non-conformance reports (NCRs) for out-of-spec product or process deviations.', objectives: ['Identify non-conformances','Raise an NCR correctly','Segregate affected product','Track resolution'], lessons: [{ title: 'What is an NCR?', duration: '7 min', seconds: 420 },{ title: 'Raising an NCR', duration: '8 min', seconds: 480 },{ title: 'Product Segregation', duration: '8 min', seconds: 480 },{ title: 'Resolution & Closure', duration: '7 min', seconds: 420 }] },
+          { name: 'Corrective Action', level: 'Intermediate', duration: '28 min', lessons_count: 4, description: 'Implement corrective and preventive actions (CAPA) to eliminate the root cause of non-conformances.', objectives: ['Conduct root cause analysis','Define corrective actions','Implement and verify effectiveness','Close CAPA records'], lessons: [{ title: 'Root Cause Analysis', duration: '8 min', seconds: 480 },{ title: 'Defining Actions', duration: '7 min', seconds: 420 },{ title: 'Implementation & Verification', duration: '7 min', seconds: 420 },{ title: 'CAPA Closure', duration: '6 min', seconds: 360 }] },
+          { name: 'Audit Checklist', level: 'Beginner', duration: '25 min', lessons_count: 3, description: 'Use internal audit checklists to verify compliance with food safety and quality standards.', objectives: ['Navigate the audit checklist','Record findings accurately','Follow up on action items'], lessons: [{ title: 'Audit Checklist Overview', duration: '8 min', seconds: 480 },{ title: 'Conducting the Audit', duration: '10 min', seconds: 600 },{ title: 'Action Item Follow-up', duration: '7 min', seconds: 420 }] },
+        ]
+      }
+    };
+
+    /* ══════════════════════════════
+       STATE
+    ══════════════════════════════ */
+    let currentCatKey   = null;
+    let currentModData  = null;
+    let currentLesson   = 0;
+    let isPlaying       = false;
+    let isPaused        = false;
+    let progressTimer   = null;
+    let progressSecs    = 0;
+
+    /* ══════════════════════════════
+       NAVIGATION
+    ══════════════════════════════ */
+    function show(id) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function goHome() {
+      stopProgress();
+      currentCatKey = null; currentModData = null;
+      document.getElementById('hubSearch').value = '';
+      filterCards();
+      show('view-hub');
+    }
+
+    function backToModules() {
+      stopProgress();
+      if (currentCatKey) openCategory(currentCatKey);
+    }
+
+    function openCategory(key) {
+      currentCatKey = key;
+      const cat = CATEGORIES[key];
+      document.getElementById('moduleTitle').textContent = cat.title + ' Module';
+      document.getElementById('moduleSearch').value = '';
+
+      document.getElementById('moduleList').innerHTML = cat.modules.map((mod, i) => `
+        <div class="module-row" data-name="${mod.name.toLowerCase()}" onclick="openDetail('${key}',${i})">
+          <div class="module-row-left">
+            <span class="module-num">Module - ${i + 1}</span>
+            <span class="module-name">${mod.name}</span>
+          </div>
+          <span class="module-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+            </svg>
+          </span>
+        </div>`).join('');
+
+      show('view-modules');
+    }
+
+    /* ══════════════════════════════
+       OPEN MODULE DETAIL
+    ══════════════════════════════ */
+    function openDetail(catKey, modIdx) {
+      stopProgress();
+      currentCatKey  = catKey;
+      currentLesson  = 0;
+      isPlaying      = false;
+      isPaused       = false;
+
+      const cat = CATEGORIES[catKey];
+      const mod = cat.modules[modIdx];
+      currentModData = mod;
+
+      /* breadcrumb */
+      document.getElementById('detailCrumbCat').textContent = cat.title;
+      document.getElementById('detailCrumbMod').textContent = mod.name;
+
+      /* banner */
+      document.getElementById('detailTag').textContent = cat.title + ' Module';
+      document.getElementById('detailTitle').textContent = mod.name;
+      document.getElementById('detailSub').textContent = `Module ${modIdx + 1} of ${cat.modules.length} · ${cat.title}`;
+
+      /* banner stats */
+      document.getElementById('detailBannerStats').innerHTML = [
+        { icon: booksIcon, label: mod.lessons_count + ' Lessons' },
+        { icon: clockIcon, label: mod.duration },
+        { icon: levelIcon, label: mod.level },
+      ].map(s => `<div class="dstat">${s.icon}${s.label}</div>`).join('');
+
+      /* video idle */
+      document.getElementById('vpIdleLabel').textContent = cat.title + ' Module';
+      document.getElementById('vpIdleTitle').textContent = mod.name;
+
+      /* reset player to idle */
+      document.getElementById('vpIdle').style.display    = 'flex';
+      document.getElementById('vpPlaying').classList.remove('active');
+      document.getElementById('nowPlayingBar').style.display = 'none';
+      document.getElementById('vpProgress').style.width  = '0%';
+
+      /* lesson panel */
+      const count = mod.lessons_count;
+      document.getElementById('lessonPanelCount').textContent = count === 1 ? '1 lesson' : count + ' lessons';
+      document.getElementById('nowPlayingBar').style.display = 'none';
+      renderLessonPanel();
+
+
+      show('view-detail');
+    }
+
+    /* ══════════════════════════════
+       RENDER LESSON PANEL
+    ══════════════════════════════ */
+    function renderLessonPanel() {
+      const mod = currentModData;
+      document.getElementById('lessonPanel').innerHTML = mod.lessons.map((l, i) => {
+        const done   = isPlaying && i < currentLesson;
+        const active = isPlaying && i === currentLesson;
+        const cls    = done ? 'lp-item done' : active ? 'lp-item active' : 'lp-item';
+        const icon   = done
+          ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+          : `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>`;
+        return `
+          <div class="${cls}" onclick="jumpToLesson(${i})">
+            <div class="lp-icon">${icon}</div>
+            <div class="lp-info">
+              <div class="lp-num">Lesson ${i + 1}</div>
+              <div class="lp-title">${l.title}</div>
+            </div>
+            <span class="lp-dur">${l.duration}</span>
+          </div>`;
+      }).join('');
+    }
+
+    /* ══════════════════════════════
+       PLAYER CONTROLS
+    ══════════════════════════════ */
+    function handlePlayerClick() {
+      if (!isPlaying) startCourse();
+    }
+
+    function startCourse() {
+      isPlaying = true; isPaused = false;
+      switchToLesson(0);
+      document.getElementById('vpIdle').style.display = 'none';
+      document.getElementById('vpPlaying').classList.add('active');
+      document.getElementById('nowPlayingBar').style.display = 'flex';
+      document.getElementById('npNav').style.display = currentModData.lessons.length === 1 ? 'none' : 'flex';
+      document.getElementById('vpPauseIcon').style.display = '';
+      document.getElementById('vpPlayIcon').style.display  = 'none';
+      renderLessonPanel();
+      startProgress();
+    }
+
+    function switchToLesson(idx) {
+      const mod = currentModData;
+      if (idx < 0 || idx >= mod.lessons.length) return;
+      currentLesson = idx;
+      progressSecs  = 0;
+      stopProgress();
+
+      const l = mod.lessons[idx];
+      document.getElementById('vpLessonLabel').textContent = `Lesson ${idx + 1} of ${mod.lessons.length}`;
+      document.getElementById('vpLessonName').textContent  = l.title;
+      document.getElementById('npTitle').textContent       = l.title;
+      document.getElementById('vpProgress').style.width    = '0%';
+      document.getElementById('vpTime').textContent        = `0:00 / ${l.duration}`;
+      const single = mod.lessons.length === 1;
+      document.getElementById('nowPlayingBar').style.display = isPlaying && !single ? 'flex' : single && isPlaying ? 'flex' : 'none';
+      document.getElementById('npPrevBtn').disabled = idx === 0;
+      document.getElementById('npNextBtn').disabled = idx === mod.lessons.length - 1;
+      document.getElementById('npNav').style.display = single ? 'none' : 'flex';
+
+      renderLessonPanel();
+      if (!isPaused) startProgress();
+    }
+
+    function jumpToLesson(idx) {
+      if (!isPlaying) startCourse();
+      isPaused = false;
+      document.getElementById('vpPauseIcon').style.display = '';
+      document.getElementById('vpPlayIcon').style.display  = 'none';
+      switchToLesson(idx);
+    }
+
+    function prevLesson() { switchToLesson(currentLesson - 1); }
+    function nextLesson() { switchToLesson(currentLesson + 1); }
+
+    function togglePlayPause(e) {
+      e.stopPropagation();
+      if (!isPlaying) { startCourse(); return; }
+      if (isPaused) {
+        isPaused = false;
+        document.getElementById('vpPauseIcon').style.display = '';
+        document.getElementById('vpPlayIcon').style.display  = 'none';
+        startProgress();
+      } else {
+        isPaused = true;
+        document.getElementById('vpPauseIcon').style.display = 'none';
+        document.getElementById('vpPlayIcon').style.display  = '';
+        stopProgress();
+      }
+    }
+
+    /* ── progress ticker ── */
+    function startProgress() {
+      stopProgress();
+      const l = currentModData.lessons[currentLesson];
+      const total = l.seconds;
+      progressTimer = setInterval(() => {
+        progressSecs++;
+        const pct = Math.min((progressSecs / total) * 100, 100);
+        document.getElementById('vpProgress').style.width = pct + '%';
+        document.getElementById('vpTime').textContent = `${fmtTime(progressSecs)} / ${l.duration}`;
+        if (progressSecs >= total) {
+          stopProgress();
+          if (currentLesson < currentModData.lessons.length - 1) {
+            setTimeout(() => switchToLesson(currentLesson + 1), 600);
+          }
+        }
+      }, 200); // fast-forward for demo: 1 real second = 5 lesson seconds
+    }
+
+    function stopProgress() { clearInterval(progressTimer); progressTimer = null; }
+
+    function fmtTime(s) {
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      return `${m}:${sec.toString().padStart(2,'0')}`;
+    }
+
+    /* ══════════════════════════════
+       SEARCH
+    ══════════════════════════════ */
+    function filterCards() {
+      const q = document.getElementById('hubSearch').value.toLowerCase();
+      let n = 0;
+      document.querySelectorAll('#cardList .card').forEach(c => {
+        const m = c.dataset.label.toLowerCase().includes(q);
+        c.style.display = m ? 'flex' : 'none'; if (m) n++;
+      });
+      const el = document.getElementById('emptyCards');
+      if (n === 0) { if (!el) { const e = document.createElement('p'); e.id='emptyCards'; e.className='empty'; e.textContent='No results found.'; document.getElementById('cardList').appendChild(e); } }
+      else if (el) el.remove();
+    }
+
+    function filterModules() {
+      const q = document.getElementById('moduleSearch').value.toLowerCase();
+      let n = 0;
+      document.querySelectorAll('#moduleList .module-row').forEach(r => {
+        const m = r.dataset.name.includes(q);
+        r.style.display = m ? 'flex' : 'none'; if (m) n++;
+      });
+      const el = document.getElementById('emptyModules');
+      if (n === 0) { if (!el) { const e = document.createElement('p'); e.id='emptyModules'; e.className='empty'; e.textContent='No modules found.'; document.getElementById('moduleList').appendChild(e); } }
+      else if (el) el.remove();
+    }
+
+    /* ══════════════════════════════
+       ICON SVGs
+    ══════════════════════════════ */
+    const booksIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
+    const clockIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+    const levelIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`;
+    const certIcon  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`;
+  </script>
+
+</body>
+</html>
