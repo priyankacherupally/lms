@@ -2330,6 +2330,27 @@
         adminVideos: adminVideos, adminVoices: adminVoices, adminDocs: adminDocs
       };
       data.modules = Object.keys(MODULES).map(function(m){ return {name:m, color:MODULES[m].color}; });
+
+      // Store full module metadata so class-viewer can look it up during navigation
+      try {
+        var fullModMeta = {};
+        Object.keys(CLASS_META[mod] || {}).forEach(function(c) {
+          var cm = (CLASS_META[mod] || {})[c] || {};
+          var lq = _liveQuiz(mod, c);
+          var lqQs = [], lqPm = 70;
+          if (lq) { try { var lqF = (JSON.parse(localStorage.getItem('lms_quizzes')||'[]')||[]).find(function(q){return q.id===lq.id;}); if(lqF){lqQs=lqF.questions||[];lqPm=lqF.passMark||70;} } catch(e){} }
+          var qqc = (QQ[mod] || {})[c] || {};
+          fullModMeta[c] = {
+            desc: cm.desc || '', videoTitle: cm.videoTitle || c + ' Training',
+            voiceTitle: cm.voiceTitle || c + ' Introduction', terms: cm.terms || [],
+            passMark: lq ? lqPm : (qqc.passMark || 70),
+            questions: lq ? lqQs : (qqc.questions || []),
+            liveQuizId: lq ? lq.id : null
+          };
+        });
+        localStorage.setItem('lms_mod_meta_' + mod, JSON.stringify(fullModMeta));
+      } catch(e) {}
+
       sessionStorage.setItem('cv_visited', '1');
       sessionStorage.setItem('cv_class', JSON.stringify(data));
       window.location.href = 'class-viewer.html';

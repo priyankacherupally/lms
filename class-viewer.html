@@ -754,9 +754,34 @@
         prevCls: newIdx > 0 ? list[newIdx - 1] || null : null,
         nextCls: newIdx < D.totalCls - 1 ? list[newIdx + 1] || null : null,
         desc: '', videoTitle: cls + ' Training', voiceTitle: cls + ' Introduction',
-        terms: [], questions: [], adminVideos: [], adminVoices: [], adminDocs: [],
+        terms: [], questions: [], liveQuizId: null, passMark: 70,
+        adminVideos: [], adminVoices: [], adminDocs: [],
         vp: s.vp || 0, a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null
       };
+
+      // Fix 1: restore class metadata (desc, terms, quiz) from localStorage
+      try {
+        var modMeta = JSON.parse(localStorage.getItem('lms_mod_meta_' + D.mod) || '{}');
+        var clsMeta = modMeta[cls] || {};
+        if (clsMeta.desc)        nd.desc        = clsMeta.desc;
+        if (clsMeta.videoTitle)  nd.videoTitle  = clsMeta.videoTitle;
+        if (clsMeta.voiceTitle)  nd.voiceTitle  = clsMeta.voiceTitle;
+        if (clsMeta.terms)       nd.terms       = clsMeta.terms;
+        if (clsMeta.questions)   nd.questions   = clsMeta.questions;
+        if (clsMeta.passMark)    nd.passMark    = clsMeta.passMark;
+        if (clsMeta.liveQuizId)  nd.liveQuizId  = clsMeta.liveQuizId;
+      } catch(e) {}
+
+      // Fix 2: restore admin-uploaded content from localStorage
+      try {
+        var _vl = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
+        nd.adminVideos = _vl.filter(function(v){ return v.module===D.mod && v.cls===cls && v.status==='live'; });
+        var _vo = JSON.parse(localStorage.getItem('lms_voiceover_library') || '[]');
+        nd.adminVoices = _vo.filter(function(v){ return v.module===D.mod && v.cls===cls; });
+        var _dl = JSON.parse(localStorage.getItem('lms_document_library') || '[]');
+        nd.adminDocs = _dl.filter(function(v){ return v.module===D.mod && v.cls===cls; });
+      } catch(e) {}
+
       sessionStorage.setItem('cv_class', JSON.stringify(nd));
       location.reload();
     }
