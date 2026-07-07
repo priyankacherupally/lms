@@ -54,7 +54,7 @@
     .hero-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
     .hero-mod-dot{width:10px;height:10px;border-radius:50%}
     .hero-mod-label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
-    .hero-title{font-size:26px;font-weight:900;color:#111;letter-spacing:-.02em;line-height:1.2;margin-bottom:6px}
+    .hero-title{font-size:20px;font-weight:700;color:#111;letter-spacing:-.01em;line-height:1.2;margin-bottom:6px}
     .hero-desc{font-size:14px;color:#6B7280;font-weight:600;line-height:1.5}
     .hero-status{position:absolute;top:28px;right:32px;display:flex;flex-direction:column;align-items:center;gap:6px}
     .status-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
@@ -367,6 +367,11 @@
   <script>
     var LS = 'st_kh_arjun';
     var D  = {};       // class data from sessionStorage
+    var CV_MODULES = {
+      'Forms':           ['Beheading','Grading','Peeling & Cutting','De-veining','Weighing & Packing','IQF Freezing','Cold Store Inward','Cold Store Outward'],
+      'Master Forms':    ['Supplier Registration','Raw Material Intake','Batch Traceability','Equipment Log','Staff Records'],
+      'Quality Control': ['Organoleptic Test','Microbiological Check','Chemical Analysis','Packaging Inspection','Final Release']
+    };
 
     /* Mark this session as having visited class-viewer (suppresses auto-guide on return) */
     try { sessionStorage.setItem('cv_visited', '1'); } catch(e) {}
@@ -746,12 +751,12 @@
       try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
       var s = (LS_val[D.mod] || {})[cls] || {};
       // Reuse meta fields — class-viewer won't have CLASS_META; send minimal session data
-      var list = D.clsList || [];
+      var list = CV_MODULES[D.mod] || D.clsList || [];
       var nd = {
         mod: D.mod, col: D.col, totalCls: D.totalCls, clsList: list, modules: D.modules,
         cls: cls, clsIdx: newIdx,
-        prevCls: newIdx > 0 ? (list.length ? list[newIdx - 1] : (dir === 'next' ? D.cls : D.prevCls)) : null,
-        nextCls: newIdx < D.totalCls - 1 ? (list.length ? list[newIdx + 1] : (dir === 'next' ? D.nextCls : D.cls)) : null,
+        prevCls: newIdx > 0 ? list[newIdx - 1] || null : null,
+        nextCls: newIdx < D.totalCls - 1 ? list[newIdx + 1] || null : null,
         desc: '', videoTitle: cls + ' Training', voiceTitle: cls + ' Introduction',
         terms: [], questions: [], adminVideos: [], adminVoices: [], adminDocs: [],
         vp: s.vp || 0, a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null
