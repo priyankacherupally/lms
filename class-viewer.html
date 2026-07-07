@@ -373,6 +373,60 @@
       'Quality Control': ['Organoleptic Test','Microbiological Check','Chemical Analysis','Packaging Inspection','Final Release']
     };
 
+    var CV_CLASS_META = {
+      'Forms': {
+        'Beheading':          { desc:'Hand positioning, hygiene protocols, blade safety, and line speed standards.', videoTitle:'Beheading Safety & Hygiene', voiceTitle:'Beheading Introduction', terms:[{t:'Beheading',d:'Removal of the head from shrimp body; the first step on the processing line.'},{t:'Yield',d:'Percentage of usable product recovered after processing; a key efficiency metric.'}] },
+        'Grading':            { desc:'Size classification, weight standards, and quality sorting procedures for shrimp.', videoTitle:'Grading Standards & Size Classification', voiceTitle:'Grading Introduction', terms:[{t:'Count Size',d:'Number of shrimp per pound; e.g., 16/20 means 16–20 shrimp per pound.'},{t:'Uniformity',d:'Consistency in size and appearance across a graded batch.'}] },
+        'Peeling & Cutting':  { desc:'Shell removal techniques, cutting angles, and waste reduction best practices.', videoTitle:'Peeling Technique & Blade Safety', voiceTitle:'Peeling Introduction', terms:[{t:'Shell-on',d:'Shrimp sold with shell intact; a premium product form valued in certain markets.'},{t:'Butterfly Cut',d:'Technique that opens the shrimp along the back while keeping it joined.'}] },
+        'De-veining':         { desc:'Vein identification, extraction techniques, and hygiene standards during processing.', videoTitle:'De-veining Methods & Hygiene', voiceTitle:'De-veining Introduction', terms:[{t:'Digestive Tract',d:'The dark vein running along the shrimp\'s back, removed for quality and safety.'},{t:'Deveining Needle',d:'Specialist tool used to cleanly extract the digestive tract without tearing.'}] },
+        'Weighing & Packing': { desc:'Tare weight, net weight accuracy, labelling requirements, and approved pack formats.', videoTitle:'Weighing Accuracy & Pack Standards', voiceTitle:'Weighing Introduction', terms:[{t:'Tare Weight',d:'Weight of the empty container, subtracted to determine the net product weight.'},{t:'Net Weight',d:'Actual weight of the product, excluding all packaging materials.'}] },
+        'IQF Freezing':       { desc:'Individual Quick Freezing process, crust-freeze temperature, and blast-freeze protocols.', videoTitle:'IQF Process & Temperature Control', voiceTitle:'IQF Introduction', terms:[{t:'IQF',d:'Individual Quick Freezing — freezes each piece separately to prevent clumping.'},{t:'Crust Freeze',d:'Partial surface freeze that sets the product shape before full IQF processing.'}] },
+        'Cold Store Inward':  { desc:'Temperature logging, pallet positioning, FIFO compliance, and stock management.', videoTitle:'Cold Store Inward Procedures', voiceTitle:'Cold Store Inward Introduction', terms:[{t:'FIFO',d:'First In, First Out — ensures oldest stock is dispatched before newer arrivals.'},{t:'Cold Chain',d:'Unbroken refrigerated logistics from processing through to the end customer.'}] },
+        'Cold Store Outward': { desc:'Dispatch documentation, load-out temperature compliance, and transport standards.', videoTitle:'Cold Store Outward & Dispatch', voiceTitle:'Cold Store Outward Introduction', terms:[{t:'FEFO',d:'First Expired, First Out — prioritises dispatch of stock nearest to expiry date.'},{t:'Bill of Lading',d:'Shipping document acknowledging cargo receipt and authorising transport.'}] }
+      },
+      'Master Forms': {
+        'Supplier Registration': { desc:'Supplier onboarding, documentation verification, and approval workflow procedures.', videoTitle:'Supplier Registration & Approval', voiceTitle:'Supplier Registration Introduction', terms:[{t:'Vendor Code',d:'Unique identifier assigned to each approved supplier within the system.'},{t:'COA',d:'Certificate of Analysis — lab report confirming a product meets required specifications.'}] },
+        'Raw Material Intake':   { desc:'Receiving inspection standards, temperature verification, and rejection criteria.', videoTitle:'Raw Material Inspection & Intake', voiceTitle:'Raw Material Introduction', terms:[{t:'Sensory Evaluation',d:'Quality check using sight, smell, and touch to assess incoming raw material.'},{t:'Rejection Threshold',d:'Maximum permitted defect rate before an incoming batch is rejected.'}] },
+        'Batch Traceability':    { desc:'Lot coding systems, batch linkage records, and full traceability documentation.', videoTitle:'Batch Traceability & Lot Coding', voiceTitle:'Batch Traceability Introduction', terms:[{t:'Lot Code',d:'Alphanumeric code linking a product batch back to its production records.'},{t:'Traceability',d:'Ability to track a product through every step from raw material to final sale.'}] },
+        'Equipment Log':         { desc:'Calibration schedules, maintenance records, and equipment sign-off procedures.', videoTitle:'Equipment Log & Calibration', voiceTitle:'Equipment Log Introduction', terms:[{t:'Calibration',d:'Process of configuring equipment to produce accurate, reliable measurements.'},{t:'Downtime Log',d:'Record of equipment stoppages including duration, cause, and corrective action.'}] },
+        'Staff Records':         { desc:'Employment documentation, training record management, and health declaration requirements.', videoTitle:'Staff Records & Health Declarations', voiceTitle:'Staff Records Introduction', terms:[{t:'Health Declaration',d:'Form confirming a worker is fit for duty and free of communicable illness.'},{t:'Training Matrix',d:'Grid showing each staff member\'s completed and outstanding training modules.'}] }
+      },
+      'Quality Control': {
+        'Organoleptic Test':     { desc:'Sensory scoring methods, defect classification, and panel evaluation standards.', videoTitle:'Organoleptic Evaluation Methods', voiceTitle:'Organoleptic Introduction', terms:[{t:'Organoleptic',d:'Relating to sensory properties: smell, taste, texture, and visual appearance.'},{t:'Defect Score',d:'Numerical penalty applied for each quality defect detected during evaluation.'}] },
+        'Microbiological Check': { desc:'Sampling plans, microbial limits, lab submission procedures, and result interpretation.', videoTitle:'Microbiological Sampling & Limits', voiceTitle:'Microbiological Introduction', terms:[{t:'TVC',d:'Total Viable Count — measure of total bacterial load present in a sample.'},{t:'APC',d:'Aerobic Plate Count — standard method for quantifying bacteria in food products.'}] },
+        'Chemical Analysis':     { desc:'Permitted additive levels, residue limits, test frequencies, and compliance standards.', videoTitle:'Chemical Analysis & Residue Testing', voiceTitle:'Chemical Analysis Introduction', terms:[{t:'Sulphite Level',d:'Concentration of sulphites used as a preservative; must stay within legal limits.'},{t:'MRL',d:'Maximum Residue Limit — highest legally permitted concentration of a chemical in food.'}] },
+        'Packaging Inspection':  { desc:'Label accuracy verification, seal integrity testing, and weight compliance checks.', videoTitle:'Packaging Inspection & Label Compliance', voiceTitle:'Packaging Introduction', terms:[{t:'Seal Integrity',d:'Airtight packaging closure that prevents contamination and extends shelf life.'},{t:'Label Compliance',d:'All mandatory label information is present, accurate, and legible.'}] },
+        'Final Release':         { desc:'Release criteria, hold and quarantine procedures, and sign-off documentation.', videoTitle:'Final Release & Certificate Procedures', voiceTitle:'Final Release Introduction', terms:[{t:'Certificate of Conformance',d:'Document confirming a product batch meets all required specifications.'},{t:'Hold Status',d:'Products quarantined pending further investigation, testing, or senior approval.'}] }
+      }
+    };
+
+    var CV_QQ = {
+      'Forms': {
+        'Beheading':          { passMark:70, questions:[{type:'mcq',text:'What is the correct hand position during the beheading process?',options:['Palm facing up','Thumb tucked inward','Fingers extended outward','Grip at the tail'],correct:1},{type:'tf',text:'PPE gloves must be worn at all times during the beheading operation.',correct:'true'},{type:'mcq',text:'What is the primary quality check performed after beheading?',options:['Weight of batch','Shell colour uniformity','Clean separation at the head joint','Shrimp temperature'],correct:2},{type:'tf',text:'Beheading blades can be shared between workstations without sanitising.',correct:'false'},{type:'mcq',text:'Which metric measures processing efficiency in beheading?',options:['IQF temperature','Yield percentage','Cold store humidity','Glazing weight'],correct:1}] },
+        'Grading':            { passMark:70, questions:[{type:'mcq',text:'What does "count" mean in shrimp grading?',options:['Total batch weight','Number of shrimp per kilogram','Percentage of rejects','Freezing time'],correct:1},{type:'tf',text:'Black spot discolouration automatically classifies shrimp as rejects.',correct:'true'},{type:'mcq',text:'Which factor is NOT used in quality grading?',options:['Shell texture','Odour','Country of origin','Colour uniformity'],correct:2},{type:'tf',text:'Grading must be completed before the IQF freezing step.',correct:'true'},{type:'mcq',text:'A batch labelled "21/25" contains approximately how many shrimp per pound?',options:['10 to 15','21 to 25','30 to 35','40 to 50'],correct:1}] },
+        'Peeling & Cutting':  { passMark:70, questions:[{type:'mcq',text:'When must knives be sanitised during peeling?',options:['End of shift only','Between each shrimp','Between batches and after breaks','Once per hour'],correct:2},{type:'tf',text:'The belly cut exposes the vein for easy removal during peeling.',correct:'true'},{type:'mcq',text:'What is the acceptable standard for shell removal quality?',options:['≥ 95% shell removed','≥ 80% shell removed','≥ 70% shell removed','Visual judgement only'],correct:0},{type:'tf',text:'Knife handles and blades must be inspected for damage before each shift.',correct:'true'},{type:'mcq',text:'What is the correct method for disposing of shell waste?',options:['Leave on the line','Transfer to dedicated waste bins','Flush with water','Mix with product rejects'],correct:1}] },
+        'De-veining':         { passMark:70, questions:[{type:'mcq',text:'Where does the digestive tract (vein) run in shrimp?',options:['Underside near legs','The dorsal (back) side','Inside the head','Between shell layers'],correct:1},{type:'tf',text:'Incomplete vein removal is acceptable if less than 30% of the vein remains.',correct:'false'},{type:'mcq',text:'What tool is typically used for de-veining?',options:['Peeling knife','De-veining needle or tool','Kitchen scissors','High-pressure water jet'],correct:1},{type:'tf',text:'Yield percentage typically drops after de-veining compared to head-on weight.',correct:'true'},{type:'mcq',text:'During quality inspection, inspectors primarily check for:',options:['Correct count per kg','Complete vein removal and clean cuts','Shell colour','Freezing temperature'],correct:1}] },
+        'Weighing & Packing': { passMark:70, questions:[{type:'mcq',text:'How often must weighing scales be calibrated?',options:['Annually','Daily before use','Weekly','Only after breakdown'],correct:1},{type:'tf',text:'A pack labelled 500g must contain exactly 500g — no tolerance is permitted.',correct:'false'},{type:'mcq',text:'What is the primary purpose of glazing IQF shrimp before packing?',options:['Improve flavour','Add bulk weight','Protect from freezer burn','Improve colour'],correct:2},{type:'tf',text:'Batch traceability codes must appear on every individual pack.',correct:'true'},{type:'mcq',text:'Which document accompanies each packed batch for traceability?',options:['Employee attendance record','Batch packing sheet','Maintenance log','Temperature chart only'],correct:1}] },
+        'IQF Freezing':       { passMark:70, questions:[{type:'mcq',text:'What does IQF stand for?',options:['Instant Quality Freeze','Individual Quick Freezing','Internal Quality Freezer','Integrated Quick Flow'],correct:1},{type:'tf',text:'The core temperature target for IQF shrimp is -18°C or below.',correct:'true'},{type:'mcq',text:'Why is IQF preferred over block freezing?',options:['It is cheaper','It prevents pieces from clumping','It adds glaze automatically','It speeds processing by 50%'],correct:1},{type:'tf',text:'IQF tunnels should be cleaned and inspected at least weekly.',correct:'true'},{type:'mcq',text:'If shrimp dwell time in the IQF tunnel is too short, what happens?',options:['Over-freezing occurs','Core temperature target is not reached','Glaze percentage increases','Yield drops'],correct:1}] },
+        'Cold Store Inward':  { passMark:70, questions:[{type:'mcq',text:'What temperature must the cold store maintain for frozen product?',options:['-12°C or below','-18°C or below','-5°C or below','0°C to 4°C'],correct:1},{type:'tf',text:'Inward temperature of product must be recorded at the time of receipt.',correct:'true'},{type:'mcq',text:'What does FIFO stand for?',options:['First In, First Out','Frozen In Frozen Out','First Inspection Final Output','Freeze Index for Operations'],correct:0},{type:'tf',text:'Product can be stacked directly on the cold store floor to save space.',correct:'false'},{type:'mcq',text:'What document must accompany every inward cold store transfer?',options:['Vehicle registration','Packing and batch record','Employee ID','Calibration log only'],correct:1}] },
+        'Cold Store Outward': { passMark:70, questions:[{type:'mcq',text:'Before loading, the transport vehicle must be checked for:',options:['Fuel level','Cleanliness and temperature','Driver licence','GPS functionality'],correct:1},{type:'tf',text:'Product temperature must be verified and logged before dispatch.',correct:'true'},{type:'mcq',text:'Which principle ensures older batches are dispatched before newer ones?',options:['LIFO','FIFO','FEFO','FILO'],correct:1},{type:'tf',text:'Dispatch documentation can be completed after the vehicle has departed.',correct:'false'},{type:'mcq',text:'If product temperature exceeds -15°C at dispatch, you must:',options:['Proceed — minor deviation','Place on hold and notify QC','Refreeze in blast tunnel','Reduce pack weight and dispatch'],correct:1}] }
+      },
+      'Master Forms': {
+        'Supplier Registration': { passMark:70, questions:[{type:'mcq',text:'KYC in supplier registration stands for:',options:['Keep Your Credentials','Know Your Customer','Key Yield Control','Know Your Compliance'],correct:1},{type:'tf',text:'A supplier can begin deliveries before their registration is fully approved.',correct:'false'},{type:'mcq',text:'Which document is NOT typically required during supplier registration?',options:['Business registration certificate','Food safety audit report','Employee attendance records','Insurance certificate'],correct:2},{type:'tf',text:'Supplier approvals must be re-verified on an annual basis.',correct:'true'},{type:'mcq',text:'Who is responsible for final approval of a new supplier?',options:['Floor supervisor','QC Manager or authorised approver','Delivery driver','Packing line operator'],correct:1}] },
+        'Raw Material Intake':   { passMark:70, questions:[{type:'mcq',text:'What is the first check performed when shrimp arrives at intake?',options:['Count per kg','Temperature of consignment','Supplier name','Vehicle weight'],correct:1},{type:'tf',text:'Fresh shrimp with minor black spots must be rejected immediately without assessment.',correct:'false'},{type:'mcq',text:'What is the acceptable ice-to-shrimp ratio for fresh delivery?',options:['1:10','1:1 or better','No ice required','2:1 (double ice)'],correct:1},{type:'tf',text:'Temperature and batch details must be logged in the intake register at time of receipt.',correct:'true'},{type:'mcq',text:'If a consignment fails the freshness check, the correct action is:',options:['Accept and process quickly','Place on hold and notify QC','Return without documentation','Reduce the purchase price'],correct:1}] },
+        'Batch Traceability':    { passMark:70, questions:[{type:'mcq',text:'What is the purpose of a Batch ID?',options:['Track employee productivity','Uniquely identify a production lot from intake to dispatch','Label equipment','Log vehicle inspections'],correct:1},{type:'tf',text:'A single Batch ID can cover multiple supplier consignments mixed together.',correct:'false'},{type:'mcq',text:'Traceability records must be retained for a minimum of:',options:['1 year','2 years','5 years','10 years'],correct:2},{type:'tf',text:'In a recall, traceability records are used to identify and isolate affected product.',correct:'true'},{type:'mcq',text:'Chain of custody documentation must be updated at each:',options:['Change of supervisor','Production stage or transfer point','Calendar month','New employee induction'],correct:1}] },
+        'Equipment Log':         { passMark:70, questions:[{type:'mcq',text:'How often must equipment calibration be documented?',options:['Monthly','After each use','Per the calibration schedule','Only when faults occur'],correct:2},{type:'tf',text:'A calibration record must include the name of the person who performed it.',correct:'true'},{type:'mcq',text:'What action must be taken if equipment fails calibration?',options:['Continue use until end of shift','Tag out of service and notify maintenance','Recalibrate once and resume','Log the failure and continue'],correct:1},{type:'tf',text:'Equipment logs must be retained even after the equipment is decommissioned.',correct:'true'},{type:'mcq',text:'Preventive maintenance records differ from breakdown records because they:',options:['Are optional','Document scheduled upkeep before failure occurs','Only apply to freezers','Do not require sign-off'],correct:1}] },
+        'Staff Records':         { passMark:70, questions:[{type:'mcq',text:'Which document confirms a staff member has completed mandatory food safety training?',options:['Payroll record','Training completion certificate','Attendance register','Employment contract'],correct:1},{type:'tf',text:'Health declaration forms must be completed at the start of every shift.',correct:'true'},{type:'mcq',text:'Staff records must be kept for a minimum of how long after employment ends?',options:['6 months','1 year','3 years','7 years'],correct:2},{type:'tf',text:'A training matrix is used to track individual staff training completion status.',correct:'true'},{type:'mcq',text:'Who is responsible for maintaining accurate staff training records?',options:['The staff member only','HR or designated record keeper','The QC team','The cleaning supervisor'],correct:1}] }
+      },
+      'Quality Control': {
+        'Organoleptic Test':     { passMark:75, questions:[{type:'mcq',text:'Which senses are used in an organoleptic evaluation?',options:['Sight only','Sight and smell only','Sight, smell, taste, and texture','Taste and texture only'],correct:2},{type:'tf',text:'An organoleptic test can replace microbiological testing for final product release.',correct:'false'},{type:'mcq',text:'A defect score of 0 in organoleptic testing means:',options:['Product failed all criteria','No defects detected','Test was not completed','Score is pending review'],correct:1},{type:'tf',text:'Panel evaluators must be trained and calibrated before conducting assessments.',correct:'true'},{type:'mcq',text:'Which factor is NOT assessed in a standard organoleptic test?',options:['Odour','Colour','Net weight','Texture'],correct:2}] },
+        'Microbiological Check': { passMark:75, questions:[{type:'mcq',text:'What does TVC measure in food microbiology?',options:['Temperature variance coefficient','Total Viable Count of bacteria','Toxin verification check','Time and volume control'],correct:1},{type:'tf',text:'Microbiological results above the limit automatically trigger a product recall.',correct:'false'},{type:'mcq',text:'What is the purpose of a control sample in microbiological testing?',options:['To speed up results','To verify the test method is working correctly','To replace the product sample','To check temperature'],correct:1},{type:'tf',text:'Samples must be transported to the lab within specified temperature and time limits.',correct:'true'},{type:'mcq',text:'Which pathogen is of primary concern in shrimp microbiological testing?',options:['E. coli only','Salmonella and Listeria','Yeast and mould only','Total coliforms only'],correct:1}] },
+        'Chemical Analysis':     { passMark:75, questions:[{type:'mcq',text:'What does MRL stand for in food chemical testing?',options:['Minimum Required Level','Maximum Residue Limit','Measured Risk Limit','Moisture Retention Level'],correct:1},{type:'tf',text:'Sulphite levels in shrimp must be tested on every production batch.',correct:'true'},{type:'mcq',text:'If a chemical test result exceeds the MRL, the correct action is:',options:['Retest and average the results','Place product on hold and notify QC manager','Reduce the portion size','Accept if only slightly over'],correct:1},{type:'tf',text:'Chemical testing certificates from suppliers can replace in-house testing permanently.',correct:'false'},{type:'mcq',text:'Which preservative is commonly monitored in processed shrimp?',options:['Citric acid','Sodium chloride','Sulphites','Acetic acid'],correct:2}] },
+        'Packaging Inspection':  { passMark:75, questions:[{type:'mcq',text:'What is checked during a seal integrity test?',options:['Label font size','Airtight closure of the packaging','Net weight accuracy','Batch code format'],correct:1},{type:'tf',text:'A label with a missing allergen declaration is still acceptable for release.',correct:'false'},{type:'mcq',text:'How often must packaging inspection checks be conducted on the line?',options:['Once per day','At the start and end of each shift','At defined intervals per the control plan','Only when a complaint is received'],correct:2},{type:'tf',text:'Over-packed product (above declared weight) does not require corrective action.',correct:'false'},{type:'mcq',text:'Which label element is legally mandatory on all food packaging?',options:['Brand logo','Best before or use-by date','Barcode','Country of design'],correct:1}] },
+        'Final Release':         { passMark:75, questions:[{type:'mcq',text:'Who is authorised to issue a final product release?',options:['Any line operator','QC Manager or designated authority','The dispatch driver','The cleaning team'],correct:1},{type:'tf',text:'A product on "Hold" status can be dispatched if the customer agrees.',correct:'false'},{type:'mcq',text:'What document confirms a batch meets all release specifications?',options:['Employee training record','Certificate of Conformance','Calibration log','Cleaning schedule'],correct:1},{type:'tf',text:'All test results must be reviewed and signed off before final release.',correct:'true'},{type:'mcq',text:'If a batch fails final release criteria, it must be:',options:['Dispatched at reduced price','Quarantined and investigated','Repackaged immediately','Approved by the customer directly'],correct:1}] }
+      }
+    };
+
     /* Mark this session as having visited class-viewer (suppresses auto-guide on return) */
     try { sessionStorage.setItem('cv_visited', '1'); } catch(e) {}
 
@@ -503,10 +557,10 @@
     }
 
     /* ── Content list ── */
-    function _contentItemVideo(title, dur, isFirst, itemId) {
+    function _contentItemVideo(title, dur, isFirst, itemId, url) {
       var col = D.col || '#5189F3';
       var vDone = isFirst && _vp >= 90;
-      var idArg = itemId ? ',\'' + esc(itemId) + '\'' : '';
+      var idArg = ',' + (itemId ? '\'' + esc(itemId) + '\'' : 'null') + ',' + (url ? '\'' + esc(url) + '\'' : 'null');
       return '<div class="content-item" onclick="openVideo(\'' + esc(title) + '\',\'video\',\'' + esc(dur||'—') + '\'' + idArg + ')">'
         + '<div class="content-icon" style="background:' + col + '18"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="' + col + '" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="15" height="12" rx="2"/><polygon points="17 10 22 7 22 17 17 14"/></svg></div>'
         + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">Video · ' + (dur||'—') + '</div></div>'
@@ -517,8 +571,8 @@
         + '</div></div>';
     }
 
-    function _contentItemVoice(title, dur, itemId) {
-      var idArg = itemId ? ',\'' + esc(itemId) + '\'' : '';
+    function _contentItemVoice(title, dur, itemId, url) {
+      var idArg = ',' + (itemId ? '\'' + esc(itemId) + '\'' : 'null') + ',' + (url ? '\'' + esc(url) + '\'' : 'null');
       return '<div class="content-item" onclick="openVideo(\'' + esc(title) + '\',\'voice\',\'' + esc(dur||'5 min') + '\'' + idArg + ')">'
         + '<div class="content-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>'
         + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">Voice Over · ' + (dur||'5 min') + '</div></div>'
@@ -526,8 +580,9 @@
         + '</div>';
     }
 
-    function _contentItemDoc(title, docType, version) {
-      return '<div class="content-item" onclick="openVideo(\'' + esc(title) + '\',\'doc\',\'—\')">'
+    function _contentItemDoc(title, docType, version, url) {
+      var click = url ? 'window.open(\'' + esc(url) + '\',\'_blank\')' : 'openVideo(\'' + esc(title) + '\',\'doc\',\'—\')';
+      return '<div class="content-item" onclick="' + click + '">'
         + '<div class="content-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>'
         + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">' + (docType||'Document') + (version ? ' · ' + version : '') + '</div></div>'
         + '<div class="content-status"><div class="play-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="#9CA3AF"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="content-status-label" style="color:#9CA3AF">View</div></div>'
@@ -539,21 +594,21 @@
       if (tab === 'video') {
         var adminV = D.adminVideos && D.adminVideos.length ? D.adminVideos : null;
         if (adminV) {
-          el.innerHTML = adminV.map(function(v,i){ return _contentItemVideo(v.title, v.duration, i===0, v.id); }).join('');
+          el.innerHTML = adminV.map(function(v,i){ return _contentItemVideo(v.title, v.duration, i===0, v.id, v.url); }).join('');
         } else {
           el.innerHTML = _contentItemVideo(D.videoTitle || D.cls + ' Training', D.dur, true);
         }
       } else if (tab === 'voice') {
         var adminVo = D.adminVoices && D.adminVoices.length ? D.adminVoices : null;
         if (adminVo) {
-          el.innerHTML = adminVo.map(function(v){ return _contentItemVoice(v.title, v.duration, v.id); }).join('');
+          el.innerHTML = adminVo.map(function(v){ return _contentItemVoice(v.title, v.duration, v.id, v.url); }).join('');
         } else {
           el.innerHTML = _contentItemVoice(D.voiceTitle || D.cls + ' Introduction', '5 min');
         }
       } else {
         var adminD = D.adminDocs && D.adminDocs.length ? D.adminDocs : null;
         if (adminD) {
-          el.innerHTML = adminD.map(function(v){ return _contentItemDoc(v.title, v.docType, v.version); }).join('');
+          el.innerHTML = adminD.map(function(v){ return _contentItemDoc(v.title, v.docType, v.version, v.url); }).join('');
         } else {
           el.innerHTML = '<div class="empty-tab">No documents attached to this class yet.</div>';
         }
@@ -580,7 +635,7 @@
 
       if (isCert) {
         var pass = D.a1 && D.a1.pass ? D.a1 : D.a2;
-        el.innerHTML = _resultHTML(pass.pct, true, pass.c, D.questions ? D.questions.length : 0, pass.date);
+        el.innerHTML = _resultHTML(pass.score, true, pass.c, D.questions ? D.questions.length : 0, pass.date);
         return;
       }
       if (exhausted) {
@@ -605,7 +660,7 @@
             var remMs = cdEnd - now;
             var remH = Math.floor(remMs/3600000);
             var remM = Math.floor((remMs%3600000)/60000);
-            el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + D.a1.pct + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in ' + (remH ? remH + 'h ' : '') + remM + 'm</div></div></div>';
+            el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + D.a1.score + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in ' + (remH ? remH + 'h ' : '') + remM + 'm</div></div></div>';
             return;
           }
         }
@@ -615,7 +670,7 @@
         + '<div class="assessment-meta">'
         + '<div class="assessment-title">' + (D.a1 && !D.a1.pass ? 'Attempt 2 — Re-Assessment' : 'Class Assessment') + '</div>'
         + '<div class="assessment-sub">' + _questions.length + ' questions · Pass mark: ' + D.passMark + '% · Approx. ' + Math.ceil(_questions.length * 1.5) + ' min</div>'
-        + (D.a1 && !D.a1.pass ? '<div style="margin-top:6px;font-size:11px;font-weight:700;color:#EF4444">Attempt 1: ' + D.a1.pct + '% — did not pass</div>' : '')
+        + (D.a1 && !D.a1.pass ? '<div style="margin-top:6px;font-size:11px;font-weight:700;color:#EF4444">Attempt 1: ' + D.a1.score + '% — did not pass</div>' : '')
         + '</div>'
         + '<button class="btn-start-quiz" onclick="startQuiz()">Start Assessment →</button>'
         + '</div>';
@@ -695,15 +750,15 @@
         var st = JSON.parse(localStorage.getItem(LS) || '{}');
         if (!st[D.mod]) st[D.mod] = {};
         if (!st[D.mod][D.cls]) st[D.mod][D.cls] = {};
-        st[D.mod][D.cls][attKey] = { pass: pass, pct: pct, date: today, c: correct, t: total };
+        st[D.mod][D.cls][attKey] = { pass: pass, score: pct, date: today, c: correct, t: total };
         if (!pass && _attNum === 1) st[D.mod][D.cls].cd = new Date().toISOString();
         localStorage.setItem(LS, JSON.stringify(st));
         // Update D so re-render shows result
-        D[attKey] = { pass: pass, pct: pct, date: today, c: correct, t: total };
+        D[attKey] = { pass: pass, score: pct, date: today, c: correct, t: total };
         if (!pass && _attNum === 1) D.cd = new Date().toISOString();
       } catch(e) {}
 
-      if (pass) { D.a1 = D.a1 || {}; if (_attNum === 1) D.a1 = D[attKey]; else D.a2 = D[attKey]; }
+      if (_attNum === 1) D.a1 = D[attKey]; else D.a2 = D[attKey];
       renderHeroStatus();
       document.getElementById('assessmentBody').innerHTML = _resultHTML(pct, pass, correct, total, today);
     }
@@ -729,47 +784,62 @@
     }
 
     /* ── Footer nav ── */
+    function _cvIdx() {
+      var _list = CV_MODULES[D.mod] || [];
+      var i = _list.indexOf(D.cls);
+      return i !== -1 ? i : (D.clsIdx || 0);
+    }
+
     function renderFooter() {
       var prev = document.getElementById('btnPrev');
       var next = document.getElementById('btnNext');
       var _list = CV_MODULES[D.mod] || [];
-      var _prevName = _list.length ? (_list[D.clsIdx - 1] || null) : D.prevCls;
-      var _nextName = _list.length ? (_list[D.clsIdx + 1] || null) : D.nextCls;
+      var ci = _cvIdx();
+      var _prevName = _list[ci - 1] || null;
+      var _nextName = _list[ci + 1] || null;
       if (_prevName) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Previous'; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
       if (_nextName) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Next'; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
     }
 
     function navClass(dir) {
       var _navList = CV_MODULES[D.mod] || [];
-      var newIdx = dir === 'next' ? D.clsIdx + 1 : D.clsIdx - 1;
-      var cls = _navList.length ? _navList[newIdx] : (dir === 'next' ? D.nextCls : D.prevCls);
+      var curIdx = _cvIdx();
+      var newIdx = dir === 'next' ? curIdx + 1 : curIdx - 1;
+      var cls = _navList[newIdx];
       if (!cls) return;
       var LS_val = {};
       try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
       var s = (LS_val[D.mod] || {})[cls] || {};
-      var list = _navList.length ? _navList : (D.clsList || []);
+      var list = _navList;
       var nd = {
-        mod: D.mod, col: D.col, totalCls: D.totalCls, clsList: list, modules: D.modules,
+        mod: D.mod, col: D.col, totalCls: list.length, clsList: list, modules: D.modules,
         cls: cls, clsIdx: newIdx,
         prevCls: newIdx > 0 ? list[newIdx - 1] || null : null,
-        nextCls: newIdx < D.totalCls - 1 ? list[newIdx + 1] || null : null,
+        nextCls: newIdx < list.length - 1 ? list[newIdx + 1] || null : null,
         desc: '', videoTitle: cls + ' Training', voiceTitle: cls + ' Introduction',
         terms: [], questions: [], liveQuizId: null, passMark: 70,
         adminVideos: [], adminVoices: [], adminDocs: [],
         vp: s.vp || 0, a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null
       };
 
-      // Fix 1: restore class metadata (desc, terms, quiz) from localStorage
+      // Fix 1: restore class metadata from embedded CV_CLASS_META + CV_QQ (always available)
+      var _cvMeta = (CV_CLASS_META[D.mod] || {})[cls] || {};
+      if (_cvMeta.desc)        nd.desc        = _cvMeta.desc;
+      if (_cvMeta.videoTitle)  nd.videoTitle  = _cvMeta.videoTitle;
+      if (_cvMeta.voiceTitle)  nd.voiceTitle  = _cvMeta.voiceTitle;
+      if (_cvMeta.terms)       nd.terms       = _cvMeta.terms;
+      var _cvQQ = (CV_QQ[D.mod] || {})[cls] || {};
+      if (_cvQQ.questions)     nd.questions   = _cvQQ.questions;
+      if (_cvQQ.passMark)      nd.passMark    = _cvQQ.passMark;
+      // Override with admin live quiz if one exists in localStorage
       try {
         var modMeta = JSON.parse(localStorage.getItem('lms_mod_meta_' + D.mod) || '{}');
         var clsMeta = modMeta[cls] || {};
-        if (clsMeta.desc)        nd.desc        = clsMeta.desc;
-        if (clsMeta.videoTitle)  nd.videoTitle  = clsMeta.videoTitle;
-        if (clsMeta.voiceTitle)  nd.voiceTitle  = clsMeta.voiceTitle;
-        if (clsMeta.terms)       nd.terms       = clsMeta.terms;
-        if (clsMeta.questions)   nd.questions   = clsMeta.questions;
-        if (clsMeta.passMark)    nd.passMark    = clsMeta.passMark;
-        if (clsMeta.liveQuizId)  nd.liveQuizId  = clsMeta.liveQuizId;
+        if (clsMeta.liveQuizId) {
+          nd.liveQuizId = clsMeta.liveQuizId;
+          if (clsMeta.questions) nd.questions = clsMeta.questions;
+          if (clsMeta.passMark)  nd.passMark  = clsMeta.passMark;
+        }
       } catch(e) {}
 
       // Fix 2: restore admin-uploaded content from localStorage
@@ -787,7 +857,7 @@
     }
 
     /* ── Video overlay ── */
-    function openVideo(title, type, dur, itemId) {
+    function openVideo(title, type, dur, itemId, url) {
       document.getElementById('vTitle').textContent = title;
       document.getElementById('vBreadcrumb').textContent = D.mod + ' › ' + D.cls;
       document.getElementById('vdModule').textContent   = D.mod || '—';
@@ -798,18 +868,25 @@
       var vPh = document.getElementById('vboxPlaceholderText');
       if (vEl) { vEl.pause(); vEl.removeAttribute('src'); vEl.style.display = 'none'; }
       if (vPh) vPh.textContent = 'No file uploaded — preview unavailable';
-      // Try to load actual file from IndexedDB
-      if (itemId && (type === 'video' || type === 'voice')) {
-        if (vPh) vPh.textContent = 'Loading…';
-        _getMediaBlobUrl(itemId).then(function(url) {
-          if (url) {
-            var v2 = document.getElementById('vboxVideo');
-            if (v2) { v2.src = url; v2.style.display = 'block'; }
-            if (vPh) vPh.style.display = 'none';
-          } else {
-            if (vPh) { vPh.textContent = 'No file uploaded — preview unavailable'; vPh.style.display = ''; }
-          }
-        });
+      if (type === 'video' || type === 'voice') {
+        if (url) {
+          // Server-uploaded file: play directly from its URL
+          var v2 = document.getElementById('vboxVideo');
+          if (v2) { v2.src = url; v2.style.display = 'block'; }
+          if (vPh) vPh.style.display = 'none';
+        } else if (itemId) {
+          // Legacy IndexedDB-stored file
+          if (vPh) vPh.textContent = 'Loading…';
+          _getMediaBlobUrl(itemId).then(function(blobUrl) {
+            if (blobUrl) {
+              var v2 = document.getElementById('vboxVideo');
+              if (v2) { v2.src = blobUrl; v2.style.display = 'block'; }
+              if (vPh) vPh.style.display = 'none';
+            } else {
+              if (vPh) { vPh.textContent = 'No file uploaded — preview unavailable'; vPh.style.display = ''; }
+            }
+          });
+        }
       }
       var btn = document.getElementById('vMarkBtn');
       var tag = document.getElementById('vWatchedTag');

@@ -1189,6 +1189,16 @@
       });
     })();
 
+    /* ── One-time reset: clear all stale LMS data so knowledge hub starts clean ── */
+    (function _resetLmsData() {
+      try {
+        if (localStorage.getItem('lms_version') !== 'v3') {
+          Object.keys(localStorage).filter(function(k){ return k.startsWith('lms_') || k.startsWith('sq_'); }).forEach(function(k){ localStorage.removeItem(k); });
+          localStorage.setItem('lms_version', 'v3');
+        }
+      } catch(e) {}
+    })();
+
     /* ── Class Metadata: descriptions, key terms, content titles ── */
     var CLASS_META = {
       'Forms': {
@@ -2152,10 +2162,10 @@
       var col=_modColor(curMod), bg=_modBg(curMod);
       var u=_curUser||{role:''};
 
-      /* Count quizzes assigned for this module (live admin + legacy) */
+      /* Count only admin-created quizzes */
       var quizCount=0;
       cls.forEach(function(c){
-        if(_liveQuiz(curMod,c)||(QQ[curMod]&&QQ[curMod][c])) quizCount++;
+        if(_liveQuiz(curMod,c)) quizCount++;
       });
 
       /* Small completion ring */
@@ -2200,12 +2210,19 @@
         stepHtml='<div class="class-step-circle" style="border:2px solid '+col+';background:'+bg+';color:'+col+'">'+(idx+1)+'</div>';
       }
 
-      /* Quiz pill — check live admin quiz first, fallback to embedded QQ */
+      /* Quiz pill — only show when admin has created a quiz for this class */
       var lq=_liveQuiz(mod,cls);
-      var hasQuiz=!!(lq||(QQ[mod]&&QQ[mod][cls]));
+      var hasQuiz=!!lq;
       var quizPill=hasQuiz
         ?'<span class="quiz-pill-assigned"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Quiz assigned</span>'
         :'<span class="quiz-pill-none">No quiz assigned</span>';
+
+      /* Video count — only admin-uploaded videos (not seeded defaults) */
+      var videoCount = 0;
+      try {
+        var _vlc = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
+        videoCount = _vlc.filter(function(v){ return v.module===mod && v.cls===cls && v.status==='live' && v._adminUploaded; }).length;
+      } catch(e) {}
 
       /* Progress */
       var pctColor=vp===100?'#16a34a':vp>0?col:'#C4C9D4';
@@ -2278,7 +2295,7 @@
         +'</div>'
         +'<div style="display:flex;align-items:center;gap:14px;flex-shrink:0">'
           +(locked?'':''+quizPill+progHtml)
-          +'<span class="class-content-count">1 video</span>'
+          +(videoCount>0?'<span class="class-content-count">'+videoCount+(videoCount===1?' video':' videos')+'</span>':'')
           +'<div class="class-card-btns">'+actionBtn+'</div>'
           +'<svg class="class-row-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>'
         +'</div>'

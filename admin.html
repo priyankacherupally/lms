@@ -2905,14 +2905,22 @@
       const panel = document.getElementById('videoNativePanel');
       if (!panel) return;
       if (_videoLibrary.length === 0) {
-        _videoLibrary = VIDEO_LIBRARY.map(v => Object.assign({}, v));
         try {
           var _storedV = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
+          // Start from hardcoded defaults, but prefer stored version for any matching id
+          // so admin's status/title changes survive a page reload
+          _videoLibrary = VIDEO_LIBRARY.map(function(v) {
+            var stored = _storedV.find(function(s){ return s.id === v.id; });
+            return stored ? Object.assign({}, v, stored) : Object.assign({}, v);
+          });
+          // Append any uploaded items not in the hardcoded list
           _storedV.forEach(function(v) {
             if (!_videoLibrary.find(function(x){ return x.id === v.id; }))
               _videoLibrary.unshift(Object.assign({}, v, { _adminUploaded: true }));
           });
-        } catch(e) {}
+        } catch(e) {
+          _videoLibrary = VIDEO_LIBRARY.map(v => Object.assign({}, v));
+        }
       }
 
       const q = _libSearch.video || '';
@@ -3397,7 +3405,7 @@
       const guessTitle = editItem ? editItem.title : (fileName ? fileName.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ') : '');
       const editDuration = editItem ? (editItem.duration || '') : '';
       const editDesc = editItem ? (editItem.desc || '') : '';
-      const editStatus = editItem ? (editItem.status || 'draft') : 'draft';
+      const editStatus = editItem ? (editItem.status || 'live') : 'live';
       const fileIcons = {
         video: '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
         voiceover: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
@@ -3532,29 +3540,30 @@
         const strip = function(arr) { return arr.map(function(v) {
           const o = Object.assign({}, v); delete o.blobUrl; return o;
         }); };
-        // Only persist admin-uploaded items (not hardcoded defaults)
-        localStorage.setItem('lms_video_library',     JSON.stringify(strip(_videoLibrary.filter(v => v._adminUploaded))));
-        localStorage.setItem('lms_voiceover_library', JSON.stringify(strip(CONTENT_LIBRARY.voiceover.filter(v => v._adminUploaded))));
-        localStorage.setItem('lms_document_library',  JSON.stringify(strip(CONTENT_LIBRARY.document.filter(v => v._adminUploaded))));
+        // Persist all items (defaults + uploaded) so class-viewer can read them
+        localStorage.setItem('lms_video_library',     JSON.stringify(strip(_videoLibrary)));
+        localStorage.setItem('lms_voiceover_library', JSON.stringify(strip(CONTENT_LIBRARY.voiceover)));
+        localStorage.setItem('lms_document_library',  JSON.stringify(strip(CONTENT_LIBRARY.document)));
       } catch(e) {}
     }
 
     function _confirmUpload() {
-      const mod  = document.getElementById('udmModule').value;
-      const cls  = document.getElementById('udmClass').value;
-      const title = (document.getElementById('udmTitle').value||'').trim() || 'Untitled';
+      const mod      = document.getElementById('udmModule').value;
+      const cls      = document.getElementById('udmClass').value;
+      const title    = (document.getElementById('udmTitle').value||'').trim() || 'Untitled';
       const duration = (document.getElementById('udmDuration').value||'').trim();
-      const desc = (document.getElementById('udmDesc').value||'').trim();
-      const status = document.getElementById('udmStatus').value;
-      const file = _udmFile; const type = _udmType;
+      const desc     = (document.getElementById('udmDesc').value||'').trim();
+      const status   = document.getElementById('udmStatus').value;
+      const file     = _udmFile;
+      const type     = _udmType;
 
-      // ── Edit mode: update existing item ──
+      // ── Edit mode: update metadata only (no re-upload) ──
       if (_udmEditId) {
         const editId = _udmEditId;
         _closeUploadModal();
-        let item = type === 'video'
-          ? _videoLibrary.find(v => v.id === editId)
-          : (CONTENT_LIBRARY[type]||[]).find(v => v.id === editId);
+        var item = type === 'video'
+          ? _videoLibrary.find(function(v){ return v.id === editId; })
+          : (CONTENT_LIBRARY[type]||[]).find(function(v){ return v.id === editId; });
         if (item) {
           item.title = title; item.module = mod; item.cls = cls;
           item.duration = duration; item.desc = desc;
@@ -3567,23 +3576,43 @@
         return;
       }
 
-      // ── Upload mode: add new item ──
-      const dateStr = cpDateStr();
-      const itemId = type === 'video' ? 'vu'+Date.now() : type === 'voiceover' ? 'v'+Date.now() : 'd'+Date.now();
-      const blobUrl = file ? URL.createObjectURL(file) : '';
-      if (file) _storeMediaFile(itemId, file);
-      _closeUploadModal();
-      if (type === 'video') {
-        _videoLibrary.unshift({ id:itemId, title, module:mod, cls, duration, desc, status, blobUrl, file:file?file.name:'', _adminUploaded:true });
-        renderVideoPanel();
-      } else if (type === 'voiceover') {
-        CONTENT_LIBRARY.voiceover.unshift({ id:itemId, title, module:mod, cls, desc, file:file?file.name:'', blobUrl, date:dateStr, duration:duration||'0:00', status, script:[{start:'00:00',end:'00:08',en:'',hi:'',te:''}], _adminUploaded:true });
-        renderContentPanel('voiceover');
-      } else if (type === 'document') {
-        CONTENT_LIBRARY.document.unshift({ id:itemId, title, module:mod, cls, desc, file:file?file.name:'', blobUrl, date:dateStr, docType:'Guide', version:'v1.0', status, sections:[{heading:'Introduction',body:''}], _adminUploaded:true });
-        renderContentPanel('document');
-      }
-      _saveContentLibrary();
+      // ── Upload mode: POST file to server, get permanent URL back ──
+      if (!file) { alert('Please select a file first.'); return; }
+      var uploadBtn = document.querySelector('.udm-btn-upload');
+      if (uploadBtn) { uploadBtn.disabled = true; uploadBtn.innerHTML = 'Uploading…'; }
+
+      var endpointMap = { video: '/api/lms/upload/video', voiceover: '/api/lms/upload/audio', document: '/api/lms/upload/document' };
+      var endpoint = endpointMap[type] || '/api/lms/upload/document';
+      var dateStr = cpDateStr();
+      var fd = new FormData();
+      fd.append('file', file);
+
+      fetch(endpoint, { method: 'POST', body: fd })
+        .then(function(res) {
+          if (!res.ok) return res.text().then(function(t){ throw new Error(t || res.status); });
+          return res.json();
+        })
+        .then(function(data) {
+          var itemId = type === 'video' ? 'vu'+Date.now() : type === 'voiceover' ? 'v'+Date.now() : 'd'+Date.now();
+          var url = data.url;
+          _closeUploadModal();
+          if (type === 'video') {
+            _videoLibrary.unshift({ id:itemId, title:title, module:mod, cls:cls, duration:duration, desc:desc, status:status, url:url, file:file.name, _adminUploaded:true });
+            renderVideoPanel();
+          } else if (type === 'voiceover') {
+            CONTENT_LIBRARY.voiceover.unshift({ id:itemId, title:title, module:mod, cls:cls, desc:desc, file:file.name, url:url, date:dateStr, duration:duration||'0:00', status:status, script:[{start:'00:00',end:'00:08',en:'',hi:'',te:''}], _adminUploaded:true });
+            renderContentPanel('voiceover');
+          } else if (type === 'document') {
+            CONTENT_LIBRARY.document.unshift({ id:itemId, title:title, module:mod, cls:cls, desc:desc, file:file.name, url:url, date:dateStr, docType:'Guide', version:'v1.0', status:status, sections:[{heading:'Introduction',body:''}], _adminUploaded:true });
+            renderContentPanel('document');
+          }
+          _saveContentLibrary();
+        })
+        .catch(function(err) {
+          console.error('Upload error:', err);
+          alert('Upload failed — ' + (err.message || 'please try again.'));
+          if (uploadBtn) { uploadBtn.disabled = false; uploadBtn.innerHTML = 'Upload'; }
+        });
     }
 
     function _videoUploadFile(ev) {
@@ -3599,8 +3628,17 @@
 
     function _deleteVideo(id) {
       if (!confirm('Delete this video?')) return;
+      var item = _videoLibrary.find(function(v){ return v.id === id; });
+      if (item && item.url && item.url.startsWith('/uploads/lms/')) {
+        var parts = item.url.split('/');
+        var fname = parts[parts.length - 1];
+        var folder = parts[parts.length - 2]; // videos / audio / documents
+        var typeMap = { videos: 'video', audio: 'audio', documents: 'document' };
+        var t = typeMap[folder] || folder;
+        fetch('/api/lms/upload/' + t + '/' + fname, { method: 'DELETE' }).catch(console.error);
+      }
       _deleteMediaFile(id);
-      _videoLibrary = _videoLibrary.filter(v => v.id !== id);
+      _videoLibrary = _videoLibrary.filter(function(v){ return v.id !== id; });
       _saveContentLibrary();
       renderVideoPanel();
     }
@@ -3870,13 +3908,19 @@
       const panel   = document.getElementById(panelId);
       if (!panel) return;
 
-      // Restore admin-uploaded items from localStorage on first open
+      // Merge localStorage into CONTENT_LIBRARY on first open per type
       if (!_cpRestored[type]) {
         _cpRestored[type] = true;
         try {
           const _lsKey = type === 'voiceover' ? 'lms_voiceover_library' : type === 'document' ? 'lms_document_library' : null;
           if (_lsKey) {
             const _storedCp = JSON.parse(localStorage.getItem(_lsKey) || '[]');
+            // Merge stored properties over hardcoded defaults (preserves admin edits)
+            CONTENT_LIBRARY[type] = CONTENT_LIBRARY[type].map(function(v) {
+              var stored = _storedCp.find(function(s){ return s.id === v.id; });
+              return stored ? Object.assign({}, v, stored) : Object.assign({}, v);
+            });
+            // Append uploaded items not in hardcoded list
             _storedCp.forEach(function(v) {
               if (!CONTENT_LIBRARY[type].find(function(x){ return x.id === v.id; }))
                 CONTENT_LIBRARY[type].unshift(Object.assign({}, v, { _adminUploaded: true }));
@@ -8708,6 +8752,7 @@
       { id:'v17', title:'Packaging Compliance Check',         module:'Quality Control', cls:'Packaging Inspection', duration:'9 min',  status:'live'  },
       { id:'v18', title:'Final Product Release Procedure',    module:'Quality Control', cls:'Final Release',        duration:'7 min',  status:'draft' },
     ];
+
 
     /* Module → certification mapping (first cert fully unlocked by completing this module) */
     const HUB_MODULE_CERT = {

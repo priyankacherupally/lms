@@ -2,9 +2,11 @@
   "name": "seatrace-lms-frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "serve . -l $PORT"
+    "start": "node server.js"
   },
   "dependencies": {
+    "express": "^5.2.1",
+    "multer": "^2.2.0",
     "serve": "^14.2.0"
   }
 }
