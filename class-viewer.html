@@ -735,8 +735,8 @@
       var _list = CV_MODULES[D.mod] || [];
       var _prevName = _list.length ? (_list[D.clsIdx - 1] || null) : D.prevCls;
       var _nextName = _list.length ? (_list[D.clsIdx + 1] || null) : D.nextCls;
-      if (_prevName) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Class ' + D.clsIdx + ': ' + _prevName; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
-      if (_nextName) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Class ' + (D.clsIdx+2) + ': ' + _nextName; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
+      if (_prevName) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Previous'; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
+      if (_nextName) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Next'; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
     }
 
     function navClass(dir) {
