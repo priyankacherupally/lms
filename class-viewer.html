@@ -741,12 +741,13 @@
 
     function navClass(dir) {
       var _navList = CV_MODULES[D.mod] || [];
+      var newIdx = dir === 'next' ? D.clsIdx + 1 : D.clsIdx - 1;
+      var cls = _navList.length ? _navList[newIdx] : (dir === 'next' ? D.nextCls : D.prevCls);
       if (!cls) return;
       var LS_val = {};
       try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
       var s = (LS_val[D.mod] || {})[cls] || {};
-      // Reuse meta fields — class-viewer won't have CLASS_META; send minimal session data
-      var list = CV_MODULES[D.mod] || D.clsList || [];
+      var list = _navList.length ? _navList : (D.clsList || []);
       var nd = {
         mod: D.mod, col: D.col, totalCls: D.totalCls, clsList: list, modules: D.modules,
         cls: cls, clsIdx: newIdx,
