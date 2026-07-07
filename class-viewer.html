@@ -746,10 +746,11 @@
       try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
       var s = (LS_val[D.mod] || {})[cls] || {};
       // Reuse meta fields — class-viewer won't have CLASS_META; send minimal session data
+      var list = D.clsList || [];
       var nd = Object.assign({}, D, {
         cls: cls, clsIdx: newIdx,
-        prevCls: newIdx > 0 ? (dir === 'next' ? D.cls : D.prevCls) : null,
-        nextCls: newIdx < D.totalCls - 1 ? (dir === 'next' ? D.nextCls : D.cls) : null,
+        prevCls: newIdx > 0 ? (list.length ? list[newIdx - 1] : (dir === 'next' ? D.cls : D.prevCls)) : null,
+        nextCls: newIdx < D.totalCls - 1 ? (list.length ? list[newIdx + 1] : (dir === 'next' ? D.nextCls : D.cls)) : null,
         desc: '', videoTitle: cls + ' Training', voiceTitle: cls + ' Introduction',
         terms: [], questions: [],
         vp: s.vp || 0, a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null
