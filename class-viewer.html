@@ -732,21 +732,16 @@
     function renderFooter() {
       var prev = document.getElementById('btnPrev');
       var next = document.getElementById('btnNext');
-      if (D.prevCls) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Class ' + D.clsIdx + ': ' + D.prevCls; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
-      if (D.nextCls) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Class ' + (D.clsIdx+2) + ': ' + D.nextCls; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
+      var _list = CV_MODULES[D.mod] || [];
+      var _prevName = _list.length ? (_list[D.clsIdx - 1] || null) : D.prevCls;
+      var _nextName = _list.length ? (_list[D.clsIdx + 1] || null) : D.nextCls;
+      if (_prevName) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Class ' + D.clsIdx + ': ' + _prevName; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
+      if (_nextName) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Class ' + (D.clsIdx+2) + ': ' + _nextName; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
     }
 
     function navClass(dir) {
-      var cls = dir === 'next' ? D.nextCls : D.prevCls;
+      var _navList = CV_MODULES[D.mod] || [];
       if (!cls) return;
-      // Re-open this page with the sibling class
-      var newIdx = dir === 'next' ? D.clsIdx + 1 : D.clsIdx - 1;
-      var mc = {};
-      // Build minimal data for the next class from what we have
-      var allCls = [];
-      for (var i = 0; i < D.totalCls; i++) { /* approximate */ }
-      // Best: instruct user to use knowledge-hub
-      // For now: pass the new class name, same mod
       var LS_val = {};
       try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
       var s = (LS_val[D.mod] || {})[cls] || {};
