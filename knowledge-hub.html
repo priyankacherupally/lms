@@ -167,10 +167,17 @@
 
     /* ── Toast ── */
     #toastStack { position:fixed; bottom:24px; right:20px; display:flex; flex-direction:column; gap:8px; z-index:9998; pointer-events:none; }
+    #topLoadBar { position:fixed; top:0; left:0; height:3px; width:0%; background:#5189F3; z-index:100000; opacity:1; }
+    :focus-visible { outline: 2px solid #5189F3 !important; outline-offset: 2px !important; border-radius: 2px; }
     .toast { display:flex; align-items:flex-start; gap:10px; background:#1E293B; color:#F1F5F9; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; padding:12px 16px; border-radius:10px; box-shadow:0 4px 18px rgba(0,0,0,.28); min-width:240px; max-width:320px; pointer-events:all; animation:toastIn .22s ease; }
     .toast.toast-red   { border-left:4px solid #DC2626; }
     .toast.toast-amber { border-left:4px solid #F59E0B; }
     .toast.toast-green { border-left:4px solid #22C55E; }
+    .toast.toast-blue   { border-left:4px solid #5189F3; }
+    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:800; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
+    .toast-action:hover { color:#fff; text-decoration:underline; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ui-spin { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; vertical-align: middle; margin-right: 6px; }
     @keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
     /* ══ PRODUCT TOUR ══ */
@@ -629,12 +636,33 @@
     .cert-module-header { display:none; }
     /* Sidebar icon alignment */
     .sidebar-item svg { flex-shrink:0 }
+
+    /* Certificate → PDF: isolate #certDoc so "Print" / "Save as PDF" only captures the
+       certificate itself, not the rest of the page behind the overlay. #certViewOverlay
+       keeps position:fixed (its normal on-screen style) rather than being switched to
+       static — static would drop it back into normal document flow, and since the rest
+       of the page is only visibility:hidden (still occupying its layout space), that left
+       a tall blank gap above the certificate on the printed page. Landscape matches a
+       certificate's actual proportions much better than the browser's default portrait. */
+    @media print {
+      @page { size: landscape; margin: 0.35in; }
+      body * { visibility: hidden; }
+      #certDoc, #certDoc * { visibility: visible; }
+      #certViewOverlay { background: none !important; backdrop-filter: none !important; padding: 0 !important; }
+      #certViewBox { box-shadow: none !important; padding: 0 !important; max-width: none !important; background: none !important; position: static !important; }
+      /* #certDoc has an inline position:relative (for its screen layout) which beats a
+         plain CSS rule regardless of media query — every overridden property here needs
+         !important or the browser silently keeps the inline value. */
+      #certDoc { position: fixed !important; top: 50% !important; left: 0 !important; width: 100% !important; margin: 0 !important; transform: translateY(-50%) !important; box-sizing: border-box; border: none !important; }
+      .cert-modal-actions { display: none !important; }
+    }
   </style>
 </head>
 <body>
+  <div id="topLoadBar"></div>
 
   <header class="navbar">
-    <div class="brand">
+    <div class="brand" onclick="_testToolsTapTrick()">
       <img src="Assets/Seatrace logo.png" alt="SeaTrace" style="height:32px;object-fit:contain"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <span class="brand-name" style="display:none"><span class="sea">SEA</span>TRACE</span>
@@ -643,16 +671,16 @@
       <span class="nav-role-badge">Learner</span>
       <div class="nav-icons">
         <!-- Profile -->
-        <button class="nav-icon-btn" id="profileBtn" title="Profile" onclick="_toggleProfilePanel()">
+        <button class="nav-icon-btn" id="profileBtn" title="Profile" aria-label="Profile" onclick="_toggleProfilePanel()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
         <!-- Bell -->
-        <button class="nav-icon-btn" id="notifBellBtn" title="Notifications" onclick="_toggleNotifPanel()" style="position:relative">
+        <button class="nav-icon-btn" id="notifBellBtn" title="Notifications" aria-label="Notifications" onclick="_toggleNotifPanel()" style="position:relative">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span id="notifBellBadge" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#DC2626;border-radius:50%;border:1.5px solid #fff"></span>
         </button>
         <!-- Logout -->
-        <button class="nav-icon-btn" title="Logout" onclick="_learnerLogout()">
+        <button class="nav-icon-btn" title="Logout" aria-label="Logout" onclick="_learnerLogout()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
       </div>
@@ -672,6 +700,10 @@
     <div id="profilePanel" style="display:none;position:absolute;top:56px;right:76px;width:260px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
       <div id="profilePanelBody"></div>
       <div style="border-top:1px solid #F3F4F6;padding:10px 12px">
+        <button onclick="_switchUser()" style="width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border:none;background:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#374151;border-radius:6px;transition:background .12s" onmouseover="this.style.background='#F5F7FF'" onmouseout="this.style.background='none'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          Switch User
+        </button>
         <button onclick="_learnerLogout()" style="width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border:none;background:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#EF4444;border-radius:6px;transition:background .12s" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='none'">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Sign out
@@ -692,21 +724,7 @@
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Knowledge Hub</div>
       <div id="sb-modules-wrap" style="overflow-y:auto;max-height:220px">
-        <button class="sidebar-item" id="sb-forms" onclick="switchSection('module','Forms')">
-          <div class="sidebar-item-dot" style="background:#5189F3"></div>
-          <span class="sidebar-item-name">Forms</span>
-          <span class="sidebar-item-count" style="background:#EEF3FF;color:#5189F3">8</span>
-        </button>
-        <button class="sidebar-item" id="sb-masterforms" onclick="switchSection('module','Master Forms')">
-          <div class="sidebar-item-dot" style="background:#7C3AED"></div>
-          <span class="sidebar-item-name">Master Forms</span>
-          <span class="sidebar-item-count" style="background:#F5F3FF;color:#7C3AED">5</span>
-        </button>
-        <button class="sidebar-item" id="sb-qc" onclick="switchSection('module','Quality Control')">
-          <div class="sidebar-item-dot" style="background:#16a34a"></div>
-          <span class="sidebar-item-name">Quality Control</span>
-          <span class="sidebar-item-count" style="background:#F0FDF4;color:#16a34a">5</span>
-        </button>
+        <div id="sb-modules-empty" style="display:none;padding:8px 12px;font-size:11px;font-weight:600;color:#9CA3AF;line-height:1.5">No modules yet — ask your admin to add training content.</div>
       </div>
 
       <div class="sidebar-divider"></div>
@@ -761,7 +779,7 @@
 
       <!-- ── KNOWLEDGE HUB (module view) ── -->
       <div id="moduleView" style="display:none">
-        <div class="main-title" id="mainTitle" style="margin-bottom:4px">Forms</div>
+        <div class="main-title" id="mainTitle" style="margin-bottom:4px"></div>
         <div class="main-sub">Complete classes in order — pass the assessment to unlock the next class</div>
         <div id="moduleHeader"></div>
         <div class="class-list" id="classList"></div>
@@ -788,7 +806,7 @@
         <div class="lb-table-wrap">
           <div class="lb-table-head">
             <span class="lb-table-head-title">All Learners</span>
-            <input class="lb-search" id="lbSearch" placeholder="Search name or department…" oninput="renderLbTable()" />
+            <input class="lb-search" id="lbSearch" placeholder="Search name or department…" oninput="_renderLbTableDebounced()" />
           </div>
           <table class="lb-tbl">
             <thead><tr>
@@ -806,27 +824,41 @@
     </main>
   </div>
 
-  <!-- Name selector overlay (removed — user auto-loaded) -->
+  <!-- Sign-up overlay: captures name + email once per browser, gates the rest of the app -->
   <div id="nameSelector" style="display:none">
     <div>
-      <div>
-        <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <button onclick="_learnerLogout()" style="display:flex;align-items:center;gap:6px;border:none;background:none;cursor:pointer;padding:0;font-family:inherit;font-size:12px;font-weight:700;color:#9CA3AF" onmouseover="this.style.color='#5189F3'" onmouseout="this.style.color='#9CA3AF'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back
+        </button>
+        <button id="nsCloseBtn" onclick="_cancelSignup()" style="display:none;align-items:center;border:none;background:none;cursor:pointer;padding:2px;color:#9CA3AF" onmouseover="this.style.color='#EF4444'" onmouseout="this.style.color='#9CA3AF'" title="Cancel — keep me signed in">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:18px">
+        <div style="width:40px;height:40px;border-radius:50%;background:#EEF3FF;color:#5189F3;display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
         </div>
         <div>
-          <div style="font-size:17px;font-weight:900;color:#1E2532">Who are you?</div>
-          <div style="font-size:12px;color:#9CA3AF;margin-top:2px;font-weight:500">Enter your name to load your progress</div>
+          <div style="font-size:17px;font-weight:900;color:#1E2532">Welcome — who's learning?</div>
+          <div style="font-size:12px;color:#9CA3AF;margin-top:2px;font-weight:500">Enter your name and email to start tracking your progress</div>
         </div>
       </div>
-      <div style="position:relative;margin-bottom:8px">
-        <input id="nameInput" type="text" placeholder="Start typing your name…" autocomplete="off"
-          style="width:100%;padding:8px 11px;border:1px solid #DFE2E6;border-radius:2px;font-size:13px;font-weight:600;font-family:inherit;outline:none;box-sizing:border-box;color:#111;transition:border-color .15s"
-          oninput="_nsFilter()" onkeydown="if(event.key==='Enter')_nsSubmit()">
-        <div id="nsSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #DFE2E6;border-top:none;border-radius:0 0 2px 2px;max-height:200px;overflow-y:auto;z-index:10"></div>
+      <div style="margin-bottom:8px">
+        <input id="nameInput" type="text" placeholder="Your full name…" autocomplete="off"
+          style="width:100%;padding:8px 11px;border:1px solid #DFE2E6;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;outline:none;box-sizing:border-box;color:#111;transition:border-color .15s;margin-bottom:8px"
+          oninput="_nsLiveValidate()"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('emailInput').focus();}">
+        <input id="emailInput" type="email" placeholder="you@company.com" autocomplete="off"
+          style="width:100%;padding:8px 11px;border:1px solid #DFE2E6;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;outline:none;box-sizing:border-box;color:#111;transition:border-color .15s"
+          oninput="_nsLiveValidate()"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();_nsSubmit();}">
+        <div id="emailHint" style="font-size:11px;color:#EF4444;font-weight:600;margin-top:5px;display:none">Enter a valid email address</div>
       </div>
       <div id="nsError" style="font-size:12px;color:#EF4444;font-weight:600;display:none;margin-bottom:10px"></div>
       <button onclick="_nsSubmit()" style="width:100%;padding:10px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s">Continue →</button>
-      <div style="font-size:11px;color:#C4C9D4;text-align:center;margin-top:14px;font-weight:500">Your progress is linked to your name in the system</div>
+      <div style="font-size:11px;color:#C4C9D4;text-align:center;margin-top:14px;font-weight:500">Your progress is linked to this email, in this browser</div>
     </div>
   </div>
 
@@ -929,8 +961,22 @@
   <div id="certViewOverlay" style="position:fixed;inset:0;background:rgba(8,18,36,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:700;padding:32px">
     <div id="certViewBox" style="background:#F5F6F8;border-radius:2px;width:100%;max-width:660px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.32);padding:16px">
 
-      <!-- Close -->
-      <button onclick="closeCertView()" style="position:absolute;top:-12px;right:-12px;width:26px;height:26px;border:1px solid #DFE2E6;background:#fff;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#888;z-index:10;font-family:inherit">✕</button>
+      <!-- Back + Download actions — hidden from the printed/PDF output itself -->
+      <div class="cert-modal-actions" style="display:flex;align-items:center;justify-content:space-between;padding:2px 4px 14px 4px">
+        <button onclick="closeCertView()" style="display:flex;align-items:center;gap:6px;border:none;background:none;cursor:pointer;padding:0;font-family:inherit;font-size:13px;font-weight:700;color:#9CA3AF" onmouseover="this.style.color='#5189F3'" onmouseout="this.style.color='#9CA3AF'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back
+        </button>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onclick="downloadCertificatePdf()" style="display:flex;align-items:center;gap:6px;padding:7px 16px;background:#fff;color:#5189F3;border:1.5px solid #C7D9FF;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#F5F8FF'" onmouseout="this.style.background='#fff'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </button>
+          <button onclick="closeCertView()" title="Close" style="width:32px;height:32px;border-radius:0;border:none;background:#F3F4F6;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,color .15s" onmouseover="this.style.background='#FEE2E2';this.style.color='#EF4444'" onmouseout="this.style.background='#F3F4F6';this.style.color='#888'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
 
       <!-- Certificate paper -->
       <div id="certDoc" style="background:#fff;border:1px solid #DFE2E6;padding:40px 48px 32px;position:relative">
@@ -999,8 +1045,8 @@
           </div>
           <div style="text-align:right">
             <div style="width:140px;height:1px;background:#111;margin-bottom:6px;margin-left:auto"></div>
-            <div style="font-size:13px;font-weight:800;color:#111;margin-bottom:1px">R. Krishnamurthy</div>
-            <div style="font-size:10px;color:#888;font-weight:600">Director, SeaTrace Processing</div>
+            <div style="font-size:13px;font-weight:800;color:#9CA3AF;font-style:italic;margin-bottom:1px">Not yet configured</div>
+            <div style="font-size:10px;color:#888;font-weight:600"></div>
           </div>
         </div>
       </div>
@@ -1122,6 +1168,100 @@
   </div>
 
   <script>
+    /* ══════════════════════════════════════════════════════
+       TEMPORARY — time-travel testing patch. Shifts what the whole
+       page considers "now" so cooldown/timer states can be tested
+       without waiting real hours/days. Remove this block (and the
+       matching widget below) once attempt-flow testing is done.
+    ══════════════════════════════════════════════════════ */
+    (function() {
+      var OFFSET_KEY = '_test_time_offset_ms';
+      function _getOffset() {
+        try {
+          if (localStorage.getItem('_test_tools_unlocked') !== '1') return 0;
+          return parseInt(localStorage.getItem(OFFSET_KEY)||'0',10) || 0;
+        } catch(e) { return 0; }
+      }
+      var RealDate = Date;
+      function FakeDate() {
+        if (!(this instanceof FakeDate)) return RealDate();
+        if (arguments.length === 0) return new RealDate(RealDate.now() + _getOffset());
+        return new (Function.prototype.bind.apply(RealDate, [null].concat(Array.prototype.slice.call(arguments))))();
+      }
+      FakeDate.prototype = RealDate.prototype;
+      FakeDate.now   = function() { return RealDate.now() + _getOffset(); };
+      FakeDate.parse = RealDate.parse;
+      FakeDate.UTC   = RealDate.UTC;
+      Date = FakeDate;
+    })();
+
+    /* ── Test tools are hidden from real learners by default. Unlock with ?testmode=1
+       in the URL, or by clicking the logo 5 times within 3 seconds. ── */
+    var TEST_UNLOCK_KEY = '_test_tools_unlocked';
+    function _testToolsUnlocked() {
+      try {
+        if (new URLSearchParams(location.search).get('testmode') === '1') {
+          localStorage.setItem(TEST_UNLOCK_KEY, '1');
+        }
+        return localStorage.getItem(TEST_UNLOCK_KEY) === '1';
+      } catch(e) { return false; }
+    }
+    var _testTapCount = 0, _testTapTimer = null;
+    function _testToolsTapTrick() {
+      _testTapCount++;
+      clearTimeout(_testTapTimer);
+      _testTapTimer = setTimeout(function() { _testTapCount = 0; }, 3000);
+      if (_testTapCount >= 5) {
+        _testTapCount = 0;
+        var unlocked = _testToolsUnlocked();
+        try { localStorage.setItem(TEST_UNLOCK_KEY, unlocked ? '0' : '1'); } catch(e) {}
+        location.reload();
+      }
+    }
+
+    /* TEMPORARY — floating time-travel widget, jumps the simulated clock forward for testing.
+       Hidden from real learners — see _testToolsUnlocked() above. */
+    (function() {
+      if (!_testToolsUnlocked()) return;
+      var OFFSET_KEY = '_test_time_offset_ms';
+      function getOffset() { try { return parseInt(localStorage.getItem(OFFSET_KEY)||'0',10) || 0; } catch(e) { return 0; } }
+      function setOffset(ms) { try { localStorage.setItem(OFFSET_KEY, String(ms)); } catch(e) {} location.reload(); }
+
+      function mount() {
+        var bar = document.createElement('div');
+        bar.style.cssText = 'position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:99999;background:#111827;border-radius:999px;padding:8px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-family:Nunito,sans-serif';
+
+        var offset = getOffset();
+        var label = document.createElement('span');
+        label.style.cssText = 'font-size:12px;font-weight:800;color:#F59E0B;white-space:nowrap;display:flex;align-items:center;gap:5px';
+        label.innerHTML = '⏱ ' + (offset ? '+' + Math.round(offset/86400000) + 'd (simulated)' : 'Real time');
+        bar.appendChild(label);
+
+        function sep() { var s=document.createElement('div'); s.style.cssText='width:1px;height:18px;background:rgba(255,255,255,.15)'; return s; }
+        bar.appendChild(sep());
+
+        [1,2,7,30,90,180].forEach(function(d) {
+          var btn = document.createElement('button');
+          btn.textContent = '+' + d + 'd';
+          btn.style.cssText = 'font-family:inherit;font-size:11px;font-weight:700;color:#6EE7B7;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);border-radius:999px;padding:5px 11px;cursor:pointer';
+          btn.onclick = function() { setOffset(getOffset() + d*86400000); };
+          bar.appendChild(btn);
+        });
+
+        bar.appendChild(sep());
+
+        var resetBtn = document.createElement('button');
+        resetBtn.innerHTML = '↺ Reset';
+        resetBtn.style.cssText = 'font-family:inherit;font-size:11px;font-weight:700;color:#93C5FD;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.35);border-radius:999px;padding:5px 11px;cursor:pointer';
+        resetBtn.onclick = function() { setOffset(0); };
+        bar.appendChild(resetBtn);
+
+        document.body.appendChild(bar);
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+      else mount();
+    })();
+
     /* ── Auth guard ── */
     (function() {
       if (sessionStorage.getItem('seatrace_role') !== 'learner') {
@@ -1135,21 +1275,28 @@
     }
   </script>
   <script>
-    /* ── Modules ── */
-    var MODULES = {
-      'Forms':           { color:'#5189F3', classes:['Beheading','Grading','Peeling & Cutting','De-veining','Weighing & Packing','IQF Freezing','Cold Store Inward','Cold Store Outward'],
-                           classCounts:{'Beheading':17,'Grading':16,'Peeling & Cutting':14,'De-veining':13,'Weighing & Packing':10,'IQF Freezing':7,'Cold Store Inward':5,'Cold Store Outward':5} },
-      'Master Forms':    { color:'#7C3AED', classes:['Supplier Registration','Raw Material Intake','Batch Traceability','Equipment Log','Staff Records'],
-                           classCounts:{'Supplier Registration':12,'Raw Material Intake':7,'Batch Traceability':4,'Equipment Log':2,'Staff Records':1} },
-      'Quality Control': { color:'#16a34a', classes:['Organoleptic Test','Microbiological Check','Chemical Analysis','Packaging Inspection','Final Release'],
-                           classCounts:{'Organoleptic Test':9,'Microbiological Check':7,'Chemical Analysis':4,'Packaging Inspection':4,'Final Release':3} }
-    };
+    /* ── Modules — curriculum starts empty; built by admin (Knowledge Hub → Add Module) ── */
+    var MODULES = {};
+    var _MOD_PALETTE = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#EC4899','#14B8A6','#6366F1','#F97316','#8B5CF6','#DC2626'];
 
-    /* ── Inject admin-created modules from localStorage into sidebar ── */
-    (function _injectAdminModules() {
-      var EXTRA_COLORS = ['#F59E0B','#EC4899','#14B8A6','#6366F1','#F97316','#8B5CF6','#DC2626'];
-      var extraIdx = 0;
-      var added = [];
+    function _modSlug(mod) { return 'sb-mod-' + mod.toLowerCase().replace(/[^a-z0-9]+/g, '-'); }
+
+    /* ── Load real curriculum from admin (synced via localStorage), assign display colors ── */
+    (function _loadModules() {
+      try {
+        var saved = JSON.parse(localStorage.getItem('lms_module_data') || 'null');
+        var data = saved ? (saved.data || {}) : {};
+        var meta = saved ? (saved.meta || {}) : {};
+        var idx = 0;
+        Object.keys(data).forEach(function(mod) {
+          if (meta[mod] && meta[mod].hidden) return;
+          var classes = (data[mod].classes || []).filter(function(c) {
+            return !(meta[mod] && meta[mod].hiddenClasses && meta[mod].hiddenClasses.indexOf(c) !== -1);
+          });
+          MODULES[mod] = { color: _MOD_PALETTE[idx++ % _MOD_PALETTE.length], classes: classes, classCounts: {} };
+        });
+      } catch(e) {}
+      /* Safety net: also pick up any module/class referenced by uploaded content but missing above */
       try {
         var allItems = [];
         ['lms_video_library','lms_voiceover_library','lms_document_library'].forEach(function(k) {
@@ -1158,242 +1305,78 @@
         allItems.forEach(function(item) {
           var mod = item.module, cls = item.cls;
           if (!mod || !cls) return;
-          if (!MODULES[mod]) {
-            MODULES[mod] = { color: EXTRA_COLORS[extraIdx++ % EXTRA_COLORS.length], classes: [], classCounts: {} };
-            added.push(mod);
-          }
-          if (MODULES[mod].classes.indexOf(cls) === -1) {
-            MODULES[mod].classes.push(cls);
-            MODULES[mod].classCounts[cls] = 1;
-          }
+          if (!MODULES[mod]) MODULES[mod] = { color: _MOD_PALETTE[Object.keys(MODULES).length % _MOD_PALETTE.length], classes: [], classCounts: {} };
+          if (MODULES[mod].classes.indexOf(cls) === -1) MODULES[mod].classes.push(cls);
         });
       } catch(e) {}
+    })();
 
-      if (!added.length) return;
-      var sbQc = document.getElementById('sb-qc');
-      if (!sbQc) return;
-      var insertAfter = sbQc;
-      added.forEach(function(mod) {
+    /* ── Render the module list in the sidebar from MODULES ── */
+    function _renderModuleSidebar() {
+      var wrap = document.getElementById('sb-modules-wrap');
+      var empty = document.getElementById('sb-modules-empty');
+      if (!wrap) return;
+      var mods = Object.keys(MODULES);
+      wrap.querySelectorAll('.sidebar-item').forEach(function(b) { b.remove(); });
+      if (empty) empty.style.display = mods.length ? 'none' : 'block';
+      mods.forEach(function(mod) {
         var col = MODULES[mod].color;
         var cnt = MODULES[mod].classes.length;
-        var safeId = 'sb-admin-' + mod.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         var btn = document.createElement('button');
         btn.className = 'sidebar-item';
-        btn.id = safeId;
+        btn.id = _modSlug(mod);
         btn.innerHTML = '<div class="sidebar-item-dot" style="background:' + col + '"></div>'
           + '<span class="sidebar-item-name">' + mod + '</span>'
-          + '<span class="sidebar-item-count" style="background:#F5F5F5;color:' + col + '">' + cnt + '</span>';
+          + '<span class="sidebar-item-count" style="background:' + col + '18;color:' + col + '">' + cnt + '</span>';
         btn.onclick = function() { switchSection('module', mod); };
-        insertAfter.parentNode.insertBefore(btn, insertAfter.nextSibling);
-        insertAfter = btn;
+        wrap.appendChild(btn);
       });
-    })();
+    }
 
     /* ── One-time reset: clear all stale LMS data so knowledge hub starts clean ── */
     (function _resetLmsData() {
       try {
-        if (localStorage.getItem('lms_version') !== 'v3') {
-          Object.keys(localStorage).filter(function(k){ return k.startsWith('lms_') || k.startsWith('sq_'); }).forEach(function(k){ localStorage.removeItem(k); });
-          localStorage.setItem('lms_version', 'v3');
+        if (localStorage.getItem('lms_version') !== 'v5') {
+          Object.keys(localStorage).filter(function(k){ return k.startsWith('lms_') || k.startsWith('sq_') || k.startsWith('st_'); }).forEach(function(k){ localStorage.removeItem(k); });
+          localStorage.setItem('lms_version', 'v5');
         }
       } catch(e) {}
     })();
 
-    /* ── Class Metadata: descriptions, key terms, content titles ── */
-    var CLASS_META = {
-      'Forms': {
-        'Beheading':          { desc:'Hand positioning, hygiene protocols, blade safety, and line speed standards.', videoTitle:'Beheading Safety & Hygiene', voiceTitle:'Beheading Introduction', terms:[{t:'Beheading',d:'Removal of the head from shrimp body; the first step on the processing line.'},{t:'Yield',d:'Percentage of usable product recovered after processing; a key efficiency metric.'}] },
-        'Grading':            { desc:'Size classification, weight standards, and quality sorting procedures for shrimp.', videoTitle:'Grading Standards & Size Classification', voiceTitle:'Grading Introduction', terms:[{t:'Count Size',d:'Number of shrimp per pound; e.g., 16/20 means 16–20 shrimp per pound.'},{t:'Uniformity',d:'Consistency in size and appearance across a graded batch.'}] },
-        'Peeling & Cutting':  { desc:'Shell removal techniques, cutting angles, and waste reduction best practices.', videoTitle:'Peeling Technique & Blade Safety', voiceTitle:'Peeling Introduction', terms:[{t:'Shell-on',d:'Shrimp sold with shell intact; a premium product form valued in certain markets.'},{t:'Butterfly Cut',d:'Technique that opens the shrimp along the back while keeping it joined.'}] },
-        'De-veining':         { desc:'Vein identification, extraction techniques, and hygiene standards during processing.', videoTitle:'De-veining Methods & Hygiene', voiceTitle:'De-veining Introduction', terms:[{t:'Digestive Tract',d:'The dark vein running along the shrimp\'s back, removed for quality and safety.'},{t:'Deveining Needle',d:'Specialist tool used to cleanly extract the digestive tract without tearing.'}] },
-        'Weighing & Packing': { desc:'Tare weight, net weight accuracy, labelling requirements, and approved pack formats.', videoTitle:'Weighing Accuracy & Pack Standards', voiceTitle:'Weighing Introduction', terms:[{t:'Tare Weight',d:'Weight of the empty container, subtracted to determine the net product weight.'},{t:'Net Weight',d:'Actual weight of the product, excluding all packaging materials.'}] },
-        'IQF Freezing':       { desc:'Individual Quick Freezing process, crust-freeze temperature, and blast-freeze protocols.', videoTitle:'IQF Process & Temperature Control', voiceTitle:'IQF Introduction', terms:[{t:'IQF',d:'Individual Quick Freezing — freezes each piece separately to prevent clumping.'},{t:'Crust Freeze',d:'Partial surface freeze that sets the product shape before full IQF processing.'}] },
-        'Cold Store Inward':  { desc:'Temperature logging, pallet positioning, FIFO compliance, and stock management.', videoTitle:'Cold Store Inward Procedures', voiceTitle:'Cold Store Inward Introduction', terms:[{t:'FIFO',d:'First In, First Out — ensures oldest stock is dispatched before newer arrivals.'},{t:'Cold Chain',d:'Unbroken refrigerated logistics from processing through to the end customer.'}] },
-        'Cold Store Outward': { desc:'Dispatch documentation, load-out temperature compliance, and transport standards.', videoTitle:'Cold Store Outward & Dispatch', voiceTitle:'Cold Store Outward Introduction', terms:[{t:'FEFO',d:'First Expired, First Out — prioritises dispatch of stock nearest to expiry date.'},{t:'Bill of Lading',d:'Shipping document acknowledging cargo receipt and authorising transport.'}] }
-      },
-      'Master Forms': {
-        'Supplier Registration': { desc:'Supplier onboarding, documentation verification, and approval workflow procedures.', videoTitle:'Supplier Registration & Approval', voiceTitle:'Supplier Registration Introduction', terms:[{t:'Vendor Code',d:'Unique identifier assigned to each approved supplier within the system.'},{t:'COA',d:'Certificate of Analysis — lab report confirming a product meets required specifications.'}] },
-        'Raw Material Intake':   { desc:'Receiving inspection standards, temperature verification, and rejection criteria.', videoTitle:'Raw Material Inspection & Intake', voiceTitle:'Raw Material Introduction', terms:[{t:'Sensory Evaluation',d:'Quality check using sight, smell, and touch to assess incoming raw material.'},{t:'Rejection Threshold',d:'Maximum permitted defect rate before an incoming batch is rejected.'}] },
-        'Batch Traceability':    { desc:'Lot coding systems, batch linkage records, and full traceability documentation.', videoTitle:'Batch Traceability & Lot Coding', voiceTitle:'Batch Traceability Introduction', terms:[{t:'Lot Code',d:'Alphanumeric code linking a product batch back to its production records.'},{t:'Traceability',d:'Ability to track a product through every step from raw material to final sale.'}] },
-        'Equipment Log':         { desc:'Calibration schedules, maintenance records, and equipment sign-off procedures.', videoTitle:'Equipment Log & Calibration', voiceTitle:'Equipment Log Introduction', terms:[{t:'Calibration',d:'Process of configuring equipment to produce accurate, reliable measurements.'},{t:'Downtime Log',d:'Record of equipment stoppages including duration, cause, and corrective action.'}] },
-        'Staff Records':         { desc:'Employment documentation, training record management, and health declaration requirements.', videoTitle:'Staff Records & Health Declarations', voiceTitle:'Staff Records Introduction', terms:[{t:'Health Declaration',d:'Form confirming a worker is fit for duty and free of communicable illness.'},{t:'Training Matrix',d:'Grid showing each staff member\'s completed and outstanding training modules.'}] }
-      },
-      'Quality Control': {
-        'Organoleptic Test':      { desc:'Sensory scoring methods, defect classification, and panel evaluation standards.', videoTitle:'Organoleptic Evaluation Methods', voiceTitle:'Organoleptic Introduction', terms:[{t:'Organoleptic',d:'Relating to sensory properties: smell, taste, texture, and visual appearance.'},{t:'Defect Score',d:'Numerical penalty applied for each quality defect detected during evaluation.'}] },
-        'Microbiological Check':  { desc:'Sampling plans, microbial limits, lab submission procedures, and result interpretation.', videoTitle:'Microbiological Sampling & Limits', voiceTitle:'Microbiological Introduction', terms:[{t:'TVC',d:'Total Viable Count — measure of total bacterial load present in a sample.'},{t:'APC',d:'Aerobic Plate Count — standard method for quantifying bacteria in food products.'}] },
-        'Chemical Analysis':      { desc:'Permitted additive levels, residue limits, test frequencies, and compliance standards.', videoTitle:'Chemical Analysis & Residue Testing', voiceTitle:'Chemical Analysis Introduction', terms:[{t:'Sulphite Level',d:'Concentration of sulphites used as a preservative; must stay within legal limits.'},{t:'MRL',d:'Maximum Residue Limit — highest legally permitted concentration of a chemical in food.'}] },
-        'Packaging Inspection':   { desc:'Label accuracy verification, seal integrity testing, and weight compliance checks.', videoTitle:'Packaging Inspection & Label Compliance', voiceTitle:'Packaging Introduction', terms:[{t:'Seal Integrity',d:'Airtight packaging closure that prevents contamination and extends shelf life.'},{t:'Label Compliance',d:'All mandatory label information is present, accurate, and legible.'}] },
-        'Final Release':          { desc:'Release criteria, hold and quarantine procedures, and sign-off documentation.', videoTitle:'Final Release & Certificate Procedures', voiceTitle:'Final Release Introduction', terms:[{t:'Certificate of Conformance',d:'Document confirming a product batch meets all required specifications.'},{t:'Hold Status',d:'Products quarantined pending further investigation, testing, or senior approval.'}] }
-      }
-    };
+    /* ── User directory + identity (browser-local accounts, no server) ── */
+    function _loadUserDirectory() {
+      try { return JSON.parse(localStorage.getItem('lms_users') || '[]'); } catch(e) { return []; }
+    }
+    function _saveUserDirectory(list) {
+      try { localStorage.setItem('lms_users', JSON.stringify(list)); } catch(e) {}
+    }
+    var LB_USERS = _loadUserDirectory();
+    var _curUser = null;
+    (function _resolveIdentity() {
+      try {
+        var stored = JSON.parse(localStorage.getItem('lms_current_user') || 'null');
+        if (stored && LB_USERS.find(function(u) { return u.email === stored.email; })) {
+          _curUser = stored;
+          sessionStorage.setItem('seatrace_user', JSON.stringify(_curUser));
+        }
+      } catch(e) {}
+    })();
+    function _uid() { return (_curUser && _curUser.email) || 'anon'; }
 
-    /* ── Quiz Questions ── */
-    var QQ = {
-      'Forms': {
-        'Beheading':{ passMark:70, questions:[
-          { type:'mcq', text:'What is the correct hand position during the beheading process?', options:['Palm facing up','Thumb tucked inward','Fingers extended outward','Grip at the tail'], correct:1 },
-          { type:'tf',  text:'PPE gloves must be worn at all times during the beheading operation.', correct:'true' },
-          { type:'mcq', text:'What is the primary quality check performed after beheading?', options:['Weight of batch','Shell colour uniformity','Clean separation at the head joint','Shrimp temperature'], correct:2 },
-          { type:'tf',  text:'Beheading blades can be shared between workstations without sanitising.', correct:'false' },
-          { type:'mcq', text:'Which metric measures processing efficiency in beheading?', options:['IQF temperature','Yield percentage','Cold store humidity','Glazing weight'], correct:1 },
-        ]},
-        'Grading':{ passMark:70, questions:[
-          { type:'mcq', text:'What does "count" mean in shrimp grading?', options:['Total batch weight','Number of shrimp per kilogram','Percentage of rejects','Freezing time'], correct:1 },
-          { type:'tf',  text:'Black spot discolouration automatically classifies shrimp as rejects.', correct:'true' },
-          { type:'mcq', text:'Which factor is NOT used in quality grading?', options:['Shell texture','Odour','Country of origin','Colour uniformity'], correct:2 },
-          { type:'tf',  text:'Grading must be completed before the IQF freezing step.', correct:'true' },
-          { type:'mcq', text:'A batch labelled "21/25" contains approximately how many shrimp per pound?', options:['10 to 15','21 to 25','30 to 35','40 to 50'], correct:1 },
-        ]},
-        'Peeling & Cutting':{ passMark:70, questions:[
-          { type:'mcq', text:'When must knives be sanitised during peeling?', options:['End of shift only','Between each shrimp','Between batches and after breaks','Once per hour'], correct:2 },
-          { type:'tf',  text:'The belly cut exposes the vein for easy removal during peeling.', correct:'true' },
-          { type:'mcq', text:'What is the acceptable standard for shell removal quality?', options:['≥ 95% shell removed','≥ 80% shell removed','≥ 70% shell removed','Visual judgement only'], correct:0 },
-          { type:'tf',  text:'Knife handles and blades must be inspected for damage before each shift.', correct:'true' },
-          { type:'mcq', text:'What is the correct method for disposing of shell waste?', options:['Leave on the line','Transfer to dedicated waste bins','Flush with water','Mix with product rejects'], correct:1 },
-        ]},
-        'De-veining':{ passMark:70, questions:[
-          { type:'mcq', text:'Where does the digestive tract (vein) run in shrimp?', options:['Underside near legs','The dorsal (back) side','Inside the head','Between shell layers'], correct:1 },
-          { type:'tf',  text:'Incomplete vein removal is acceptable if less than 30% of the vein remains.', correct:'false' },
-          { type:'mcq', text:'What tool is typically used for de-veining?', options:['Peeling knife','De-veining needle or tool','Kitchen scissors','High-pressure water jet'], correct:1 },
-          { type:'tf',  text:'Yield percentage typically drops after de-veining compared to head-on weight.', correct:'true' },
-          { type:'mcq', text:'During quality inspection, inspectors primarily check for:', options:['Correct count per kg','Complete vein removal and clean cuts','Shell colour','Freezing temperature'], correct:1 },
-        ]},
-        'Weighing & Packing':{ passMark:70, questions:[
-          { type:'mcq', text:'How often must weighing scales be calibrated?', options:['Annually','Daily before use','Weekly','Only after breakdown'], correct:1 },
-          { type:'tf',  text:'A pack labelled 500g must contain exactly 500g — no tolerance is permitted.', correct:'false' },
-          { type:'mcq', text:'What is the primary purpose of glazing IQF shrimp before packing?', options:['Improve flavour','Add bulk weight','Protect from freezer burn','Improve colour'], correct:2 },
-          { type:'tf',  text:'Batch traceability codes must appear on every individual pack.', correct:'true' },
-          { type:'mcq', text:'Which document accompanies each packed batch for traceability?', options:['Employee attendance record','Batch packing sheet','Maintenance log','Temperature chart only'], correct:1 },
-        ]},
-        'IQF Freezing':{ passMark:70, questions:[
-          { type:'mcq', text:'What does IQF stand for?', options:['Instant Quality Freeze','Individual Quick Freezing','Internal Quality Freezer','Integrated Quick Flow'], correct:1 },
-          { type:'tf',  text:'The core temperature target for IQF shrimp is -18°C or below.', correct:'true' },
-          { type:'mcq', text:'Why is IQF preferred over block freezing?', options:['It is cheaper','It prevents pieces from clumping','It adds glaze automatically','It speeds processing by 50%'], correct:1 },
-          { type:'tf',  text:'IQF tunnels should be cleaned and inspected at least weekly.', correct:'true' },
-          { type:'mcq', text:'If shrimp dwell time in the IQF tunnel is too short, what happens?', options:['Over-freezing occurs','Core temperature target is not reached','Glaze percentage increases','Yield drops'], correct:1 },
-        ]},
-        'Cold Store Inward':{ passMark:70, questions:[
-          { type:'mcq', text:'What temperature must the cold store maintain for frozen product?', options:['-12°C or below','-18°C or below','-5°C or below','0°C to 4°C'], correct:1 },
-          { type:'tf',  text:'Inward temperature of product must be recorded at the time of receipt.', correct:'true' },
-          { type:'mcq', text:'What does FIFO stand for?', options:['First In, First Out','Frozen In Frozen Out','First Inspection Final Output','Freeze Index for Operations'], correct:0 },
-          { type:'tf',  text:'Product can be stacked directly on the cold store floor to save space.', correct:'false' },
-          { type:'mcq', text:'What document must accompany every inward cold store transfer?', options:['Vehicle registration','Packing and batch record','Employee ID','Calibration log only'], correct:1 },
-        ]},
-        'Cold Store Outward':{ passMark:70, questions:[
-          { type:'mcq', text:'Before loading, the transport vehicle must be checked for:', options:['Fuel level','Cleanliness and temperature','Driver licence','GPS functionality'], correct:1 },
-          { type:'tf',  text:'Product temperature must be verified and logged before dispatch.', correct:'true' },
-          { type:'mcq', text:'Which principle ensures older batches are dispatched before newer ones?', options:['LIFO','FIFO','FEFO','FILO'], correct:1 },
-          { type:'tf',  text:'Dispatch documentation can be completed after the vehicle has departed.', correct:'false' },
-          { type:'mcq', text:'If product temperature exceeds -15°C at dispatch, you must:', options:['Proceed — minor deviation','Place on hold and notify QC','Refreeze in blast tunnel','Reduce pack weight and dispatch'], correct:1 },
-        ]},
-      },
-      'Master Forms': {
-        'Supplier Registration':{ passMark:70, questions:[
-          { type:'mcq', text:'KYC in supplier registration stands for:', options:['Keep Your Credentials','Know Your Customer','Key Yield Control','Know Your Compliance'], correct:1 },
-          { type:'tf',  text:'A supplier can begin deliveries before their registration is fully approved.', correct:'false' },
-          { type:'mcq', text:'Which document is NOT typically required during supplier registration?', options:['Business registration certificate','Food safety audit report','Employee attendance records','Insurance certificate'], correct:2 },
-          { type:'tf',  text:'Supplier approvals must be re-verified on an annual basis.', correct:'true' },
-          { type:'mcq', text:'Who is responsible for final approval of a new supplier?', options:['Floor supervisor','QC Manager or authorised approver','Delivery driver','Packing line operator'], correct:1 },
-        ]},
-        'Raw Material Intake':{ passMark:70, questions:[
-          { type:'mcq', text:'What is the first check performed when shrimp arrives at intake?', options:['Count per kg','Temperature of consignment','Supplier name','Vehicle weight'], correct:1 },
-          { type:'tf',  text:'Fresh shrimp with minor black spots must be rejected immediately without assessment.', correct:'false' },
-          { type:'mcq', text:'What is the acceptable ice-to-shrimp ratio for fresh delivery?', options:['1:10','1:1 or better','No ice required','2:1 (double ice)'], correct:1 },
-          { type:'tf',  text:'Temperature and batch details must be logged in the intake register at time of receipt.', correct:'true' },
-          { type:'mcq', text:'If a consignment fails the freshness check, the correct action is:', options:['Accept and process quickly','Place on hold and notify QC','Return without documentation','Reduce the purchase price'], correct:1 },
-        ]},
-        'Batch Traceability':{ passMark:70, questions:[
-          { type:'mcq', text:'What is the purpose of a Batch ID?', options:['Track employee productivity','Uniquely identify a production lot from intake to dispatch','Label equipment','Log vehicle inspections'], correct:1 },
-          { type:'tf',  text:'A single Batch ID can cover multiple supplier consignments mixed together.', correct:'false' },
-          { type:'mcq', text:'Traceability records must be retained for a minimum of:', options:['1 year','2 years','5 years','10 years'], correct:2 },
-          { type:'tf',  text:'In a recall, traceability records are used to identify and isolate affected product.', correct:'true' },
-          { type:'mcq', text:'Chain of custody documentation must be updated at each:', options:['Change of supervisor','Production stage or transfer point','Calendar month','New employee induction'], correct:1 },
-        ]},
-        'Equipment Log':{ passMark:70, questions:[
-          { type:'mcq', text:'Minimum frequency for logging equipment inspections is:', options:['Annually','Monthly','Daily before each shift','Every 6 months'], correct:2 },
-          { type:'tf',  text:'A faulty piece of equipment can continue to be used if the fault is minor.', correct:'false' },
-          { type:'mcq', text:'Calibration records are most critical for:', options:['Conveyor belts','Weighing scales and thermometers','Packing tables','Storage shelving'], correct:1 },
-          { type:'tf',  text:'Downtime incidents must be recorded with time and reason in the equipment log.', correct:'true' },
-          { type:'mcq', text:'Who signs off on completed equipment maintenance?', options:['The employee who reported the fault','An authorised maintenance supervisor','Any floor worker','The HR department'], correct:1 },
-        ]},
-        'Staff Records':{ passMark:70, questions:[
-          { type:'mcq', text:'Which document confirms a new employee completed food safety induction?', options:['Employment contract','Signed induction training record','Payslip','Medical certificate'], correct:1 },
-          { type:'tf',  text:'Medical fitness records must be updated annually for all food handling staff.', correct:'true' },
-          { type:'mcq', text:'If an employee changes role, which record must be updated?', options:['Attendance log','Role change and training record','Payroll only','Emergency contact form'], correct:1 },
-          { type:'tf',  text:'PPE issue records do not need to be maintained for audit purposes.', correct:'false' },
-          { type:'mcq', text:'Minimum period to retain employee training records:', options:['6 months','Duration of employment only','Duration of employment + 2 years','10 years'], correct:2 },
-        ]},
-      },
-      'Quality Control': {
-        'Organoleptic Test':{ passMark:75, questions:[
-          { type:'mcq', text:'Organoleptic evaluation uses:', options:['Lab equipment only','The five human senses','Computer imaging','Spectral analysis'], correct:1 },
-          { type:'tf',  text:'A strong ammonia odour in fresh shrimp is normal and acceptable.', correct:'false' },
-          { type:'mcq', text:'Which colour indicates spoilage during shrimp evaluation?', options:['Pale grey-white','Pink at the tail','Yellowing or black discolouration','Translucent appearance'], correct:2 },
-          { type:'tf',  text:'Texture (firmness) assessment is part of the organoleptic test protocol.', correct:'true' },
-          { type:'mcq', text:'Organoleptic test results must be recorded in:', options:['Employee attendance log','QC sensory evaluation register','Equipment maintenance log','Dispatch checklist'], correct:1 },
-        ]},
-        'Microbiological Check':{ passMark:75, questions:[
-          { type:'mcq', text:'Microbiological swabs are taken from:', options:['Office desks','Contact surfaces: boards, knives, belts','Vehicle exteriors','Cold store exterior walls'], correct:1 },
-          { type:'tf',  text:'Microbiological test results are available immediately from a swab.', correct:'false' },
-          { type:'mcq', text:'The acceptable limit for Total Viable Count is typically:', options:['Defined in the product specification','Zero CFU in all cases','No limit if frozen','Set by the delivery driver'], correct:0 },
-          { type:'tf',  text:'Lab samples must be stored correctly during transport to avoid contamination.', correct:'true' },
-          { type:'mcq', text:'If microbiological results exceed limits, you must:', options:['Reduce sample size','Place batch on hold and escalate to QC Manager','Release and monitor','Retest once then release if pass'], correct:1 },
-        ]},
-        'Chemical Analysis':{ passMark:75, questions:[
-          { type:'mcq', text:'Why are sulphites tested in shrimp products?', options:['Improve flavour','Ensure levels are within safe legal limits','Check freshness','Verify yield'], correct:1 },
-          { type:'tf',  text:'Antibiotic screening is required for all export product batches.', correct:'true' },
-          { type:'mcq', text:'A Certificate of Analysis (COA) is issued for:', options:['Each employee','Each batch that passes all chemical tests','Every weekly run','Each vehicle inspection'], correct:1 },
-          { type:'tf',  text:'Heavy metal testing is only required if a customer specifically requests it.', correct:'false' },
-          { type:'mcq', text:'Which test confirms shrimp was not treated with unauthorised antibiotics?', options:['Sulphite residue test','Antibiotic screening test','Heavy metal analysis','Organoleptic evaluation'], correct:1 },
-        ]},
-        'Packaging Inspection':{ passMark:75, questions:[
-          { type:'mcq', text:'Which detail is mandatory on every product label?', options:['Factory supervisor name','Best before date, batch number, and net weight','Employee ID of packer','Vehicle registration number'], correct:1 },
-          { type:'tf',  text:'Seal integrity testing involves applying pressure to verify each seal is airtight.', correct:'true' },
-          { type:'mcq', text:'A failed seal integrity test means the product should be:', options:['Resealed and approved immediately','Rejected or reprocessed — not dispatched','Dispatched with a disclaimer','Accepted if only one pack fails'], correct:1 },
-          { type:'tf',  text:'Net weight on the label must match the actual packed weight within permitted tolerance.', correct:'true' },
-          { type:'mcq', text:'Barcode verification is performed to ensure:', options:['Aesthetic alignment','Correct product information is encoded and readable','Colour is accurate','Font size meets brand guidelines'], correct:1 },
-        ]},
-        'Final Release':{ passMark:75, questions:[
-          { type:'mcq', text:'A product can be released for dispatch only when:', options:['The factory manager is present','All release criteria are met and signed off by QC','The batch has been frozen 24 hours','The customer confirms receipt'], correct:1 },
-          { type:'tf',  text:'A product on "Hold" status can be dispatched with verbal management approval.', correct:'false' },
-          { type:'mcq', text:'The hold procedure is initiated when:', options:['Any product fails a release criterion','Stock space is insufficient','A customer requests early delivery','The shift ends before QC completes'], correct:0 },
-          { type:'tf',  text:'Dispatch clearance documentation must be signed before the vehicle departs.', correct:'true' },
-          { type:'mcq', text:'Who has authority to release a product from Hold status?', options:['Any QC team member','Authorised QC Manager or Quality Director','Floor supervisor on duty','Customer representative'], correct:1 },
-        ]},
-      }
-    };
+    /* ── Class Metadata: descriptions, key terms, content titles ── */
+    /* Class descriptions/key terms — no admin editor exists yet, so this starts empty and
+       classes fall back to generic auto-generated text derived from their real name */
+    var CLASS_META = {};
+
+    /* ── Quiz Questions — created via Admin Quiz Builder; no seeded fallback ── */
+    var QQ = {};
 
     /* ── State (localStorage persisted) ── */
-    var LS = 'st_kh_arjun';
-    var INIT = {
-      'Forms':{
-        'Beheading':         { vp:100, a1:{score:82,pass:true, date:'01 Mar 2026',c:4,t:5}, a2:null },
-        'Grading':           { vp:100, a1:{score:48,pass:false,date:'05 Mar 2026',c:2,t:5}, a2:{score:74,pass:true,date:'07 Mar 2026',c:4,t:5} },
-        'Peeling & Cutting': { vp:100, a1:{score:40,pass:false,date:'25 Jun 2026',c:2,t:5}, a2:null,
-                               cd: new Date(Date.now()+14*3600000).toISOString() },
-        'De-veining':        { vp:55,  a1:null, a2:null },
-        'Weighing & Packing':{ vp:0,   a1:null, a2:null },
-        'IQF Freezing':      { vp:0,   a1:null, a2:null },
-        'Cold Store Inward': { vp:0,   a1:null, a2:null },
-        'Cold Store Outward':{ vp:0,   a1:null, a2:null },
-      },
-      'Master Forms':{
-        'Supplier Registration':{ vp:100, a1:null, a2:null },
-        'Raw Material Intake':  { vp:0,   a1:null, a2:null },
-        'Batch Traceability':   { vp:0,   a1:null, a2:null },
-        'Equipment Log':        { vp:0,   a1:null, a2:null },
-        'Staff Records':        { vp:0,   a1:null, a2:null },
-      },
-      'Quality Control':{
-        'Organoleptic Test':    { vp:60,  a1:null, a2:null },
-        'Microbiological Check':{ vp:0,   a1:null, a2:null },
-        'Chemical Analysis':    { vp:0,   a1:null, a2:null },
-        'Packaging Inspection': { vp:0,   a1:null, a2:null },
-        'Final Release':        { vp:0,   a1:null, a2:null },
-      }
-    };
-    function loadS(){ try{ var v=localStorage.getItem(LS); if(v) return JSON.parse(v); }catch(e){} return JSON.parse(JSON.stringify(INIT)); }
-    function saveS(){ try{ localStorage.setItem(LS, JSON.stringify(ST)); }catch(e){} }
+    var LS = 'st_kh_progress';
+    function _lsKey(){ return LS + '::' + _uid(); }
+    var INIT = {}; // progress starts empty; entries are created on demand per real module/class
+    function loadS(){ try{ var v=localStorage.getItem(_lsKey()); if(v) return JSON.parse(v); }catch(e){} return JSON.parse(JSON.stringify(INIT)); }
+    function saveS(){ try{ localStorage.setItem(_lsKey(), JSON.stringify(ST)); }catch(e){} }
     var ST = loadS();
 
     /* ══════════════════════════════════════════════════════
@@ -1410,10 +1393,47 @@
 
     /* ── Results (shared key with admin) ── */
     function _sqRes(quizId) {
-      try { return JSON.parse(localStorage.getItem('sq_results_'+quizId)||'{}'); } catch(e){ return {}; }
+      try { return JSON.parse(localStorage.getItem('sq_results_'+quizId+'::'+_uid())||'{}'); } catch(e){ return {}; }
     }
     function _saveSqRes(quizId, data) {
-      try { localStorage.setItem('sq_results_'+quizId, JSON.stringify(data)); } catch(e){}
+      try { localStorage.setItem('sq_results_'+quizId+'::'+_uid(), JSON.stringify(data)); } catch(e){}
+    }
+    function _sqResForEmail(quizId, email) {
+      try { return JSON.parse(localStorage.getItem('sq_results_'+quizId+'::'+email)||'{}'); } catch(e){ return {}; }
+    }
+    function _vpForEmail(mod, cls, email) {
+      try {
+        var st = JSON.parse(localStorage.getItem('st_kh_progress::'+email)||'{}');
+        return (st[mod] && st[mod][cls] && st[mod][cls].vp) || 0;
+      } catch(e) { return 0; }
+    }
+
+    /* ── Real per-user stats, computed live from actual quiz/video activity ── */
+    function _computeUserStats(u) {
+      var email = u.email;
+      var certs = 0, completed = 0;
+      Object.keys(MODULES).forEach(function(mod) {
+        MODULES[mod].classes.forEach(function(cls) {
+          var quiz = _liveQuiz(mod, cls);
+          if (quiz) {
+            var r = _sqResForEmail(quiz.id, email);
+            var passed = (r.att1 && r.att1.pass) || (r.att2 && r.att2.pass) || (r.att3 && r.att3.pass);
+            if (passed) { certs++; completed++; }
+          } else if (_vpForEmail(mod, cls, email) >= 90) {
+            completed++;
+          }
+        });
+      });
+      var total = _totalClasses();
+      return {
+        certsEarned: certs,
+        classesCompleted: completed,
+        completionPct: total ? Math.round(completed / total * 100) : 0,
+        skillPoints: certs * 150
+      };
+    }
+    function _enrichedUsers() {
+      return LB_USERS.map(function(u) { return Object.assign({}, u, _computeUserStats(u)); });
     }
 
     /* ── 15-day auto-reset: wipe results if both atts failed and window expired ── */
@@ -1427,7 +1447,7 @@
           var u=_curUser||{};
           var reqs = JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
           var filtered = reqs.filter(function(x){
-            return !(x.quizId===quizId && (x.userName===u.name||x.userId===u.email));
+            return !(String(x.quizId)===String(quizId) && (x.userName===u.name||x.userId===u.email));
           });
           localStorage.setItem('sq_schedule_requests', JSON.stringify(filtered));
         } catch(e){}
@@ -1443,7 +1463,7 @@
         var reqs = JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
         for (var i=reqs.length-1; i>=0; i--) {
           var r=reqs[i];
-          if (r.quizId===quizId && (r.userName===u.name || r.userId===u.email)) return r;
+          if (String(r.quizId)===String(quizId) && (r.userName===u.name || r.userId===u.email)) return r;
         }
         return null;
       } catch(e){ return null; }
@@ -1460,13 +1480,64 @@
           id: Date.now(), quizId: quizId,
           quizTitle: quiz ? quiz.title : cls,
           quizModule: module, quizCls: cls,
-          userId: u.email||u.name||'', userName: u.name||'',
+          userId: u.email||u.name||'', userName: u.name||'', userEmail: u.email||'',
           reason: reason||'', requestedAt: Date.now(),
           status: 'pending', adminNote: ''
         });
         localStorage.setItem('sq_schedule_requests', JSON.stringify(reqs));
         return true;
       } catch(e){ return false; }
+    }
+
+    /* ── Full reset requests ("Admin Requests") — after all 3 attempts exhausted ── */
+    function _sqResetReq(quizId) {
+      try {
+        var u=_curUser||{};
+        var reqs = JSON.parse(localStorage.getItem('sq_reset_requests')||'[]');
+        for (var i=reqs.length-1; i>=0; i--) {
+          var r=reqs[i];
+          if (String(r.quizId)===String(quizId) && (r.userName===u.name || r.userEmail===u.email)) return r;
+        }
+        return null;
+      } catch(e){ return null; }
+    }
+
+    function _submitResetReq(quizId, module, cls, reason) {
+      try {
+        var u=_curUser||{};
+        var existing=_sqResetReq(quizId);
+        if (existing && existing.status==='pending') return false;
+        var quiz=_liveQuiz(module, cls);
+        var reqs = JSON.parse(localStorage.getItem('sq_reset_requests')||'[]');
+        reqs.push({
+          id: Date.now(), quizId: quizId,
+          quizTitle: quiz ? quiz.title : cls,
+          userName: u.name||'Unknown', userEmail: u.email||'',
+          reason: reason||'', requestedAt: Date.now(),
+          status: 'pending'
+        });
+        localStorage.setItem('sq_reset_requests', JSON.stringify(reqs));
+        return true;
+      } catch(e){ return false; }
+    }
+
+    function requestAttemptReset(mod, cls, quizId) {
+      if (!quizId) { alert('No admin-assigned quiz found for this class. Contact your supervisor.'); return; }
+      var existing = _sqResetReq(quizId);
+      if (existing && existing.status === 'pending') { alert('You already have a pending reset request for this class — an admin will review it soon.'); return; }
+      _uiPrompt({
+        title: 'Request Attempt Reset',
+        label: 'Briefly explain why you need your attempts reset for "' + cls + '"',
+        placeholder: 'Reason…',
+        multiline: true,
+        confirmLabel: 'Submit',
+        validate: function(reason) { return reason ? null : 'Please enter a reason.'; },
+        onSubmit: function(reason) {
+          var ok = _submitResetReq(quizId, mod, cls, reason);
+          if (ok) { _uiToast('success', 'Reset request submitted. An admin will review it.'); renderModule(); renderJourney(); }
+          else alert('Something went wrong submitting your request. Please try again.');
+        }
+      });
     }
 
     /* ── Question selection: fresh-first, then reused, shuffled ── */
@@ -1528,17 +1599,29 @@
 
         if (a2&&!a2.pass) {
           var req=_sqSchedule(quiz.id);
+          var att3Unlocked = false;
           if (req) {
             if (req.status==='pending')  return 'sched-pending';
-            if (req.status==='approved') return 'att2-ready';  /* att3 unlocked */
-            if (req.status==='denied')   return 'sched-denied';
+            if (req.status==='approved') att3Unlocked = true;
+            /* denied falls through — the automatic 1-week timer below can still unlock it */
           }
-          return 'exhausted';
+          /* Automatic 1-week unlock, independent of any admin-approved early request */
+          if (!att3Unlocked && Date.now() >= a2.ts + 7*24*3600000) att3Unlocked = true;
+          if (!att3Unlocked) return (req && req.status==='denied') ? 'sched-denied' : 'exhausted';
+          /* Unlocked for attempt 3 — but still gated on re-watching 90%+ of the content */
+          var vp3=s.vp||0;
+          if (vp3>=90) return 'att2-ready';
+          if (vp3>0)   return 'in-progress';
+          return 'available';
         }
 
         if (a1&&!a1.pass) {
           if (Date.now() < a1.ts+24*3600000) return 'cooldown';
-          return 'att2-ready';
+          /* Cooldown passed — but still gated on re-watching 90%+ of the content */
+          var vp2=s.vp||0;
+          if (vp2>=90) return 'att2-ready';
+          if (vp2>0)   return 'in-progress';
+          return 'available';
         }
 
         var vp=s.vp||0;
@@ -1606,34 +1689,27 @@
         ' font-family="Nunito,sans-serif" font-weight="900" font-size="18" fill="'+col+'">'+score+'%</text></svg>';
     }
 
-    /* ── Users list (mirrors admin LB_USERS) ── */
-    var LB_USERS = [
-      { name:'Arjun Mehta',    email:'arjun@seatrace.in',   role:'Supervisor', dept:'Management',      team:'Team Alpha', completionPct:100, certsEarned:3, skillPoints:2840 },
-      { name:'Suresh Patel',   email:'suresh@seatrace.in',  role:'Supervisor', dept:'Management',      team:'Team Beta',  completionPct:98,  certsEarned:3, skillPoints:2680 },
-      { name:'Priya Nair',     email:'priya@seatrace.in',   role:'QC Inspector',dept:'Quality Control',team:'Team Alpha', completionPct:88,  certsEarned:2, skillPoints:2210 },
-      { name:'Ravi Kumar',     email:'ravi@seatrace.in',    role:'Operator',   dept:'Processing',      team:'Team Beta',  completionPct:82,  certsEarned:2, skillPoints:1980 },
-      { name:'Sneha Thomas',   email:'sneha@seatrace.in',   role:'Trainee',    dept:'Processing',      team:'Team Gamma', completionPct:74,  certsEarned:1, skillPoints:1560 },
-      { name:'Kiran Babu',     email:'kiran@seatrace.in',   role:'Operator',   dept:'Processing',      team:'Team Alpha', completionPct:68,  certsEarned:1, skillPoints:1390 },
-      { name:'Divya Krishnan', email:'divya@seatrace.in',   role:'QC Inspector',dept:'Quality Control',team:'Team Beta',  completionPct:55,  certsEarned:1, skillPoints:1120 },
-      { name:'Mohan Das',      email:'mohan@seatrace.in',   role:'Operator',   dept:'Cold Store',      team:'Team Gamma', completionPct:42,  certsEarned:1, skillPoints:860  },
-      { name:'Anitha Raj',     email:'anitha@seatrace.in',  role:'Trainee',    dept:'Dispatch',        team:'Team Alpha', completionPct:28,  certsEarned:0, skillPoints:540  },
-      { name:'Vijay Shankar',  email:'vijay@seatrace.in',   role:'Supervisor', dept:'Processing',      team:'Team Beta',  completionPct:95,  certsEarned:3, skillPoints:2720 },
-      { name:'Meena Reddy',    email:'meena@seatrace.in',   role:'QC Inspector',dept:'Quality Control',team:'Team Gamma', completionPct:86,  certsEarned:2, skillPoints:2050 },
-      { name:'Arun Pillai',    email:'arun@seatrace.in',    role:'Operator',   dept:'Cold Store',      team:'Team Alpha', completionPct:78,  certsEarned:2, skillPoints:1840 },
-    ];
-
-    /* ── Current user ── */
-    var _curUser = null;
-
     function _initUser() {
-      var stored = sessionStorage.getItem('seatrace_user');
-      if (stored) {
-        try { _curUser = JSON.parse(stored); } catch(e) {}
-      }
-      if (!_curUser) {
-        _curUser = LB_USERS[0]; /* default to first learner */
-      }
-      _applyUser();
+      if (_curUser) { _applyUser(); }
+      else { _showSignup(); }
+    }
+
+    function _showSignup() {
+      var ns = document.getElementById('nameSelector');
+      if (!ns) return;
+      ns.style.cssText = 'display:flex;position:fixed;inset:0;background:rgba(17,24,39,.55);align-items:center;justify-content:center;z-index:9999';
+      var card = ns.firstElementChild;
+      if (card) card.style.cssText = 'background:#fff;border-radius:14px;padding:26px 28px;width:340px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif';
+      var closeBtn = document.getElementById('nsCloseBtn');
+      if (closeBtn) closeBtn.style.display = _curUser ? 'flex' : 'none';
+      var nameEl = document.getElementById('nameInput');
+      if (nameEl) { nameEl.value = ''; nameEl.style.borderColor = '#DFE2E6'; nameEl.focus(); }
+      var emailEl = document.getElementById('emailInput');
+      if (emailEl) { emailEl.value = ''; emailEl.style.borderColor = '#DFE2E6'; }
+      var hintEl = document.getElementById('emailHint');
+      if (hintEl) hintEl.style.display = 'none';
+      var errEl = document.getElementById('nsError');
+      if (errEl) errEl.style.display = 'none';
     }
 
     function _hideNameSelector() {
@@ -1641,40 +1717,62 @@
       if (ns) ns.style.display = 'none';
     }
 
-    function _nsFilter() {
-      var q = document.getElementById('nameInput').value.toLowerCase().trim();
-      var sug = document.getElementById('nsSuggestions');
-      if (!q) { sug.style.display = 'none'; return; }
-      var matches = LB_USERS.filter(function(u) { return u.name.toLowerCase().indexOf(q) !== -1; });
-      if (!matches.length) { sug.style.display = 'none'; return; }
-      sug.innerHTML = matches.map(function(u) {
-        return '<div onclick="_nsSelect(\'' + u.name.replace(/'/g,"\\'") + '\')" style="padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;color:#1E2532;border-bottom:1px solid #F3F4F6" onmouseover="this.style.background=\'#F5F7FF\'" onmouseout="this.style.background=\'#fff\'">'
-          + '<span style="font-weight:800">' + u.name + '</span>'
-          + '<span style="font-size:11px;color:#9CA3AF;margin-left:8px">' + u.role + ' · ' + u.dept + '</span>'
-          + '</div>';
-      }).join('');
-      sug.style.display = 'block';
+    /* Live feedback while typing — border color + inline hint, ahead of the real
+       check that still runs on submit in _nsSubmit(). */
+    function _nsLiveValidate() {
+      var nameEl = document.getElementById('nameInput');
+      var emailEl = document.getElementById('emailInput');
+      var hintEl = document.getElementById('emailHint');
+      if (!nameEl || !emailEl) return;
+      var nameVal = nameEl.value.trim();
+      nameEl.style.borderColor = nameVal ? '#22C55E' : '#DFE2E6';
+      var emailVal = emailEl.value.trim();
+      var emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+      emailEl.style.borderColor = !emailVal ? '#DFE2E6' : (emailValid ? '#22C55E' : '#EF4444');
+      if (hintEl) hintEl.style.display = (emailVal && !emailValid) ? 'block' : 'none';
     }
 
-    function _nsSelect(name) {
-      document.getElementById('nameInput').value = name;
-      document.getElementById('nsSuggestions').style.display = 'none';
+    /* Cancel a "Switch User" attempt — no changes were made yet, just close the overlay
+       and keep whoever was already signed in. Only shown when there's someone to return to. */
+    function _cancelSignup() {
+      if (!_curUser) return;
+      _hideNameSelector();
     }
 
     function _nsSubmit() {
-      var val = document.getElementById('nameInput').value.trim();
-      var match = LB_USERS.find(function(u) { return u.name.toLowerCase() === val.toLowerCase(); });
+      var name = (document.getElementById('nameInput').value || '').trim();
+      var email = (document.getElementById('emailInput').value || '').trim().toLowerCase();
       var errEl = document.getElementById('nsError');
-      if (!match) {
-        errEl.textContent = 'Name not found. Please select from the suggestions.';
+      if (!name) {
+        errEl.textContent = 'Please enter your name.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEl.textContent = 'Please enter a valid email.';
         errEl.style.display = 'block';
         return;
       }
       errEl.style.display = 'none';
-      _curUser = match;
-      sessionStorage.setItem('seatrace_user', JSON.stringify(match));
-      _hideNameSelector();
-      _applyUser();
+      var existing = LB_USERS.find(function(u) { return u.email.toLowerCase() === email; });
+      var user;
+      if (existing) { existing.name = name; user = existing; }
+      else { user = { name: name, email: email, joinedAt: Date.now() }; LB_USERS.push(user); }
+      _saveUserDirectory(LB_USERS);
+      _curUser = user;
+      localStorage.setItem('lms_current_user', JSON.stringify(user));
+      sessionStorage.setItem('seatrace_user', JSON.stringify(user));
+      /* Full reload so every section (module views, leaderboard, etc.) re-renders
+         for the newly signed-in person — not just the Journey page. */
+      location.reload();
+    }
+
+    function _switchUser() {
+      var pp = document.getElementById('profilePanel');
+      if (pp) pp.style.display = 'none';
+      /* Don't clear the current identity yet — only replace it once someone actually
+         submits a new name+email below. That way "Close" can cancel cleanly. */
+      _showSignup();
     }
 
     function _applyUser() {
@@ -1692,7 +1790,31 @@
     /* ── Section switching ── */
     var _curSection = 'journey';
 
+    function _topBarStart() {
+      var el = document.getElementById('topLoadBar');
+      if (!el) return;
+      el.style.transition = 'none';
+      el.style.opacity = '1';
+      el.style.width = '0%';
+      requestAnimationFrame(function() {
+        el.style.transition = 'width .25s ease';
+        el.style.width = '70%';
+      });
+    }
+    function _topBarDone() {
+      var el = document.getElementById('topLoadBar');
+      if (!el) return;
+      el.style.transition = 'width .15s ease';
+      el.style.width = '100%';
+      setTimeout(function() {
+        el.style.transition = 'opacity .25s ease';
+        el.style.opacity = '0';
+        setTimeout(function() { el.style.width = '0%'; }, 250);
+      }, 150);
+    }
+
     function switchSection(section, subMod) {
+      _topBarStart();
       document.getElementById('journeyView').style.display = 'none';
       document.getElementById('moduleView').style.display  = 'none';
       document.getElementById('certsView').style.display   = 'none';
@@ -1703,34 +1825,36 @@
       if (section === 'journey') {
         document.getElementById('journeyView').style.display = 'block';
         document.getElementById('sb-journey').classList.add('active');
+        document.title = 'SeaTrace — My Journey';
         renderJourney();
       } else if (section === 'module') {
         document.getElementById('moduleView').style.display = 'block';
         if (subMod) curMod = subMod;
-        var sbId = { 'Forms':'sb-forms', 'Master Forms':'sb-masterforms', 'Quality Control':'sb-qc' }[curMod]
-          || 'sb-admin-' + curMod.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        var sbEl = document.getElementById(sbId);
+        var sbEl = curMod ? document.getElementById(_modSlug(curMod)) : null;
         if (sbEl) sbEl.classList.add('active');
-        document.getElementById('mainTitle').textContent = curMod;
+        document.getElementById('mainTitle').textContent = curMod || 'No module selected';
+        document.title = 'SeaTrace — ' + (curMod || 'Knowledge Hub');
         renderModule();
       } else if (section === 'certs') {
         document.getElementById('certsView').style.display = 'block';
         document.getElementById('sb-certs').classList.add('active');
+        document.title = 'SeaTrace — Certifications';
         renderCerts();
       } else if (section === 'lb') {
         document.getElementById('lbView').style.display = 'block';
         document.getElementById('sb-lb').classList.add('active');
+        document.title = 'SeaTrace — Leaderboard';
         renderLb();
       }
+      setTimeout(_topBarDone, 120);
     }
 
     /* ── My Journey ── */
     function _modColor(mod) {
-      return { 'Forms':'#5189F3', 'Master Forms':'#7C3AED', 'Quality Control':'#059669' }[mod]
-        || (MODULES[mod] && MODULES[mod].color) || '#5189F3';
+      return (MODULES[mod] && MODULES[mod].color) || '#5189F3';
     }
     function _modBg(mod) {
-      return { 'Forms':'#EEF3FF', 'Master Forms':'#F5F3FF', 'Quality Control':'#ECFDF5' }[mod] || '#F5F5F5';
+      return _modColor(mod) + '18';
     }
 
     function _countCertified(mod) {
@@ -1785,14 +1909,14 @@
       var initials = u.name.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
       var totalCerts = _totalCertified();
       var totalCls = _totalClasses();
-      var overallPct = Math.round(totalCerts / totalCls * 100);
+      var overallPct = totalCls ? Math.round(totalCerts / totalCls * 100) : 0;
 
       /* Banner */
       document.getElementById('jUserBanner').innerHTML =
         '<div style="width:56px;height:56px;border-radius:50%;background:#5189F3;color:#fff;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
         + '<div style="flex:1;min-width:0">'
           + '<div style="font-size:18px;font-weight:900;color:#1E2532">' + u.name + '</div>'
-          + '<div style="font-size:12px;color:#9CA3AF;font-weight:600;margin-top:2px">' + u.role + ' · ' + u.dept + ' · ' + u.team + '</div>'
+          + '<div style="font-size:12px;color:#9CA3AF;font-weight:600;margin-top:2px">' + (u.role||'Learner') + ' · ' + (u.dept||'—') + ' · ' + (u.team||'—') + '</div>'
           + '<div style="margin-top:10px;display:flex;align-items:center;gap:10px">'
             + '<div style="flex:1;max-width:260px;height:5px;background:#F0F0F0;border-radius:2px;overflow:hidden">'
               + '<div style="height:100%;width:' + overallPct + '%;background:#5189F3;border-radius:2px"></div>'
@@ -1953,7 +2077,11 @@
           } else if (st === 'sched-pending') {
             ctaBtn = '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Pending…</button>';
           } else if (st === 'quiz-failed') {
-            ctaBtn = '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #FECACA;background:#FEF2F2;color:#EF4444;cursor:default;font-family:inherit">Exhausted</button>';
+            var jlqf=_liveQuiz(mod,cls); var jqidf=jlqf?jlqf.id:'';
+            var jrr=jlqf?_sqResetReq(jlqf.id):null;
+            ctaBtn = (jrr&&jrr.status==='pending')
+              ? '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Reset Pending…</button>'
+              : '<button onclick="requestAttemptReset(\''+sm+'\',\''+sc2+'\','+jqidf+')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #FECACA;background:#FEF2F2;color:#EF4444;cursor:pointer;font-family:inherit">Request Reset</button>';
           } else if (st === 'cooldown') {
             ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Rewatch</button>';
           } else if (st === 'certified') {
@@ -2012,7 +2140,7 @@
       }).join('');
 
       /* Colleagues */
-      var sorted = LB_USERS.slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.skillPoints - a.skillPoints; });
+      var sorted = _enrichedUsers().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.skillPoints - a.skillPoints; });
       document.getElementById('jColleagues').innerHTML = sorted.map(function(colleague, idx) {
         var isMe = u.name === colleague.name;
         var ini = colleague.name.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
@@ -2021,7 +2149,7 @@
           + '<div style="width:32px;height:32px;border-radius:50%;background:' + (isMe?'#5189F3':'#F0F2F5') + ';color:' + (isMe?'#fff':'#6B7280') + ';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + ini + '</div>'
           + '<div style="flex:1;min-width:0">'
             + '<div style="font-size:13px;font-weight:' + (isMe?'800':'600') + ';color:#111">' + colleague.name + (isMe ? ' <span style="font-size:9px;font-weight:700;color:#5189F3;background:#EEF3FF;padding:1px 6px;border-radius:2px">You</span>' : '') + '</div>'
-            + '<div style="font-size:11px;color:#9CA3AF;font-weight:600">' + colleague.role + ' · ' + colleague.dept + '</div>'
+            + '<div style="font-size:11px;color:#9CA3AF;font-weight:600">' + (colleague.role||'Learner') + ' · ' + (colleague.dept||'—') + '</div>'
           + '</div>'
           + '<div style="text-align:right;flex-shrink:0">'
             + '<div style="font-size:14px;font-weight:800;color:#1E2532">' + colleague.certsEarned + ' certs</div>'
@@ -2044,7 +2172,6 @@
     }
 
     /* ── Certifications ── */
-    var _TOTAL_TEAM = 20; /* approximate total company learners */
 
     function renderCerts() {
       var totalEarned = _totalCertified(), totalCls = _totalClasses();
@@ -2101,7 +2228,6 @@
 
       Object.keys(MODULES).forEach(function(mod) {
         var m = MODULES[mod], col = m.color, bg = _modBg(mod);
-        var modTotal  = m.classes.reduce(function(s,c){ return s + ((m.classCounts||{})[c]||0); }, 0);
         var modEarned = _countCertified(mod);
 
         html += '<div style="background:#fff;border:1px solid #DFE2E6;border-radius:2px;overflow:hidden;display:flex;flex-direction:column">';
@@ -2111,7 +2237,7 @@
           +'<div style="font-size:11px;font-weight:800;color:'+col+';text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">'+mod+'</div>'
           +'<div style="display:flex;align-items:center;justify-content:space-between">'
             +'<span style="font-size:10px;font-weight:600;color:'+col+'99">'+modEarned+' earned by you</span>'
-            +'<span style="font-size:11px;font-weight:800;color:#fff;background:'+col+';padding:2px 9px;border-radius:2px">'+modTotal+' certified</span>'
+            +'<span style="font-size:11px;font-weight:800;color:#fff;background:'+col+';padding:2px 9px;border-radius:2px">'+m.classes.length+' classes</span>'
           +'</div>'
         +'</div>';
 
@@ -2119,18 +2245,15 @@
         html += '<div style="flex:1">';
         m.classes.forEach(function(cls, i) {
           var st     = getStatus(mod, cls, i);
-          var cnt    = (m.classCounts||{})[cls]||0;
           var isCert = st === 'certified';
           var sm = mod.replace(/'/g,"\\'"), sc2 = cls.replace(/'/g,"\\'");
           var rowBg   = isCert ? '#FAFFFE' : '#fff';
           var nameCol = isCert ? '#111827' : '#374151';
-          var cntCol  = isCert ? '#059669' : col;
           var isLast  = i === m.classes.length - 1;
 
           html += '<div style="display:flex;align-items:center;gap:9px;padding:7px 12px;background:'+rowBg+';'+(isLast?'':'border-bottom:1px solid #F3F4F6')+'">'
-            +'<div style="flex-shrink:0">'+_ring(cnt, _TOTAL_TEAM, col, isCert)+'</div>'
+            +'<div style="flex-shrink:0">'+_ring(isCert?1:0, 1, col, isCert)+'</div>'
             +'<div style="flex:1;font-size:11.5px;font-weight:700;color:'+nameCol+';line-height:1.3">'+cls+'</div>'
-            +'<div style="font-size:14px;font-weight:900;color:'+cntCol+';flex-shrink:0;min-width:18px;text-align:right">'+cnt+'</div>'
             +(isCert
               ? '<button onclick="viewCertificate(\''+sm+'\',\''+sc2+'\')" title="View Certificate" style="width:26px;height:26px;border:1.5px solid #bbf7d0;border-radius:2px;background:#ECFDF5;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0">'+_eyeGreen+'</button>'
               : '<div title="Earn this certification to view" style="width:26px;height:26px;border:1px solid #E5E7EB;border-radius:2px;background:#F9FAFB;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+_eyeGray+'</div>')
@@ -2144,7 +2267,7 @@
     }
 
     /* ── Render ── */
-    var curMod = 'Forms'; // moved here — was after dead block
+    var curMod = Object.keys(MODULES)[0] || null;
     function switchModule(mod, btn) {
       switchSection('module', mod);
     }
@@ -2156,9 +2279,14 @@
     }
 
     function renderModule(){
+      if (!curMod || !MODULES[curMod]) {
+        document.getElementById('moduleHeader').innerHTML = '';
+        document.getElementById('classList').innerHTML = '<div style="padding:40px 20px;text-align:center;color:#9CA3AF;font-size:13px;font-weight:600">No modules yet — ask your admin to add training content in the Knowledge Hub.</div>';
+        return;
+      }
       var m=MODULES[curMod], cls=m.classes, cert=0;
       cls.forEach(function(c,i){ if(getStatus(curMod,c,i)==='certified') cert++; });
-      var pct=Math.round(cert/cls.length*100);
+      var pct=cls.length ? Math.round(cert/cls.length*100) : 0;
       var col=_modColor(curMod), bg=_modBg(curMod);
       var u=_curUser||{role:''};
 
@@ -2282,8 +2410,11 @@
         actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
           +(st==='sched-denied'?'<button class="btn-amber" style="padding:5px 12px;font-size:12px" onclick="openAtt3Form(\''+sm+'\',\''+sc+'\',\''+(lq?lq.id:'')+'\')">'+I.retry+' Re-request</button>':'');
       }else if(st==='quiz-failed'){
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Watch</button>'
-          +'<button class="btn-disabled" style="padding:5px 12px;font-size:12px" title="All 3 attempts used">'+I.xmark+' Exhausted</button>';
+        var qfLq=lq; var qfId=qfLq?qfLq.id:'';
+        var qfReq=qfLq?_sqResetReq(qfLq.id):null;
+        actionBtn=(qfReq&&qfReq.status==='pending')
+          ? '<button class="btn-disabled" style="padding:5px 12px;font-size:12px" title="Waiting for admin">'+I.clock+' Reset Pending…</button>'
+          : '<button class="btn-amber" style="padding:5px 12px;font-size:12px" onclick="requestAttemptReset(\''+sm+'\',\''+sc+'\','+qfId+')">'+I.retry+' Request Reset</button>';
       }
 
       return '<div class="class-row" style="cursor:pointer" onclick="if(!event.target.closest(\'button\')) watchVid(\''+sm+'\',\''+sc+'\')">'
@@ -2326,7 +2457,7 @@
         var _vo = JSON.parse(localStorage.getItem('lms_voiceover_library') || '[]');
         adminVoices = _vo.filter(function(v){ return v.module===mod && v.cls===cls; });
         var _dl = JSON.parse(localStorage.getItem('lms_document_library') || '[]');
-        adminDocs = _dl.filter(function(v){ return v.module===mod && v.cls===cls; });
+        adminDocs = _dl.filter(function(v){ return v.module===mod && v.cls===cls && (v.status||'live')==='live'; });
       } catch(e){}
 
       var data = {
@@ -2346,12 +2477,12 @@
         a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null,
         adminVideos: adminVideos, adminVoices: adminVoices, adminDocs: adminDocs
       };
-      data.modules = Object.keys(MODULES).map(function(m){ return {name:m, color:MODULES[m].color}; });
+      data.modules = Object.keys(MODULES).map(function(m){ return {name:m, color:MODULES[m].color, classCount:MODULES[m].classes.length}; });
 
       // Store full module metadata so class-viewer can look it up during navigation
       try {
         var fullModMeta = {};
-        Object.keys(CLASS_META[mod] || {}).forEach(function(c) {
+        classes.forEach(function(c) {
           var cm = (CLASS_META[mod] || {})[c] || {};
           var lq = _liveQuiz(mod, c);
           var lqQs = [], lqPm = 70;
@@ -2572,16 +2703,18 @@
             var reqs=JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
             var rq=null;
             for(var ri=reqs.length-1;ri>=0;ri--){
-              if(reqs[ri].quizId===_qLive.id&&(reqs[ri].userName===u.name||reqs[ri].userId===u.email)){rq=reqs[ri];break;}
+              if(String(reqs[ri].quizId)===String(_qLive.id)&&(reqs[ri].userName===u.name||reqs[ri].userId===u.email)){rq=reqs[ri];break;}
             }
             if(rq&&rq.status==='approved'){rq.status='used';rq.usedAt=ts;localStorage.setItem('sq_schedule_requests',JSON.stringify(reqs));}
           }catch(e){}
         }
 
-        /* Ensure ST has vp so progress bar shows */
+        /* Video-rewatch rule: pass keeps the video marked watched; a fail resets it so the
+           learner must re-watch 90%+ of the content again before the next attempt unlocks */
         if(!ST[_qM])ST[_qM]={};
         if(!ST[_qM][_qC])ST[_qM][_qC]={vp:0};
-        if(ST[_qM][_qC].vp<90){ST[_qM][_qC].vp=100;saveS();}
+        ST[_qM][_qC].vp = pass ? 100 : 0;
+        saveS();
       } else {
         /* ── Legacy QQ path ── */
         var legRes={score:pct,pass:pass,date:today,c:correct,t:total};
@@ -2761,7 +2894,7 @@
       cnEl.style.color = col;
       document.getElementById('certModName').textContent = cls + ' · ' + mod;
       document.getElementById('certUserName').textContent = u.name;
-      document.getElementById('certUserRole').textContent = u.role + (u.dept ? ' · ' + u.dept : '');
+      document.getElementById('certUserRole').textContent = (u.role||'Learner') + (u.dept ? ' · ' + u.dept : '');
       document.getElementById('certDate').textContent = dateStr;
       document.getElementById('certId').textContent = certId;
 
@@ -2782,6 +2915,20 @@
       document.getElementById('certViewOverlay').style.display = 'none';
     }
 
+    /* Uses the browser's own print dialog (with "Save as PDF" as a destination) instead of
+       a third-party PDF library — works fully offline and needs no external dependency.
+       The print CSS above hides everything except #certDoc, so only the certificate itself
+       is captured. document.title becomes the suggested filename while the dialog is open. */
+    function downloadCertificatePdf() {
+      var userName  = (document.getElementById('certUserName').textContent || 'Certificate').trim();
+      var className = (document.getElementById('certClassName').textContent || '').trim();
+      var origTitle = document.title;
+      document.title = (className || 'SeaTrace Certificate') + ' - ' + userName;
+      function restore() { document.title = origTitle; window.removeEventListener('afterprint', restore); }
+      window.addEventListener('afterprint', restore);
+      window.print();
+    }
+
     function hashStr(str) {
       var h = 0;
       for (var i = 0; i < str.length; i++) { h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
@@ -2792,8 +2939,7 @@
     /* ═══════════════════════════════════════════════
        LEADERBOARD — reads shared state from admin
     ═══════════════════════════════════════════════ */
-    var CURRENT_USER = 'Arjun Mehta';
-    var TOTAL_CLS    = 18;
+    function _currentUserName() { return (typeof _curUser !== 'undefined' && _curUser && _curUser.name) || 'Learner'; }
     var AV_COLORS    = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#EF4444','#0EA5E9','#D97706','#9333EA','#059669','#DC2626','#2563EB','#7C3AED','#0D9488','#EA580C','#6366F1','#DB2777','#65A30D','#0891B2'];
 
     function loadSharedState() {
@@ -2814,60 +2960,29 @@
       return AV_COLORS[Math.abs(h) % AV_COLORS.length];
     }
 
-    function buildLbUsers(shared) {
-      if (shared && shared.users && shared.completions) {
-        // Use live data from admin
-        return shared.users.map(function(u) {
-          var certs = Object.keys(shared.completions).filter(function(k) {
-            return k.split(':')[0] === u.name && shared.completions[k].certEarned;
-          }).length;
-          return Object.assign({}, u, {
-            certsEarned:    certs,
-            completionPct:  Math.round(certs / TOTAL_CLS * 100),
-            skillPoints:    certs * 150 + (u.streak || 0) * 10
-          });
-        });
-      }
-      // Fallback: derive from INIT (demo data)
-      var FALLBACK = [
-        {name:'Arjun Mehta',    dept:'Management',      role:'Supervisor', streak:42, certsEarned:18, completionPct:100, skillPoints:2840},
-        {name:'Vijay Shankar',  dept:'Processing',      role:'Supervisor', streak:38, certsEarned:16, completionPct:89,  skillPoints:2720},
-        {name:'Suresh Patel',   dept:'Management',      role:'Supervisor', streak:35, certsEarned:13, completionPct:72,  skillPoints:2680},
-        {name:'Priya Nair',     dept:'Quality Control', role:'QC',         streak:28, certsEarned:13, completionPct:72,  skillPoints:2210},
-        {name:'Ravi Kumar',     dept:'Processing',      role:'Operator',   streak:21, certsEarned:10, completionPct:56,  skillPoints:1980},
-        {name:'Meena Reddy',    dept:'Quality Control', role:'QC',         streak:22, certsEarned:10, completionPct:56,  skillPoints:2050},
-        {name:'Arun Pillai',    dept:'Cold Store',      role:'Operator',   streak:18, certsEarned:9,  completionPct:50,  skillPoints:1840},
-        {name:'Sneha Thomas',   dept:'Processing',      role:'Trainee',    streak:14, certsEarned:7,  completionPct:39,  skillPoints:1560},
-        {name:'Kiran Babu',     dept:'Processing',      role:'Operator',   streak:10, certsEarned:6,  completionPct:33,  skillPoints:1390},
-        {name:'Deepa Varma',    dept:'Dispatch',        role:'Operator',   streak:11, certsEarned:5,  completionPct:28,  skillPoints:1250},
-        {name:'Divya Krishnan', dept:'Quality Control', role:'QC',         streak:7,  certsEarned:5,  completionPct:28,  skillPoints:1120},
-        {name:'Rahul Nambiar',  dept:'Processing',      role:'Trainee',    streak:6,  certsEarned:4,  completionPct:22,  skillPoints:920},
-        {name:'Mohan Das',      dept:'Cold Store',      role:'Operator',   streak:5,  certsEarned:4,  completionPct:22,  skillPoints:860},
-        {name:'Anitha Raj',     dept:'Dispatch',        role:'Trainee',    streak:3,  certsEarned:2,  completionPct:11,  skillPoints:540},
-        {name:'Sita Krishnan',  dept:'Cold Store',      role:'Trainee',    streak:4,  certsEarned:2,  completionPct:11,  skillPoints:610},
-        {name:'Babu George',    dept:'Dispatch',        role:'Operator',   streak:2,  certsEarned:1,  completionPct:6,   skillPoints:380},
-        {name:'Lakshmi Iyer',   dept:'Cold Store',      role:'Trainee',    streak:1,  certsEarned:1,  completionPct:6,   skillPoints:220},
-        {name:'Nisha Philip',   dept:'Management',      role:'Trainee',    streak:1,  certsEarned:0,  completionPct:0,   skillPoints:110},
-      ];
-      return FALLBACK;
+    function buildLbUsers() {
+      return _enrichedUsers();
     }
 
     function renderLbView() {
-      var shared  = loadSharedState();
-      var users   = buildLbUsers(shared);
+      var users   = buildLbUsers();
       var ranked  = users.slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.skillPoints - a.skillPoints; });
 
       // Sync note
       var note = document.getElementById('lbSyncNote');
-      if (shared && shared.syncedAt) {
-        var d = new Date(shared.syncedAt);
-        note.textContent = 'Live data from admin · Last updated ' + d.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
-      } else {
-        note.innerHTML = '<span style="color:#D97706">&#9888; Using demo data — open Admin to sync live results</span>';
+      if (note) {
+        note.textContent = ranked.length + ' learner' + (ranked.length !== 1 ? 's' : '') + ' on this platform · updated live';
+      }
+
+      if (!ranked.length) {
+        document.getElementById('lbHero').innerHTML = '';
+        document.getElementById('lbPodium').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9CA3AF;font-size:13px;font-weight:600;padding:24px 0">No leaderboard data yet.</div>';
+        renderLbTable(ranked);
+        return;
       }
 
       // Hero stats
-      var myUser = ranked.find(function(u){return u.name===CURRENT_USER;}) || ranked[0];
+      var myUser = ranked.find(function(u){return u.name === _currentUserName();}) || ranked[0];
       var myRank = ranked.indexOf(myUser) + 1;
       var totalCerts = ranked.reduce(function(s,u){return s+u.certsEarned;},0);
       var avgCompl   = Math.round(ranked.reduce(function(s,u){return s+u.completionPct;},0)/ranked.length);
@@ -2891,7 +3006,7 @@
       ];
       var pBadgeBg  = ['#94A3B8','#F59E0B','#EA580C'];
       document.getElementById('lbPodium').innerHTML = podiumSlots.map(function(u,si){
-        var isMe = u.name === CURRENT_USER;
+        var isMe = u.name === _currentUserName();
         var firstName = u.name.split(' ')[0];
         var youTag = isMe ? '<span style="font-size:9px;font-weight:700;color:#5189F3;background:#EEF3FF;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px">You</span>' : '';
         return '<div class="podium-slot">'
@@ -2923,14 +3038,13 @@
     function chartSVG(c){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'; }
 
     function renderLbTable(rankedIn) {
-      var shared  = rankedIn ? null : loadSharedState();
-      var users   = rankedIn || buildLbUsers(shared).slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.completionPct - a.completionPct; });
+      var users   = rankedIn || buildLbUsers().slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.completionPct - a.completionPct; });
       var q       = (document.getElementById('lbSearch')?.value || '').toLowerCase();
       var visible = q ? users.filter(function(u){ return u.name.toLowerCase().includes(q) || (u.dept||'').toLowerCase().includes(q); }) : users;
 
       document.getElementById('lbBody').innerHTML = visible.map(function(u, i) {
         var rank   = users.indexOf(u) + 1;
-        var isMe   = u.name === CURRENT_USER;
+        var isMe   = u.name === _currentUserName();
         var rkCls  = rank===1?'top1':rank===2?'top2':rank===3?'top3':'';
         var compColor = u.completionPct >= 80 ? '#16a34a' : u.completionPct >= 50 ? '#F59E0B' : '#5189F3';
         return '<tr class="'+(isMe?'is-me':'')+'">'+
@@ -2947,13 +3061,52 @@
             '<div class="lb-bar-track"><div class="lb-bar-fill" style="width:'+u.completionPct+'%;background:'+compColor+'"></div></div>'+
             '<span class="lb-bar-pct" style="color:'+compColor+'">'+u.completionPct+'%</span>'+
           '</div></td>'+
-          '<td style="text-align:center"><span class="lb-cert-count">'+u.certsEarned+'</span><span class="lb-cert-total">/'+TOTAL_CLS+'</span></td>'+
+          '<td style="text-align:center"><span class="lb-cert-count">'+u.certsEarned+'</span><span class="lb-cert-total">/'+_totalClasses()+'</span></td>'+
         '</tr>';
       }).join('');
     }
 
+    _renderModuleSidebar();
     _initUser();
     // renderModule is called by switchSection when needed
+
+    /* Deep-link support — e.g. class-viewer.html's sidebar links here with
+       #certifications / #leaderboard so those tabs open directly instead of
+       always landing on the default My Journey view. */
+    (function _applyHashSection() {
+      var hash = (location.hash || '').slice(1);
+      if (hash.indexOf('module=') === 0) {
+        var modName = decodeURIComponent(hash.slice('module='.length));
+        if (MODULES[modName]) switchSection('module', modName);
+        return;
+      }
+      var hashMap = { certifications: 'certs', leaderboard: 'lb', journey: 'journey' };
+      var section = hashMap[hash];
+      if (section) switchSection(section);
+    })();
+
+    /* Pull real quiz definitions from the server (organized in per-Module/Class
+       files, same as uploads) so quizzes work from any device, not just whichever
+       browser the admin happened to create them in. Read-only here — learners
+       never write quiz definitions back. */
+    function _loadQuizzesFromServer() {
+      fetch('/api/lms/quizzes').then(function(res) { return res.json(); }).then(function(data) {
+        if (!data || !Array.isArray(data.quizzes)) return;
+        var local = [];
+        try { local = JSON.parse(localStorage.getItem('lms_quizzes') || '[]'); } catch(e) {}
+        function key(q) { return q.module + '::' + q.cls; }
+        var serverKeys = {};
+        data.quizzes.forEach(function(sq) { serverKeys[key(sq)] = true; });
+        // Server is authoritative for anything it has; keep any local-only
+        // entries the server doesn't know about yet (nothing to compare here —
+        // learners never write quiz definitions back).
+        var localOnly = local.filter(function(q) { return !serverKeys[key(q)]; });
+        localStorage.setItem('lms_quizzes', JSON.stringify(data.quizzes.concat(localOnly)));
+        if (_curSection === 'journey') renderJourney();
+        else if (_curSection === 'module') renderModule();
+      }).catch(function(err) { console.error('Quiz server load failed:', err); });
+    }
+    _loadQuizzesFromServer();
 
     /* Show guide only on first visit — never on return from class-viewer */
     window.addEventListener('load', function() {
@@ -3049,6 +3202,124 @@
       setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 4500);
     }
 
+    /* ══════════════════════════════════════════════════════
+       SHARED UI KIT — replaces native alert()/prompt() with
+       in-app toast / prompt modal (mirrors admin.html's kit).
+    ══════════════════════════════════════════════════════ */
+    var _UI_TOAST_ICONS = {
+      error:   '<svg viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+      success: '<svg viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      info:    '<svg viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+    };
+    var _UI_TOAST_CLASS = { error: 'toast-red', success: 'toast-green', info: 'toast-blue' };
+    function _uiToast(type, message, opts) {
+      opts = opts || {};
+      var stack = document.getElementById('toastStack');
+      if (!stack) return;
+      var el = document.createElement('div');
+      el.className = 'toast ' + (_UI_TOAST_CLASS[type] || 'toast-blue');
+      var actionHtml = opts.actionLabel ? '<button class="toast-action">' + _escHtml(opts.actionLabel) + '</button>' : '';
+      el.innerHTML = (_UI_TOAST_ICONS[type] || _UI_TOAST_ICONS.info) + '<div style="flex:1">' + _escHtml(message) + '</div>' + actionHtml;
+      var remove = function() { if (el.parentNode) el.parentNode.removeChild(el); };
+      if (opts.actionLabel && opts.onAction) {
+        el.querySelector('.toast-action').onclick = function() { opts.onAction(); remove(); };
+      }
+      stack.appendChild(el);
+      setTimeout(remove, opts.duration || (opts.actionLabel ? 6000 : 4000));
+    }
+    window.alert = function(msg) { _uiToast('error', String(msg)); };
+
+    function _uiConfirm(opts) {
+      var existing = document.getElementById('uiConfirmOverlay');
+      if (existing) existing.remove();
+      var danger = !!opts.danger;
+      var confirmColor = danger ? '#EF4444' : '#5189F3';
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="uiConfirmOverlay" onclick="if(event.target===this)_uiCloseConfirm()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
+          + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
+            + '<div style="font-size:13px;color:#6B7280;font-weight:600;line-height:1.5;margin-bottom:20px;white-space:pre-line">' + _escHtml(opts.message || '') + '</div>'
+            + '<div style="display:flex;justify-content:flex-end;gap:10px">'
+              + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
+              + '<button id="uiConfirmOkBtn" style="padding:9px 18px;border:none;background:' + confirmColor + ';color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || (danger ? 'Delete' : 'Confirm')) + '</button>'
+            + '</div>'
+          + '</div>'
+        + '</div>');
+      var okBtn = document.getElementById('uiConfirmOkBtn');
+      okBtn.onclick = function() {
+        okBtn.disabled = true;
+        okBtn.innerHTML = '<span class="ui-spin"></span>' + (danger ? 'Deleting…' : 'Working…');
+        setTimeout(function() {
+          _uiCloseConfirm();
+          if (opts.onConfirm) opts.onConfirm();
+        }, 250);
+      };
+    }
+    function _uiCloseConfirm() {
+      var el = document.getElementById('uiConfirmOverlay');
+      if (el) el.remove();
+    }
+
+    var _uiPromptOnSubmit = null;
+    var _uiPromptValidate = null;
+    function _uiPrompt(opts) {
+      var existing = document.getElementById('uiPromptOverlay');
+      if (existing) existing.remove();
+      var safeVal = opts.value ? _escHtml(String(opts.value)) : '';
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="uiPromptOverlay" onclick="if(event.target===this)_uiClosePrompt()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
+          + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
+            + (opts.label ? '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
+            + (opts.multiline
+                ? '<textarea id="uiPromptInput" rows="3" placeholder="' + _escHtml(opts.placeholder || '') + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box;resize:vertical">' + safeVal + '</textarea>'
+                : '<input id="uiPromptInput" type="text" placeholder="' + _escHtml(opts.placeholder || '') + '" value="' + safeVal + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_uiSubmitPrompt();}">')
+            + '<div id="uiPromptError" style="font-size:12px;color:#EF4444;font-weight:700;margin-top:8px;display:none"></div>'
+            + '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">'
+              + '<button onclick="_uiClosePrompt()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancel</button>'
+              + '<button id="uiPromptOkBtn" onclick="_uiSubmitPrompt()" style="padding:9px 18px;border:none;background:#5189F3;color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || 'Save') + '</button>'
+            + '</div>'
+          + '</div>'
+        + '</div>');
+      _uiPromptOnSubmit = opts.onSubmit;
+      _uiPromptValidate = opts.validate || null;
+      setTimeout(function() { var el = document.getElementById('uiPromptInput'); if (el) { el.focus(); el.select(); } }, 0);
+    }
+    function _uiSubmitPrompt() {
+      var inputEl = document.getElementById('uiPromptInput');
+      var val = (inputEl.value || '').trim();
+      var errEl = document.getElementById('uiPromptError');
+      if (_uiPromptValidate) {
+        var err = _uiPromptValidate(val);
+        if (err) { errEl.textContent = err; errEl.style.display = 'block'; return; }
+      }
+      var fn = _uiPromptOnSubmit;
+      var okBtn = document.getElementById('uiPromptOkBtn');
+      if (okBtn) { okBtn.disabled = true; okBtn.innerHTML = '<span class="ui-spin"></span>Saving…'; }
+      setTimeout(function() {
+        _uiClosePrompt();
+        if (fn) fn(val);
+      }, 250);
+    }
+    function _uiClosePrompt() {
+      var el = document.getElementById('uiPromptOverlay');
+      if (el) el.remove();
+      _uiPromptOnSubmit = null;
+      _uiPromptValidate = null;
+    }
+
+    /* Generic debounce — used on search inputs so typing doesn't re-render the
+       whole list on every keystroke, only once you pause briefly. */
+    function _debounce(fn, delay) {
+      var t;
+      return function() {
+        var args = arguments;
+        clearTimeout(t);
+        t = setTimeout(function() { fn.apply(null, args); }, delay || 200);
+      };
+    }
+    var _renderLbTableDebounced = _debounce(renderLbTable, 200);
+
     /* ══ PROFILE PANEL ══ */
     function _toggleProfilePanel() {
       var p  = document.getElementById('profilePanel');
@@ -3070,20 +3341,197 @@
           + '<div style="width:42px;height:42px;border-radius:50%;background:#5189F3;color:#fff;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
           + '<div style="min-width:0">'
             + '<div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name) + '</div>'
-            + '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px">' + _escHtml(u.role) + '</div>'
+            + '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.email||'') + '</div>'
           + '</div>'
         + '</div>'
         + '<div style="padding:10px 12px">'
+          + _profileRow('Employee ID', u.employeeId)
+          + _profileRow('Mobile', u.mobile)
+          + _profileRow('Role', u.role)
           + _profileRow('Department', u.dept)
           + _profileRow('Team', u.team)
+        + '</div>'
+        + '<div style="padding:0 12px 10px">'
+          + '<button onclick="_openMyProfile()" style="width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border:none;background:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#5189F3;border-radius:6px;transition:background .12s" onmouseover="this.style.background=\'#F5F7FF\'" onmouseout="this.style.background=\'none\'">'
+            + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>'
+            + 'My Profile'
+          + '</button>'
         + '</div>';
     }
 
     function _profileRow(label, val) {
       return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 6px;font-size:12px">'
         + '<span style="color:#aaa;font-weight:700">' + label + '</span>'
-        + '<span style="color:#111;font-weight:700">' + _escHtml(val||'—') + '</span>'
+        + (val
+            ? '<span style="color:#111;font-weight:700">' + _escHtml(val) + '</span>'
+            : '<span style="color:#C4C9D4;font-weight:600;font-style:italic">Not set</span>')
       + '</div>';
+    }
+
+    /* ══ MY PROFILE (editable details, opened from the profile icon) ══ */
+    function _genUniqueId() {
+      function seg(n) { return String(Math.floor(Math.random() * Math.pow(10, n))).padStart(n, '0'); }
+      return seg(3) + '-' + seg(3) + '-' + seg(3);
+    }
+
+    function _openMyProfile() {
+      var pp = document.getElementById('profilePanel');
+      if (pp) pp.style.display = 'none';
+      if (!_curUser) return;
+      var u = _curUser;
+      if (!u.uniqueId) u.uniqueId = _genUniqueId();
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="mpfOverlay" onclick="if(event.target===this)_closeMyProfile()" style="position:fixed;inset:0;background:rgba(17,24,39,.55);display:flex;align-items:center;justify-content:center;z-index:9998">'
+          + '<div style="background:#fff;border-radius:14px;padding:24px 26px;width:480px;max-width:94vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+            + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">'
+              + '<div style="font-size:17px;font-weight:900;color:#1E2532">My Profile</div>'
+              + '<button onclick="_closeMyProfile()" style="border:none;background:none;cursor:pointer;color:#9CA3AF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+            + '</div>'
+            + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px">'
+              + '<div>' + _mpLabel('Unique ID') + '<input id="mpUniqueId" type="text" value="' + _escHtml(u.uniqueId) + '" readonly style="' + _mpInputStyle(true) + '"></div>'
+              + '<div>' + _mpLabel('Employee ID') + '<input id="mpEmployeeId" type="text" placeholder="Enter ID" value="' + _escHtml(u.employeeId||'') + '" oninput="_mpLiveValidateEmployeeId()" style="' + _mpInputStyle(false) + '"><div id="mpEmployeeIdHint" style="font-size:11px;color:#EF4444;font-weight:600;margin-top:5px;display:none">Letters, numbers, and hyphens only</div></div>'
+              + '<div>' + _mpLabel('Name *') + '<input id="mpName" type="text" placeholder="Enter Name" value="' + _escHtml(u.name||'') + '" oninput="_mpLiveValidateName()" style="' + _mpInputStyle(false) + '"></div>'
+              + '<div>' + _mpLabel('Mobile Number') + '<input id="mpMobile" type="text" placeholder="Enter Mobile Number" value="' + _escHtml(u.mobile||'') + '" oninput="_mpLiveValidateMobile()" style="' + _mpInputStyle(false) + '"><div id="mpMobileHint" style="font-size:11px;color:#EF4444;font-weight:600;margin-top:5px;display:none">Enter 7–15 digits</div></div>'
+              + '<div style="grid-column:1/-1">' + _mpLabel('Email') + '<input id="mpEmail" type="email" value="' + _escHtml(u.email||'') + '" readonly style="' + _mpInputStyle(true) + '"></div>'
+              + '<div>' + _mpPwField('mpPassword', 'Password') + _mpPwStrengthBarHtml() + '</div>'
+              + '<div>' + _mpPwField('mpConfirmPassword', 'Confirm Password') + '<div id="mpPwHint" style="font-size:11px;font-weight:700;margin-top:5px;display:none"></div></div>'
+            + '</div>'
+            + '<div id="mpError" style="font-size:12px;color:#EF4444;font-weight:700;margin-top:12px;display:none"></div>'
+            + '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">'
+              + '<button onclick="_closeMyProfile()" style="padding:9px 18px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancel</button>'
+              + '<button id="mpSaveBtn" onclick="_saveMyProfile()" style="padding:9px 22px;border:none;background:#5189F3;color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Save</button>'
+            + '</div>'
+          + '</div>'
+        + '</div>');
+    }
+
+    function _mpLabel(text) {
+      return '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + text + '</label>';
+    }
+    function _mpInputStyle(readonly) {
+      return 'width:100%;padding:8px 11px;border:1px solid ' + (readonly ? '#E5E7EB' : '#DFE2E6') + ';border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;color:' + (readonly ? '#9CA3AF' : '#111') + ';background:' + (readonly ? '#F3F4F6' : '#fff') + ';box-sizing:border-box;outline:none;transition:border-color .15s';
+    }
+    var _mpEyeOpen = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    var _mpEyeClosed = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 4.22-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    function _mpPwField(id, label) {
+      return _mpLabel(label)
+        + '<div style="position:relative">'
+          + '<input id="' + id + '" type="password" placeholder="Enter Password" oninput="_mpLiveValidatePassword()" style="' + _mpInputStyle(false) + ';padding-right:34px">'
+          + '<button type="button" tabindex="-1" onclick="_mpTogglePw(\'' + id + '\')" id="' + id + 'Eye" style="position:absolute;right:7px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:#9CA3AF;display:flex;align-items:center;padding:2px">' + _mpEyeClosed + '</button>'
+        + '</div>';
+    }
+    function _mpPwStrengthBarHtml() {
+      return '<div style="height:4px;background:#F0F0F0;border-radius:2px;margin-top:6px;overflow:hidden"><div id="mpPwStrengthFill" style="height:100%;width:0%;background:#EF4444;transition:width .2s,background .2s"></div></div>'
+        + '<div id="mpPwStrengthLabel" style="font-size:10px;font-weight:700;color:#C4C9D4;margin-top:3px"></div>';
+    }
+    function _mpTogglePw(id) {
+      var el = document.getElementById(id);
+      var eye = document.getElementById(id + 'Eye');
+      var showing = el.type === 'text';
+      el.type = showing ? 'password' : 'text';
+      if (eye) eye.innerHTML = showing ? _mpEyeClosed : _mpEyeOpen;
+    }
+    function _mpPasswordStrength(pw) {
+      if (!pw) return { pct: 0, label: '', color: '#EF4444' };
+      var score = 0;
+      if (pw.length >= 4) score++;
+      if (pw.length >= 8) score++;
+      if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+      if (/[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+      var levels = [
+        { pct: 20,  label: 'Very weak', color: '#EF4444' },
+        { pct: 40,  label: 'Weak',      color: '#F59E0B' },
+        { pct: 60,  label: 'Okay',      color: '#F59E0B' },
+        { pct: 80,  label: 'Good',      color: '#22C55E' },
+        { pct: 100, label: 'Strong',    color: '#16A34A' }
+      ];
+      return levels[Math.min(score, 5) - 1] || levels[0];
+    }
+    function _mpLiveValidateName() {
+      var el = document.getElementById('mpName');
+      if (el) el.style.borderColor = el.value.trim() ? '#22C55E' : '#EF4444';
+    }
+    function _mpLiveValidateEmployeeId() {
+      var el = document.getElementById('mpEmployeeId');
+      var hint = document.getElementById('mpEmployeeIdHint');
+      if (!el) return;
+      var val = el.value.trim();
+      var valid = !val || /^[A-Za-z0-9-]+$/.test(val);
+      el.style.borderColor = !val ? '#DFE2E6' : (valid ? '#22C55E' : '#EF4444');
+      if (hint) hint.style.display = (val && !valid) ? 'block' : 'none';
+    }
+    function _mpLiveValidateMobile() {
+      var el = document.getElementById('mpMobile');
+      var hint = document.getElementById('mpMobileHint');
+      if (!el) return;
+      var val = el.value.trim();
+      var valid = !val || /^[0-9]{7,15}$/.test(val);
+      el.style.borderColor = !val ? '#DFE2E6' : (valid ? '#22C55E' : '#EF4444');
+      if (hint) hint.style.display = (val && !valid) ? 'block' : 'none';
+    }
+    function _mpLiveValidatePassword() {
+      var pwEl = document.getElementById('mpPassword');
+      var pwConfirmEl = document.getElementById('mpConfirmPassword');
+      if (!pwEl || !pwConfirmEl) return;
+      var pw = pwEl.value, pwConfirm = pwConfirmEl.value;
+      var fill = document.getElementById('mpPwStrengthFill');
+      var label = document.getElementById('mpPwStrengthLabel');
+      if (fill && label) {
+        var s = _mpPasswordStrength(pw);
+        fill.style.width = s.pct + '%';
+        fill.style.background = s.color;
+        label.textContent = s.label;
+        label.style.color = s.label ? s.color : '#C4C9D4';
+      }
+      var hint = document.getElementById('mpPwHint');
+      if (hint) {
+        if (!pwConfirm) { hint.style.display = 'none'; }
+        else if (pw === pwConfirm) { hint.textContent = '✓ Passwords match'; hint.style.color = '#22C55E'; hint.style.display = 'block'; }
+        else { hint.textContent = 'Passwords do not match'; hint.style.color = '#EF4444'; hint.style.display = 'block'; }
+      }
+    }
+
+    function _closeMyProfile() {
+      var el = document.getElementById('mpfOverlay');
+      if (el) el.remove();
+    }
+
+    function _saveMyProfile() {
+      var name = (document.getElementById('mpName').value || '').trim();
+      var employeeId = (document.getElementById('mpEmployeeId').value || '').trim();
+      var mobile = (document.getElementById('mpMobile').value || '').trim();
+      var pw = document.getElementById('mpPassword').value || '';
+      var pwConfirm = document.getElementById('mpConfirmPassword').value || '';
+      var errEl = document.getElementById('mpError');
+      if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+      if (employeeId && !/^[A-Za-z0-9-]+$/.test(employeeId)) { errEl.textContent = 'Employee ID can only contain letters, numbers, and hyphens.'; errEl.style.display = 'block'; return; }
+      if (mobile && !/^[0-9]{7,15}$/.test(mobile)) { errEl.textContent = 'Enter a valid mobile number (7–15 digits).'; errEl.style.display = 'block'; return; }
+      if (pw || pwConfirm) {
+        if (pw.length < 4) { errEl.textContent = 'Password must be at least 4 characters.'; errEl.style.display = 'block'; return; }
+        if (pw !== pwConfirm) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
+      }
+      errEl.style.display = 'none';
+
+      var saveBtn = document.getElementById('mpSaveBtn');
+      if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<span class="ui-spin"></span>Saving…'; }
+      setTimeout(function() {
+        _curUser.name = name;
+        _curUser.employeeId = employeeId;
+        _curUser.mobile = mobile;
+        if (!_curUser.uniqueId) _curUser.uniqueId = document.getElementById('mpUniqueId').value;
+        if (pw) _curUser.password = pw;
+
+        var dirEntry = LB_USERS.find(function(x) { return x.email === _curUser.email; });
+        if (dirEntry) Object.assign(dirEntry, _curUser);
+        _saveUserDirectory(LB_USERS);
+        localStorage.setItem('lms_current_user', JSON.stringify(_curUser));
+        sessionStorage.setItem('seatrace_user', JSON.stringify(_curUser));
+
+        _closeMyProfile();
+        _applyUser();
+        _uiToast('success', 'Profile updated.');
+      }, 250);
     }
 
     /* ══ INTERACTIVE GUIDE ══ */
@@ -3284,8 +3732,8 @@
     var _TOUR_STEPS = [
       { ids:'sb-journey',                              pos:'right',  title:'My Journey',
         body:'Your personal dashboard. See your overall progress, module completion bars, quiz scores, skill points and the next class ready for you — all in one view.' },
-      { ids:['sb-forms','sb-masterforms','sb-qc'],     pos:'right',  title:'Modules — Your Classes',
-        body:'This is where you learn. Three modules with sequential video classes: Forms (8 classes), Master Forms (5 classes) and Quality Control (5 classes). Complete each class to unlock the next one.' },
+      { ids:'sb-modules-wrap',                         pos:'right',  title:'Modules — Your Classes',
+        body:'This is where you learn. Your admin builds modules with sequential video classes here. Complete each class to unlock the next one.' },
       { ids:'sb-certs',                                pos:'right',  title:'Certifications',
         body:'View all your earned certificates. Download printable copies, track pending ones, and request a 3rd quiz attempt directly from this section.' },
       { ids:'sb-lb',                                   pos:'right',  title:'Team Leaderboard',

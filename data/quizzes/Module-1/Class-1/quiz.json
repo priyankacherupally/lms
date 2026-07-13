@@ -1,0 +1,17 @@
+{
+  "id": 1783494297816,
+  "title": "Module 1 – Class 1",
+  "module": "Module 1",
+  "cls": "Class 1",
+  "passMark": 70,
+  "questionsPerAttempt1": null,
+  "questionsPerAttempt2": null,
+  "questions": [
+    {
+      "type": "tf",
+      "text": "testttinggg",
+      "correct": "true"
+    }
+  ],
+  "created": "08 Jul 2026"
+}

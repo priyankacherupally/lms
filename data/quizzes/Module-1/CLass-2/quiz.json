@@ -1,0 +1,17 @@
+{
+  "id": 1783502533162,
+  "title": "Module 1 – CLass 2",
+  "module": "Module 1",
+  "cls": "CLass 2",
+  "passMark": 70,
+  "questionsPerAttempt1": null,
+  "questionsPerAttempt2": null,
+  "questions": [
+    {
+      "type": "tf",
+      "text": "Test 2",
+      "correct": "true"
+    }
+  ],
+  "created": "08 Jul 2026"
+}

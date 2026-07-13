@@ -9,6 +9,37 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Nunito',sans-serif;background:#F7F8FA;color:#111;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
+    /* ══ PRODUCT TOUR (same mechanism as knowledge-hub.html) ══ */
+    #tourHighlight{position:fixed;z-index:9996;border-radius:8px;display:none;pointer-events:none;box-shadow:0 0 0 3px #5189F3,0 0 0 9999px rgba(15,23,42,.72);transition:top .28s cubic-bezier(.4,0,.2,1),left .28s cubic-bezier(.4,0,.2,1),width .28s,height .28s}
+    #tourCard{position:fixed;z-index:9997;display:none;background:#fff;border-radius:16px;width:272px;overflow:visible;box-shadow:0 8px 40px rgba(0,0,0,.22);font-family:'Nunito',sans-serif;transition:top .28s cubic-bezier(.4,0,.2,1),left .28s cubic-bezier(.4,0,.2,1)}
+    .tour-arr-l{position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:8px solid #fff;filter:drop-shadow(-1px 0 1px rgba(0,0,0,.1))}
+    .tour-arr-r{position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:8px solid #fff;filter:drop-shadow(1px 0 1px rgba(0,0,0,.1))}
+    .tour-arr-t{position:absolute;top:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #fff;filter:drop-shadow(0 -1px 1px rgba(0,0,0,.1))}
+    #tourBtnBack,#tourBtnNext,#tourBtnDone{display:none;align-items:center;justify-content:center;height:32px;padding:0 14px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;border:none}
+    #tourBtnBack{background:#F3F4F6;color:#555;border:1.5px solid #E5E7EB}
+    #tourBtnNext{background:#5189F3;color:#fff}
+    #tourBtnDone{background:#059669;color:#fff}
+
+    /* Certificate → PDF: isolate #certDoc so "Print" / "Save as PDF" only captures the
+       certificate itself, not the rest of the page behind the overlay. #certViewOverlay
+       keeps position:fixed (its normal on-screen style) rather than being switched to
+       static — static would drop it back into normal document flow, and since the rest
+       of the page is only visibility:hidden (still occupying its layout space), that left
+       a tall blank gap above the certificate on the printed page. Landscape matches a
+       certificate's actual proportions much better than the browser's default portrait. */
+    @media print {
+      @page { size: landscape; margin: 0.35in; }
+      body * { visibility: hidden; }
+      #certDoc, #certDoc * { visibility: visible; }
+      #certViewOverlay { background: none !important; backdrop-filter: none !important; padding: 0 !important; }
+      #certViewBox { box-shadow: none !important; padding: 0 !important; max-width: none !important; background: none !important; position: static !important; }
+      /* #certDoc has an inline position:relative (for its screen layout) which beats a
+         plain CSS rule regardless of media query — every overridden property here needs
+         !important or the browser silently keeps the inline value. */
+      #certDoc { position: fixed !important; top: 50% !important; left: 0 !important; width: 100% !important; margin: 0 !important; transform: translateY(-50%) !important; box-sizing: border-box; border: none !important; }
+      .cert-modal-actions { display: none !important; }
+    }
+
     /* ── Navbar ── */
     .topbar{position:relative;z-index:100;background:#fff;border-bottom:1px solid #DFE2E6;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;flex-shrink:0}
     .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
@@ -21,24 +52,37 @@
     .nav-icon-btn:hover{background:#E4EEFF;color:#5189F3}
     .nav-icon-btn svg{width:18px;height:18px}
 
+    /* ── Notification / Profile panels (same mechanism as knowledge-hub.html) ── */
+    .notif-item{display:flex;align-items:flex-start;gap:10px;padding:11px 16px;border-bottom:1px solid #F3F4F6;cursor:pointer;transition:background .12s}
+    .notif-item:hover{background:#F9FAFB}
+    .notif-item.unread{background:#F0F5FF}
+    .notif-item.unread:hover{background:#E8EFFE}
+    .notif-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+    .notif-dot.red{background:#DC2626}
+    .notif-dot.amber{background:#F59E0B}
+    .notif-dot.read{background:#D1D5DB}
+    .notif-title{font-size:12px;font-weight:800;color:#111;margin-bottom:2px}
+    .notif-sub{font-size:11px;color:#888;line-height:1.4}
+    .notif-time{font-size:10px;color:#C0C0C0;margin-top:3px}
+    .notif-empty{padding:32px 16px;text-align:center;font-size:13px;color:#B0B7C3;font-weight:600}
+
     /* ── Layout ── */
     .main-layout{display:flex;flex:1;overflow:hidden}
 
     /* ── Sidebar ── */
-    .sidebar{width:220px;flex-shrink:0;background:#fff;border-right:1px solid #DFE2E6;display:flex;flex-direction:column;overflow-y:auto;padding:16px 0 0}
-    .sb-section-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#9CA3AF;text-transform:uppercase;padding:0 16px;margin-bottom:6px;margin-top:4px}
-    .sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;border-radius:0;font-size:13px;font-weight:700;color:#6B7280;text-decoration:none;transition:background .12s;border:none;background:none;font-family:inherit;width:100%;text-align:left}
-    .sb-item:hover{background:#F7F8FA;color:#111}
-    .sb-item.active{background:#EEF3FF;color:#5189F3}
+    .sidebar{width:220px;flex-shrink:0;background:#fff;border-right:1px solid #DFE2E6;display:flex;flex-direction:column;overflow-y:auto;padding:16px 0}
+    .sb-section-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#9CA3AF;text-transform:uppercase;padding:0 20px 10px}
+    .sb-item{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;border-radius:0;font-size:14px;font-weight:600;color:#555;text-decoration:none;border-left:3px solid transparent;transition:background .12s,color .12s,border-color .12s;border-top:none;border-right:none;border-bottom:none;background:none;font-family:inherit;width:100%;text-align:left}
+    .sb-item:hover{background:#F8FAFF;color:#5189F3}
+    .sb-item.active{background:#EEF3FF;color:#5189F3;border-left-color:#5189F3}
     .sb-item.active .sb-mod-dot{box-shadow:0 0 0 2px #5189F3}
     .sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .sb-mod-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-    .sb-count{margin-left:auto;font-size:11px;font-weight:800;background:#F0F2F5;color:#9CA3AF;border-radius:10px;padding:1px 7px}
-    .sb-item.active .sb-count{background:#C7D7FD;color:#5189F3}
-    .sb-divider{height:1px;background:#F0F2F5;margin:10px 0}
-    .sb-footer{padding:12px 16px;border-top:1px solid #DFE2E6;margin-top:auto}
-    .sb-tour-btn{width:100%;border:1.5px dashed #DFE2E6;background:none;border-radius:2px;padding:8px 12px;font-size:12px;font-weight:700;color:#9CA3AF;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px}
-    .sb-tour-btn:hover{border-color:#5189F3;color:#5189F3}
+    .sb-mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .sb-count{font-size:10px;font-weight:700;border-radius:2px;padding:1px 7px}
+    .sb-divider{height:1px;background:#F0F0F0;margin:10px 0}
+    .sb-footer{padding:16px 12px 4px;margin-top:auto}
+    .sb-tour-btn{width:100%;border:1.5px dashed #DFE2E6;background:none;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:700;color:#9CA3AF;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;transition:all .15s}
+    .sb-tour-btn:hover{border-color:#5189F3;color:#5189F3;background:#F8FAFF}
 
     /* ── Main content area ── */
     .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
@@ -50,7 +94,7 @@
     .breadcrumb .sep{color:#DFE2E6;font-size:14px}
 
     /* ── Hero ── */
-    .hero{background:#fff;border-bottom:1px solid #DFE2E6;padding:28px 32px 24px;position:relative}
+    .hero{background:#fff;border-bottom:1px solid #DFE2E6;padding:28px 32px 24px;position:sticky;top:0;z-index:5}
     .hero-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
     .hero-mod-dot{width:10px;height:10px;border-radius:50%}
     .hero-mod-label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
@@ -188,9 +232,24 @@
     .vbox-detail-card-label{font-size:10px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;text-transform:uppercase;margin-bottom:3px}
     .vbox-detail-card-value{font-size:13px;font-weight:700;color:#111}
     .vbox-detail-card-value.live{color:#16a34a}
+
+    /* ── Toasts + modals (replace native alert/confirm/prompt) ── */
+    #toastStack { position:fixed; bottom:24px; right:20px; display:flex; flex-direction:column; gap:8px; z-index:9998; pointer-events:none; }
+    .toast { display:flex; align-items:flex-start; gap:10px; background:#1E293B; color:#F1F5F9; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; padding:12px 16px; border-radius:10px; box-shadow:0 4px 18px rgba(0,0,0,.28); min-width:240px; max-width:320px; pointer-events:all; }
+    .toast.toast-red   { border-left:4px solid #DC2626; }
+    .toast.toast-green { border-left:4px solid #22C55E; }
+    .toast.toast-blue  { border-left:4px solid #5189F3; }
+    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:800; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
+    .toast-action:hover { color:#fff; text-decoration:underline; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ui-spin { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; vertical-align: middle; margin-right: 6px; }
+    #topLoadBar { position:fixed; top:0; left:0; height:3px; width:0%; background:#5189F3; z-index:100000; opacity:1; }
+    :focus-visible { outline: 2px solid #5189F3 !important; outline-offset: 2px !important; border-radius: 2px; }
   </style>
 </head>
 <body>
+  <div id="toastStack"></div>
+  <div id="topLoadBar"></div>
 
   <!-- Navbar (matches knowledge-hub style exactly) -->
   <header class="topbar">
@@ -202,14 +261,36 @@
     <div style="display:flex;align-items:center;gap:12px">
       <span class="nav-role-badge">Learner</span>
       <div style="display:flex;align-items:center;gap:2px">
-        <button class="nav-icon-btn" title="Profile">
+        <button class="nav-icon-btn" id="profileBtn" title="Profile" aria-label="Profile" onclick="_toggleProfilePanel()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
-        <button class="nav-icon-btn" title="Notifications">
+        <button class="nav-icon-btn" id="notifBellBtn" title="Notifications" aria-label="Notifications" onclick="_toggleNotifPanel()" style="position:relative">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span id="notifBellBadge" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#DC2626;border-radius:50%;border:1.5px solid #fff"></span>
         </button>
-        <button class="nav-icon-btn" title="Logout" onclick="_learnerLogout()">
+        <button class="nav-icon-btn" title="Logout" aria-label="Logout" onclick="_learnerLogout()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Notification panel -->
+    <div id="notifPanel" style="display:none;position:absolute;top:52px;right:76px;width:320px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px">
+        <span style="font-size:15px;font-weight:800;color:#111">Notifications</span>
+        <button onclick="_markAllNotifsRead()" style="font-size:12px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
+      </div>
+      <div style="height:1px;background:#F3F4F6"></div>
+      <div id="notifList" style="max-height:340px;overflow-y:auto"></div>
+    </div>
+
+    <!-- Profile panel -->
+    <div id="profilePanel" style="display:none;position:absolute;top:52px;right:16px;width:260px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+      <div id="profilePanelBody"></div>
+      <div style="border-top:1px solid #F3F4F6;padding:10px 12px">
+        <button onclick="_learnerLogout()" style="width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border:none;background:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#EF4444;border-radius:6px;transition:background .12s" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='none'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
         </button>
       </div>
     </div>
@@ -221,8 +302,8 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
       <div class="sb-section-label">Overview</div>
-      <a class="sb-item" href="knowledge-hub.html">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <a class="sb-item" id="sb-journey" href="knowledge-hub.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         My Journey
       </a>
       <div class="sb-divider"></div>
@@ -230,17 +311,18 @@
       <div id="sbModules"></div>
       <div class="sb-divider"></div>
       <div class="sb-section-label">Team</div>
-      <a class="sb-item" href="knowledge-hub.html#certifications">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      <a class="sb-item" id="sb-certs" href="knowledge-hub.html#certifications">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
         Certifications
       </a>
-      <a class="sb-item" href="knowledge-hub.html#leaderboard">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="20" width="4" height="1"/><rect x="9" y="15" width="4" height="6"/><rect x="16" y="11" width="4" height="10"/></svg>
-        Leaderboard
+      <a class="sb-item" id="sb-lb" href="knowledge-hub.html#leaderboard">
+        <div class="sb-dot" style="background:#F59E0B"></div>
+        <span style="flex:1">Leaderboard</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
       </a>
       <div class="sb-footer">
-        <button class="sb-tour-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <button class="sb-tour-btn" onclick="_tourStart()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           Take a Tour
         </button>
       </div>
@@ -265,7 +347,7 @@
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
           <button onclick="history.length>1?history.back():window.close()"
                   title="Back"
-                  style="width:36px;height:36px;border-radius:8px;border:1.5px solid #E5E7EB;background:#fff;color:#6B7280;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s,color .15s"
+                  style="width:36px;height:36px;border-radius:0;border:1.5px solid #E5E7EB;background:#fff;color:#6B7280;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s,color .15s"
                   onmouseover="this.style.borderColor='#5189F3';this.style.color='#5189F3'"
                   onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#6B7280'">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -305,16 +387,140 @@
       <footer class="page-footer">
         <button class="nav-btn prev" id="btnPrev" onclick="navClass('prev')" disabled>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-          <span id="btnPrevLabel">Previous</span>
+          <span style="display:flex;flex-direction:column;line-height:1.3;text-align:left">
+            <span id="btnPrevLabel" style="font-size:9px;font-weight:700;opacity:.65;text-transform:uppercase;letter-spacing:.03em">Previous</span>
+            <span id="btnPrevName"></span>
+          </span>
         </button>
         <button class="nav-btn next" id="btnNext" onclick="navClass('next')" disabled>
-          <span id="btnNextLabel">Next</span>
+          <span style="display:flex;flex-direction:column;line-height:1.3;text-align:right">
+            <span id="btnNextLabel" style="font-size:9px;font-weight:700;opacity:.65;text-transform:uppercase;letter-spacing:.03em">Next</span>
+            <span id="btnNextName"></span>
+          </span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg>
         </button>
       </footer>
 
     </div><!-- /main-content -->
   </div><!-- /main-layout -->
+
+  <!-- Product Tour -->
+  <div id="tourHighlight"></div>
+  <div id="tourCard">
+    <div id="tourArrow"></div>
+    <div style="padding:18px 20px 12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <span id="tourStepLabel" style="font-size:10px;font-weight:800;color:#5189F3;text-transform:uppercase;letter-spacing:.1em"></span>
+        <button onclick="_tourClose()" style="width:22px;height:22px;border-radius:50%;border:none;background:#F3F4F6;color:#888;font-size:11px;cursor:pointer;font-family:inherit;line-height:1">&#10005;</button>
+      </div>
+      <div id="tourTitle" style="font-size:15px;font-weight:900;color:#111;margin-bottom:5px"></div>
+      <div id="tourBody" style="font-size:12px;font-weight:600;color:#555;line-height:1.6"></div>
+    </div>
+    <div style="padding:10px 16px 14px;border-top:1px solid #F3F4F6;display:flex;align-items:center;justify-content:space-between">
+      <div id="tourDots" style="display:flex;gap:5px;align-items:center"></div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <button id="tourBtnBack" onclick="_tourPrev()">&#8592; Back</button>
+        <button id="tourBtnNext" onclick="_tourNext()">Next &#8594;</button>
+        <button id="tourBtnDone" onclick="_tourClose()">Done &#10003;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate viewer -->
+  <div id="certViewOverlay" style="position:fixed;inset:0;background:rgba(8,18,36,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:700;padding:32px">
+    <div id="certViewBox" style="background:#F5F6F8;border-radius:2px;width:100%;max-width:660px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.32);padding:16px">
+
+      <!-- Back + Download actions — hidden from the printed/PDF output itself -->
+      <div class="cert-modal-actions" style="display:flex;align-items:center;justify-content:space-between;padding:2px 4px 14px 4px">
+        <button onclick="_cvCloseCertView()" style="display:flex;align-items:center;gap:6px;border:none;background:none;cursor:pointer;padding:0;font-family:inherit;font-size:13px;font-weight:700;color:#9CA3AF" onmouseover="this.style.color='#5189F3'" onmouseout="this.style.color='#9CA3AF'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back
+        </button>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onclick="downloadCertificatePdf()" style="display:flex;align-items:center;gap:6px;padding:7px 16px;background:#fff;color:#5189F3;border:1.5px solid #C7D9FF;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#F5F8FF'" onmouseout="this.style.background='#fff'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </button>
+          <button onclick="_cvCloseCertView()" title="Close" style="width:32px;height:32px;border-radius:0;border:none;background:#F3F4F6;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,color .15s" onmouseover="this.style.background='#FEE2E2';this.style.color='#EF4444'" onmouseout="this.style.background='#F3F4F6';this.style.color='#888'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Certificate paper -->
+      <div id="certDoc" style="background:#fff;border:1px solid #DFE2E6;padding:40px 48px 32px;position:relative">
+
+        <!-- Corner brackets -->
+        <div id="certCornerTL" style="position:absolute;top:10px;left:10px;width:16px;height:16px;border-top:1.5px solid #5189F3;border-left:1.5px solid #5189F3"></div>
+        <div id="certCornerTR" style="position:absolute;top:10px;right:10px;width:16px;height:16px;border-top:1.5px solid #5189F3;border-right:1.5px solid #5189F3"></div>
+        <div id="certCornerBL" style="position:absolute;bottom:10px;left:10px;width:16px;height:16px;border-bottom:1.5px solid #5189F3;border-left:1.5px solid #5189F3"></div>
+        <div id="certCornerBR" style="position:absolute;bottom:10px;right:10px;width:16px;height:16px;border-bottom:1.5px solid #5189F3;border-right:1.5px solid #5189F3"></div>
+
+        <!-- Header: logo left · cert ID right -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px">
+          <div style="display:flex;align-items:center;gap:9px">
+            <svg width="34" height="34" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="21" fill="none" stroke="#111" stroke-width="2"/>
+              <path d="M9 27c3.2 0 3.2-4 6.4-4s3.2 4 6.4 4 3.2-4 6.4-4 3.2 4 6.4 4 3.2-4 6.4-4" fill="none" stroke="#5189F3" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <div style="font-size:15px;font-weight:900;letter-spacing:.01em;line-height:1"><span style="color:#5189F3">SEA</span><span style="color:#111">TRACE</span></div>
+              <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-top:2px">Seafood Processing</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">Certificate ID</div>
+            <div id="certId" style="font-size:12px;font-weight:800;color:#111;font-family:monospace"></div>
+          </div>
+        </div>
+
+        <!-- Rule -->
+        <div style="height:1px;background:#E8EEFF;margin-bottom:14px"></div>
+
+        <!-- Title -->
+        <div style="text-align:center;margin-bottom:14px">
+          <span style="font-size:10px;font-weight:800;color:#5189F3;letter-spacing:.08em;text-transform:uppercase">Certificate of Completion</span>
+        </div>
+
+        <!-- Rule -->
+        <div style="height:1px;background:#E8EEFF;margin-bottom:24px"></div>
+
+        <!-- Recipient -->
+        <div style="text-align:center;margin-bottom:18px">
+          <div style="font-size:11px;color:#B0B7C3;font-weight:600;margin-bottom:12px">This is to certify that</div>
+          <div id="certUserName" style="font-size:26px;font-weight:900;color:#111;letter-spacing:-.01em;line-height:1.15;margin-bottom:4px"></div>
+          <div id="certUserRole" style="font-size:9px;font-weight:700;color:#B0B7C3;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px"></div>
+          <div style="font-size:12px;color:#888;font-weight:600">has successfully completed all required training and assessments for</div>
+        </div>
+
+        <!-- Course box -->
+        <div id="certCourseBox" style="border:1px solid #DDE6FF;border-radius:2px;padding:13px 18px;text-align:center;margin-bottom:24px;background:#F0F5FF">
+          <div id="certClassName" style="font-size:15px;font-weight:800;color:#5189F3;margin-bottom:3px"></div>
+          <div style="font-size:11px;color:#888;font-weight:600"><span id="certModName"></span></div>
+          <div id="certScoreWrap" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:#ECFDF5;border:1px solid #bbf7d0;border-radius:2px;padding:3px 10px">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <span style="font-size:10px;font-weight:800;color:#15803d">Score: <span id="certScore"></span></span>
+          </div>
+        </div>
+
+        <!-- Rule -->
+        <div style="height:1px;background:#E8EEFF;margin-bottom:18px"></div>
+
+        <!-- Footer -->
+        <div style="display:flex;align-items:flex-end;justify-content:space-between">
+          <div>
+            <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Date Issued</div>
+            <div id="certDate" style="font-size:13px;font-weight:700;color:#111"></div>
+          </div>
+          <div style="text-align:right">
+            <div style="width:140px;height:1px;background:#111;margin-bottom:6px;margin-left:auto"></div>
+            <div style="font-size:13px;font-weight:800;color:#9CA3AF;font-style:italic;margin-bottom:1px">Not yet configured</div>
+            <div style="font-size:10px;color:#888;font-weight:600"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Video Overlay -->
   <div class="voverlay" id="voverlay" onclick="_vovClick(event)">
@@ -332,7 +538,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
           <div class="vbox-live">Live</div>
-          <button class="vbox-close" onclick="closeVideo()" title="Close">✕</button>
+          <button class="vbox-close" onclick="closeVideo()" title="Close" aria-label="Close video">✕</button>
         </div>
       </div>
       <div class="vbox-video">
@@ -365,75 +571,455 @@
   </div>
 
   <script>
-    var LS = 'st_kh_arjun';
+    /* ══════════════════════════════════════════════════════
+       TEMPORARY — time-travel testing patch. Shifts what the whole
+       page considers "now" so cooldown/timer states can be tested
+       without waiting real hours/days. Remove this block (and the
+       matching widget markup/CSS/JS below) once attempt-flow testing is done.
+    ══════════════════════════════════════════════════════ */
+    (function() {
+      var OFFSET_KEY = '_test_time_offset_ms';
+      function _getOffset() {
+        try {
+          if (localStorage.getItem('_test_tools_unlocked') !== '1') return 0;
+          return parseInt(localStorage.getItem(OFFSET_KEY)||'0',10) || 0;
+        } catch(e) { return 0; }
+      }
+      var RealDate = Date;
+      function FakeDate() {
+        if (!(this instanceof FakeDate)) return RealDate();
+        if (arguments.length === 0) return new RealDate(RealDate.now() + _getOffset());
+        return new (Function.prototype.bind.apply(RealDate, [null].concat(Array.prototype.slice.call(arguments))))();
+      }
+      FakeDate.prototype = RealDate.prototype;
+      FakeDate.now   = function() { return RealDate.now() + _getOffset(); };
+      FakeDate.parse = RealDate.parse;
+      FakeDate.UTC   = RealDate.UTC;
+      Date = FakeDate;
+    })();
+
+    /* Test tools are hidden from real learners by default — unlocked via the
+       logo tap-trick on knowledge-hub.html, which sets this same localStorage flag. */
+    function _testToolsUnlocked() {
+      try { return localStorage.getItem('_test_tools_unlocked') === '1'; } catch(e) { return false; }
+    }
+
+    /* TEMPORARY — floating time-travel widget, jumps the simulated clock forward for testing.
+       Hidden from real learners — see _testToolsUnlocked() above. */
+    (function() {
+      if (!_testToolsUnlocked()) return;
+      var OFFSET_KEY = '_test_time_offset_ms';
+      function getOffset() { try { return parseInt(localStorage.getItem(OFFSET_KEY)||'0',10) || 0; } catch(e) { return 0; } }
+      function setOffset(ms) { try { localStorage.setItem(OFFSET_KEY, String(ms)); } catch(e) {} location.reload(); }
+
+      function mount() {
+        var bar = document.createElement('div');
+        bar.style.cssText = 'position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:99999;background:#111827;border-radius:999px;padding:8px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-family:Nunito,sans-serif';
+
+        var offset = getOffset();
+        var label = document.createElement('span');
+        label.style.cssText = 'font-size:12px;font-weight:800;color:#F59E0B;white-space:nowrap;display:flex;align-items:center;gap:5px';
+        label.innerHTML = '⏱ ' + (offset ? '+' + Math.round(offset/86400000) + 'd (simulated)' : 'Real time');
+        bar.appendChild(label);
+
+        function sep() { var s=document.createElement('div'); s.style.cssText='width:1px;height:18px;background:rgba(255,255,255,.15)'; return s; }
+        bar.appendChild(sep());
+
+        [1,2,7,30,90,180].forEach(function(d) {
+          var btn = document.createElement('button');
+          btn.textContent = '+' + d + 'd';
+          btn.style.cssText = 'font-family:inherit;font-size:11px;font-weight:700;color:#6EE7B7;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);border-radius:999px;padding:5px 11px;cursor:pointer';
+          btn.onclick = function() { setOffset(getOffset() + d*86400000); };
+          bar.appendChild(btn);
+        });
+
+        bar.appendChild(sep());
+
+        var resetBtn = document.createElement('button');
+        resetBtn.innerHTML = '↺ Reset';
+        resetBtn.style.cssText = 'font-family:inherit;font-size:11px;font-weight:700;color:#93C5FD;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.35);border-radius:999px;padding:5px 11px;cursor:pointer';
+        resetBtn.onclick = function() { setOffset(0); };
+        bar.appendChild(resetBtn);
+
+        document.body.appendChild(bar);
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+      else mount();
+    })();
+
+    var LS = 'st_kh_progress';
+    function LS_KEY() { return LS + '::' + (_cvUser().email || 'anon'); }
     var D  = {};       // class data from sessionStorage
-    var CV_MODULES = {
-      'Forms':           ['Beheading','Grading','Peeling & Cutting','De-veining','Weighing & Packing','IQF Freezing','Cold Store Inward','Cold Store Outward'],
-      'Master Forms':    ['Supplier Registration','Raw Material Intake','Batch Traceability','Equipment Log','Staff Records'],
-      'Quality Control': ['Organoleptic Test','Microbiological Check','Chemical Analysis','Packaging Inspection','Final Release']
-    };
+    /* Class navigation/metadata now comes entirely from D.clsList (real data passed by
+       knowledge-hub.html) and the lms_mod_meta_<mod> sync cache — no hardcoded duplicates. */
 
-    var CV_CLASS_META = {
-      'Forms': {
-        'Beheading':          { desc:'Hand positioning, hygiene protocols, blade safety, and line speed standards.', videoTitle:'Beheading Safety & Hygiene', voiceTitle:'Beheading Introduction', terms:[{t:'Beheading',d:'Removal of the head from shrimp body; the first step on the processing line.'},{t:'Yield',d:'Percentage of usable product recovered after processing; a key efficiency metric.'}] },
-        'Grading':            { desc:'Size classification, weight standards, and quality sorting procedures for shrimp.', videoTitle:'Grading Standards & Size Classification', voiceTitle:'Grading Introduction', terms:[{t:'Count Size',d:'Number of shrimp per pound; e.g., 16/20 means 16–20 shrimp per pound.'},{t:'Uniformity',d:'Consistency in size and appearance across a graded batch.'}] },
-        'Peeling & Cutting':  { desc:'Shell removal techniques, cutting angles, and waste reduction best practices.', videoTitle:'Peeling Technique & Blade Safety', voiceTitle:'Peeling Introduction', terms:[{t:'Shell-on',d:'Shrimp sold with shell intact; a premium product form valued in certain markets.'},{t:'Butterfly Cut',d:'Technique that opens the shrimp along the back while keeping it joined.'}] },
-        'De-veining':         { desc:'Vein identification, extraction techniques, and hygiene standards during processing.', videoTitle:'De-veining Methods & Hygiene', voiceTitle:'De-veining Introduction', terms:[{t:'Digestive Tract',d:'The dark vein running along the shrimp\'s back, removed for quality and safety.'},{t:'Deveining Needle',d:'Specialist tool used to cleanly extract the digestive tract without tearing.'}] },
-        'Weighing & Packing': { desc:'Tare weight, net weight accuracy, labelling requirements, and approved pack formats.', videoTitle:'Weighing Accuracy & Pack Standards', voiceTitle:'Weighing Introduction', terms:[{t:'Tare Weight',d:'Weight of the empty container, subtracted to determine the net product weight.'},{t:'Net Weight',d:'Actual weight of the product, excluding all packaging materials.'}] },
-        'IQF Freezing':       { desc:'Individual Quick Freezing process, crust-freeze temperature, and blast-freeze protocols.', videoTitle:'IQF Process & Temperature Control', voiceTitle:'IQF Introduction', terms:[{t:'IQF',d:'Individual Quick Freezing — freezes each piece separately to prevent clumping.'},{t:'Crust Freeze',d:'Partial surface freeze that sets the product shape before full IQF processing.'}] },
-        'Cold Store Inward':  { desc:'Temperature logging, pallet positioning, FIFO compliance, and stock management.', videoTitle:'Cold Store Inward Procedures', voiceTitle:'Cold Store Inward Introduction', terms:[{t:'FIFO',d:'First In, First Out — ensures oldest stock is dispatched before newer arrivals.'},{t:'Cold Chain',d:'Unbroken refrigerated logistics from processing through to the end customer.'}] },
-        'Cold Store Outward': { desc:'Dispatch documentation, load-out temperature compliance, and transport standards.', videoTitle:'Cold Store Outward & Dispatch', voiceTitle:'Cold Store Outward Introduction', terms:[{t:'FEFO',d:'First Expired, First Out — prioritises dispatch of stock nearest to expiry date.'},{t:'Bill of Lading',d:'Shipping document acknowledging cargo receipt and authorising transport.'}] }
-      },
-      'Master Forms': {
-        'Supplier Registration': { desc:'Supplier onboarding, documentation verification, and approval workflow procedures.', videoTitle:'Supplier Registration & Approval', voiceTitle:'Supplier Registration Introduction', terms:[{t:'Vendor Code',d:'Unique identifier assigned to each approved supplier within the system.'},{t:'COA',d:'Certificate of Analysis — lab report confirming a product meets required specifications.'}] },
-        'Raw Material Intake':   { desc:'Receiving inspection standards, temperature verification, and rejection criteria.', videoTitle:'Raw Material Inspection & Intake', voiceTitle:'Raw Material Introduction', terms:[{t:'Sensory Evaluation',d:'Quality check using sight, smell, and touch to assess incoming raw material.'},{t:'Rejection Threshold',d:'Maximum permitted defect rate before an incoming batch is rejected.'}] },
-        'Batch Traceability':    { desc:'Lot coding systems, batch linkage records, and full traceability documentation.', videoTitle:'Batch Traceability & Lot Coding', voiceTitle:'Batch Traceability Introduction', terms:[{t:'Lot Code',d:'Alphanumeric code linking a product batch back to its production records.'},{t:'Traceability',d:'Ability to track a product through every step from raw material to final sale.'}] },
-        'Equipment Log':         { desc:'Calibration schedules, maintenance records, and equipment sign-off procedures.', videoTitle:'Equipment Log & Calibration', voiceTitle:'Equipment Log Introduction', terms:[{t:'Calibration',d:'Process of configuring equipment to produce accurate, reliable measurements.'},{t:'Downtime Log',d:'Record of equipment stoppages including duration, cause, and corrective action.'}] },
-        'Staff Records':         { desc:'Employment documentation, training record management, and health declaration requirements.', videoTitle:'Staff Records & Health Declarations', voiceTitle:'Staff Records Introduction', terms:[{t:'Health Declaration',d:'Form confirming a worker is fit for duty and free of communicable illness.'},{t:'Training Matrix',d:'Grid showing each staff member\'s completed and outstanding training modules.'}] }
-      },
-      'Quality Control': {
-        'Organoleptic Test':     { desc:'Sensory scoring methods, defect classification, and panel evaluation standards.', videoTitle:'Organoleptic Evaluation Methods', voiceTitle:'Organoleptic Introduction', terms:[{t:'Organoleptic',d:'Relating to sensory properties: smell, taste, texture, and visual appearance.'},{t:'Defect Score',d:'Numerical penalty applied for each quality defect detected during evaluation.'}] },
-        'Microbiological Check': { desc:'Sampling plans, microbial limits, lab submission procedures, and result interpretation.', videoTitle:'Microbiological Sampling & Limits', voiceTitle:'Microbiological Introduction', terms:[{t:'TVC',d:'Total Viable Count — measure of total bacterial load present in a sample.'},{t:'APC',d:'Aerobic Plate Count — standard method for quantifying bacteria in food products.'}] },
-        'Chemical Analysis':     { desc:'Permitted additive levels, residue limits, test frequencies, and compliance standards.', videoTitle:'Chemical Analysis & Residue Testing', voiceTitle:'Chemical Analysis Introduction', terms:[{t:'Sulphite Level',d:'Concentration of sulphites used as a preservative; must stay within legal limits.'},{t:'MRL',d:'Maximum Residue Limit — highest legally permitted concentration of a chemical in food.'}] },
-        'Packaging Inspection':  { desc:'Label accuracy verification, seal integrity testing, and weight compliance checks.', videoTitle:'Packaging Inspection & Label Compliance', voiceTitle:'Packaging Introduction', terms:[{t:'Seal Integrity',d:'Airtight packaging closure that prevents contamination and extends shelf life.'},{t:'Label Compliance',d:'All mandatory label information is present, accurate, and legible.'}] },
-        'Final Release':         { desc:'Release criteria, hold and quarantine procedures, and sign-off documentation.', videoTitle:'Final Release & Certificate Procedures', voiceTitle:'Final Release Introduction', terms:[{t:'Certificate of Conformance',d:'Document confirming a product batch meets all required specifications.'},{t:'Hold Status',d:'Products quarantined pending further investigation, testing, or senior approval.'}] }
-      }
-    };
-
-    var CV_QQ = {
-      'Forms': {
-        'Beheading':          { passMark:70, questions:[{type:'mcq',text:'What is the correct hand position during the beheading process?',options:['Palm facing up','Thumb tucked inward','Fingers extended outward','Grip at the tail'],correct:1},{type:'tf',text:'PPE gloves must be worn at all times during the beheading operation.',correct:'true'},{type:'mcq',text:'What is the primary quality check performed after beheading?',options:['Weight of batch','Shell colour uniformity','Clean separation at the head joint','Shrimp temperature'],correct:2},{type:'tf',text:'Beheading blades can be shared between workstations without sanitising.',correct:'false'},{type:'mcq',text:'Which metric measures processing efficiency in beheading?',options:['IQF temperature','Yield percentage','Cold store humidity','Glazing weight'],correct:1}] },
-        'Grading':            { passMark:70, questions:[{type:'mcq',text:'What does "count" mean in shrimp grading?',options:['Total batch weight','Number of shrimp per kilogram','Percentage of rejects','Freezing time'],correct:1},{type:'tf',text:'Black spot discolouration automatically classifies shrimp as rejects.',correct:'true'},{type:'mcq',text:'Which factor is NOT used in quality grading?',options:['Shell texture','Odour','Country of origin','Colour uniformity'],correct:2},{type:'tf',text:'Grading must be completed before the IQF freezing step.',correct:'true'},{type:'mcq',text:'A batch labelled "21/25" contains approximately how many shrimp per pound?',options:['10 to 15','21 to 25','30 to 35','40 to 50'],correct:1}] },
-        'Peeling & Cutting':  { passMark:70, questions:[{type:'mcq',text:'When must knives be sanitised during peeling?',options:['End of shift only','Between each shrimp','Between batches and after breaks','Once per hour'],correct:2},{type:'tf',text:'The belly cut exposes the vein for easy removal during peeling.',correct:'true'},{type:'mcq',text:'What is the acceptable standard for shell removal quality?',options:['≥ 95% shell removed','≥ 80% shell removed','≥ 70% shell removed','Visual judgement only'],correct:0},{type:'tf',text:'Knife handles and blades must be inspected for damage before each shift.',correct:'true'},{type:'mcq',text:'What is the correct method for disposing of shell waste?',options:['Leave on the line','Transfer to dedicated waste bins','Flush with water','Mix with product rejects'],correct:1}] },
-        'De-veining':         { passMark:70, questions:[{type:'mcq',text:'Where does the digestive tract (vein) run in shrimp?',options:['Underside near legs','The dorsal (back) side','Inside the head','Between shell layers'],correct:1},{type:'tf',text:'Incomplete vein removal is acceptable if less than 30% of the vein remains.',correct:'false'},{type:'mcq',text:'What tool is typically used for de-veining?',options:['Peeling knife','De-veining needle or tool','Kitchen scissors','High-pressure water jet'],correct:1},{type:'tf',text:'Yield percentage typically drops after de-veining compared to head-on weight.',correct:'true'},{type:'mcq',text:'During quality inspection, inspectors primarily check for:',options:['Correct count per kg','Complete vein removal and clean cuts','Shell colour','Freezing temperature'],correct:1}] },
-        'Weighing & Packing': { passMark:70, questions:[{type:'mcq',text:'How often must weighing scales be calibrated?',options:['Annually','Daily before use','Weekly','Only after breakdown'],correct:1},{type:'tf',text:'A pack labelled 500g must contain exactly 500g — no tolerance is permitted.',correct:'false'},{type:'mcq',text:'What is the primary purpose of glazing IQF shrimp before packing?',options:['Improve flavour','Add bulk weight','Protect from freezer burn','Improve colour'],correct:2},{type:'tf',text:'Batch traceability codes must appear on every individual pack.',correct:'true'},{type:'mcq',text:'Which document accompanies each packed batch for traceability?',options:['Employee attendance record','Batch packing sheet','Maintenance log','Temperature chart only'],correct:1}] },
-        'IQF Freezing':       { passMark:70, questions:[{type:'mcq',text:'What does IQF stand for?',options:['Instant Quality Freeze','Individual Quick Freezing','Internal Quality Freezer','Integrated Quick Flow'],correct:1},{type:'tf',text:'The core temperature target for IQF shrimp is -18°C or below.',correct:'true'},{type:'mcq',text:'Why is IQF preferred over block freezing?',options:['It is cheaper','It prevents pieces from clumping','It adds glaze automatically','It speeds processing by 50%'],correct:1},{type:'tf',text:'IQF tunnels should be cleaned and inspected at least weekly.',correct:'true'},{type:'mcq',text:'If shrimp dwell time in the IQF tunnel is too short, what happens?',options:['Over-freezing occurs','Core temperature target is not reached','Glaze percentage increases','Yield drops'],correct:1}] },
-        'Cold Store Inward':  { passMark:70, questions:[{type:'mcq',text:'What temperature must the cold store maintain for frozen product?',options:['-12°C or below','-18°C or below','-5°C or below','0°C to 4°C'],correct:1},{type:'tf',text:'Inward temperature of product must be recorded at the time of receipt.',correct:'true'},{type:'mcq',text:'What does FIFO stand for?',options:['First In, First Out','Frozen In Frozen Out','First Inspection Final Output','Freeze Index for Operations'],correct:0},{type:'tf',text:'Product can be stacked directly on the cold store floor to save space.',correct:'false'},{type:'mcq',text:'What document must accompany every inward cold store transfer?',options:['Vehicle registration','Packing and batch record','Employee ID','Calibration log only'],correct:1}] },
-        'Cold Store Outward': { passMark:70, questions:[{type:'mcq',text:'Before loading, the transport vehicle must be checked for:',options:['Fuel level','Cleanliness and temperature','Driver licence','GPS functionality'],correct:1},{type:'tf',text:'Product temperature must be verified and logged before dispatch.',correct:'true'},{type:'mcq',text:'Which principle ensures older batches are dispatched before newer ones?',options:['LIFO','FIFO','FEFO','FILO'],correct:1},{type:'tf',text:'Dispatch documentation can be completed after the vehicle has departed.',correct:'false'},{type:'mcq',text:'If product temperature exceeds -15°C at dispatch, you must:',options:['Proceed — minor deviation','Place on hold and notify QC','Refreeze in blast tunnel','Reduce pack weight and dispatch'],correct:1}] }
-      },
-      'Master Forms': {
-        'Supplier Registration': { passMark:70, questions:[{type:'mcq',text:'KYC in supplier registration stands for:',options:['Keep Your Credentials','Know Your Customer','Key Yield Control','Know Your Compliance'],correct:1},{type:'tf',text:'A supplier can begin deliveries before their registration is fully approved.',correct:'false'},{type:'mcq',text:'Which document is NOT typically required during supplier registration?',options:['Business registration certificate','Food safety audit report','Employee attendance records','Insurance certificate'],correct:2},{type:'tf',text:'Supplier approvals must be re-verified on an annual basis.',correct:'true'},{type:'mcq',text:'Who is responsible for final approval of a new supplier?',options:['Floor supervisor','QC Manager or authorised approver','Delivery driver','Packing line operator'],correct:1}] },
-        'Raw Material Intake':   { passMark:70, questions:[{type:'mcq',text:'What is the first check performed when shrimp arrives at intake?',options:['Count per kg','Temperature of consignment','Supplier name','Vehicle weight'],correct:1},{type:'tf',text:'Fresh shrimp with minor black spots must be rejected immediately without assessment.',correct:'false'},{type:'mcq',text:'What is the acceptable ice-to-shrimp ratio for fresh delivery?',options:['1:10','1:1 or better','No ice required','2:1 (double ice)'],correct:1},{type:'tf',text:'Temperature and batch details must be logged in the intake register at time of receipt.',correct:'true'},{type:'mcq',text:'If a consignment fails the freshness check, the correct action is:',options:['Accept and process quickly','Place on hold and notify QC','Return without documentation','Reduce the purchase price'],correct:1}] },
-        'Batch Traceability':    { passMark:70, questions:[{type:'mcq',text:'What is the purpose of a Batch ID?',options:['Track employee productivity','Uniquely identify a production lot from intake to dispatch','Label equipment','Log vehicle inspections'],correct:1},{type:'tf',text:'A single Batch ID can cover multiple supplier consignments mixed together.',correct:'false'},{type:'mcq',text:'Traceability records must be retained for a minimum of:',options:['1 year','2 years','5 years','10 years'],correct:2},{type:'tf',text:'In a recall, traceability records are used to identify and isolate affected product.',correct:'true'},{type:'mcq',text:'Chain of custody documentation must be updated at each:',options:['Change of supervisor','Production stage or transfer point','Calendar month','New employee induction'],correct:1}] },
-        'Equipment Log':         { passMark:70, questions:[{type:'mcq',text:'How often must equipment calibration be documented?',options:['Monthly','After each use','Per the calibration schedule','Only when faults occur'],correct:2},{type:'tf',text:'A calibration record must include the name of the person who performed it.',correct:'true'},{type:'mcq',text:'What action must be taken if equipment fails calibration?',options:['Continue use until end of shift','Tag out of service and notify maintenance','Recalibrate once and resume','Log the failure and continue'],correct:1},{type:'tf',text:'Equipment logs must be retained even after the equipment is decommissioned.',correct:'true'},{type:'mcq',text:'Preventive maintenance records differ from breakdown records because they:',options:['Are optional','Document scheduled upkeep before failure occurs','Only apply to freezers','Do not require sign-off'],correct:1}] },
-        'Staff Records':         { passMark:70, questions:[{type:'mcq',text:'Which document confirms a staff member has completed mandatory food safety training?',options:['Payroll record','Training completion certificate','Attendance register','Employment contract'],correct:1},{type:'tf',text:'Health declaration forms must be completed at the start of every shift.',correct:'true'},{type:'mcq',text:'Staff records must be kept for a minimum of how long after employment ends?',options:['6 months','1 year','3 years','7 years'],correct:2},{type:'tf',text:'A training matrix is used to track individual staff training completion status.',correct:'true'},{type:'mcq',text:'Who is responsible for maintaining accurate staff training records?',options:['The staff member only','HR or designated record keeper','The QC team','The cleaning supervisor'],correct:1}] }
-      },
-      'Quality Control': {
-        'Organoleptic Test':     { passMark:75, questions:[{type:'mcq',text:'Which senses are used in an organoleptic evaluation?',options:['Sight only','Sight and smell only','Sight, smell, taste, and texture','Taste and texture only'],correct:2},{type:'tf',text:'An organoleptic test can replace microbiological testing for final product release.',correct:'false'},{type:'mcq',text:'A defect score of 0 in organoleptic testing means:',options:['Product failed all criteria','No defects detected','Test was not completed','Score is pending review'],correct:1},{type:'tf',text:'Panel evaluators must be trained and calibrated before conducting assessments.',correct:'true'},{type:'mcq',text:'Which factor is NOT assessed in a standard organoleptic test?',options:['Odour','Colour','Net weight','Texture'],correct:2}] },
-        'Microbiological Check': { passMark:75, questions:[{type:'mcq',text:'What does TVC measure in food microbiology?',options:['Temperature variance coefficient','Total Viable Count of bacteria','Toxin verification check','Time and volume control'],correct:1},{type:'tf',text:'Microbiological results above the limit automatically trigger a product recall.',correct:'false'},{type:'mcq',text:'What is the purpose of a control sample in microbiological testing?',options:['To speed up results','To verify the test method is working correctly','To replace the product sample','To check temperature'],correct:1},{type:'tf',text:'Samples must be transported to the lab within specified temperature and time limits.',correct:'true'},{type:'mcq',text:'Which pathogen is of primary concern in shrimp microbiological testing?',options:['E. coli only','Salmonella and Listeria','Yeast and mould only','Total coliforms only'],correct:1}] },
-        'Chemical Analysis':     { passMark:75, questions:[{type:'mcq',text:'What does MRL stand for in food chemical testing?',options:['Minimum Required Level','Maximum Residue Limit','Measured Risk Limit','Moisture Retention Level'],correct:1},{type:'tf',text:'Sulphite levels in shrimp must be tested on every production batch.',correct:'true'},{type:'mcq',text:'If a chemical test result exceeds the MRL, the correct action is:',options:['Retest and average the results','Place product on hold and notify QC manager','Reduce the portion size','Accept if only slightly over'],correct:1},{type:'tf',text:'Chemical testing certificates from suppliers can replace in-house testing permanently.',correct:'false'},{type:'mcq',text:'Which preservative is commonly monitored in processed shrimp?',options:['Citric acid','Sodium chloride','Sulphites','Acetic acid'],correct:2}] },
-        'Packaging Inspection':  { passMark:75, questions:[{type:'mcq',text:'What is checked during a seal integrity test?',options:['Label font size','Airtight closure of the packaging','Net weight accuracy','Batch code format'],correct:1},{type:'tf',text:'A label with a missing allergen declaration is still acceptable for release.',correct:'false'},{type:'mcq',text:'How often must packaging inspection checks be conducted on the line?',options:['Once per day','At the start and end of each shift','At defined intervals per the control plan','Only when a complaint is received'],correct:2},{type:'tf',text:'Over-packed product (above declared weight) does not require corrective action.',correct:'false'},{type:'mcq',text:'Which label element is legally mandatory on all food packaging?',options:['Brand logo','Best before or use-by date','Barcode','Country of design'],correct:1}] },
-        'Final Release':         { passMark:75, questions:[{type:'mcq',text:'Who is authorised to issue a final product release?',options:['Any line operator','QC Manager or designated authority','The dispatch driver','The cleaning team'],correct:1},{type:'tf',text:'A product on "Hold" status can be dispatched if the customer agrees.',correct:'false'},{type:'mcq',text:'What document confirms a batch meets all release specifications?',options:['Employee training record','Certificate of Conformance','Calibration log','Cleaning schedule'],correct:1},{type:'tf',text:'All test results must be reviewed and signed off before final release.',correct:'true'},{type:'mcq',text:'If a batch fails final release criteria, it must be:',options:['Dispatched at reduced price','Quarantined and investigated','Repackaged immediately','Approved by the customer directly'],correct:1}] }
-      }
-    };
+    /* ── One-time reset: clear all stale LMS data so class-viewer starts clean ── */
+    (function _resetLmsData() {
+      try {
+        if (localStorage.getItem('lms_version') !== 'v5') {
+          Object.keys(localStorage).filter(function(k){ return k.startsWith('lms_') || k.startsWith('sq_') || k.startsWith('st_'); }).forEach(function(k){ localStorage.removeItem(k); });
+          localStorage.setItem('lms_version', 'v5');
+        }
+      } catch(e) {}
+    })();
 
     /* Mark this session as having visited class-viewer (suppresses auto-guide on return) */
     try { sessionStorage.setItem('cv_visited', '1'); } catch(e) {}
+
+    /* ══════════════════════════════════════════════════════
+       SHARED UI KIT — replaces native alert()/confirm()/prompt()
+       with in-app toast / confirm modal / prompt modal (mirrors
+       the kit in admin.html and knowledge-hub.html).
+    ══════════════════════════════════════════════════════ */
+    function _escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    var _UI_TOAST_ICONS = {
+      error:   '<svg viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+      success: '<svg viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      info:    '<svg viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+    };
+    var _UI_TOAST_CLASS = { error: 'toast-red', success: 'toast-green', info: 'toast-blue' };
+    function _uiToast(type, message, opts) {
+      opts = opts || {};
+      var stack = document.getElementById('toastStack');
+      if (!stack) return;
+      var el = document.createElement('div');
+      el.className = 'toast ' + (_UI_TOAST_CLASS[type] || 'toast-blue');
+      var actionHtml = opts.actionLabel ? '<button class="toast-action">' + _escHtml(opts.actionLabel) + '</button>' : '';
+      el.innerHTML = (_UI_TOAST_ICONS[type] || _UI_TOAST_ICONS.info) + '<div style="flex:1">' + _escHtml(message) + '</div>' + actionHtml;
+      var remove = function() { if (el.parentNode) el.parentNode.removeChild(el); };
+      if (opts.actionLabel && opts.onAction) {
+        el.querySelector('.toast-action').onclick = function() { opts.onAction(); remove(); };
+      }
+      stack.appendChild(el);
+      setTimeout(remove, opts.duration || (opts.actionLabel ? 6000 : 4000));
+    }
+    window.alert = function(msg) { _uiToast('error', String(msg)); };
+
+    function _uiConfirm(opts) {
+      var existing = document.getElementById('uiConfirmOverlay');
+      if (existing) existing.remove();
+      var danger = !!opts.danger;
+      var confirmColor = danger ? '#EF4444' : '#5189F3';
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="uiConfirmOverlay" onclick="if(event.target===this)_uiCloseConfirm()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
+          + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
+            + '<div style="font-size:13px;color:#6B7280;font-weight:600;line-height:1.5;margin-bottom:20px;white-space:pre-line">' + _escHtml(opts.message || '') + '</div>'
+            + '<div style="display:flex;justify-content:flex-end;gap:10px">'
+              + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
+              + '<button id="uiConfirmOkBtn" style="padding:9px 18px;border:none;background:' + confirmColor + ';color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || (danger ? 'Delete' : 'Confirm')) + '</button>'
+            + '</div>'
+          + '</div>'
+        + '</div>');
+      var okBtn = document.getElementById('uiConfirmOkBtn');
+      okBtn.onclick = function() {
+        okBtn.disabled = true;
+        okBtn.innerHTML = '<span class="ui-spin"></span>' + (danger ? 'Deleting…' : 'Working…');
+        setTimeout(function() {
+          _uiCloseConfirm();
+          if (opts.onConfirm) opts.onConfirm();
+        }, 250);
+      };
+    }
+    function _uiCloseConfirm() {
+      var el = document.getElementById('uiConfirmOverlay');
+      if (el) el.remove();
+    }
+
+    var _uiPromptOnSubmit = null;
+    var _uiPromptValidate = null;
+    function _uiPrompt(opts) {
+      var existing = document.getElementById('uiPromptOverlay');
+      if (existing) existing.remove();
+      var safeVal = opts.value ? _escHtml(String(opts.value)) : '';
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="uiPromptOverlay" onclick="if(event.target===this)_uiClosePrompt()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
+          + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
+            + (opts.label ? '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
+            + (opts.multiline
+                ? '<textarea id="uiPromptInput" rows="3" placeholder="' + _escHtml(opts.placeholder || '') + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box;resize:vertical">' + safeVal + '</textarea>'
+                : '<input id="uiPromptInput" type="text" placeholder="' + _escHtml(opts.placeholder || '') + '" value="' + safeVal + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_uiSubmitPrompt();}">')
+            + '<div id="uiPromptError" style="font-size:12px;color:#EF4444;font-weight:700;margin-top:8px;display:none"></div>'
+            + '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">'
+              + '<button onclick="_uiClosePrompt()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancel</button>'
+              + '<button id="uiPromptOkBtn" onclick="_uiSubmitPrompt()" style="padding:9px 18px;border:none;background:#5189F3;color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || 'Save') + '</button>'
+            + '</div>'
+          + '</div>'
+        + '</div>');
+      _uiPromptOnSubmit = opts.onSubmit;
+      _uiPromptValidate = opts.validate || null;
+      setTimeout(function() { var el = document.getElementById('uiPromptInput'); if (el) { el.focus(); el.select(); } }, 0);
+    }
+    function _uiSubmitPrompt() {
+      var inputEl = document.getElementById('uiPromptInput');
+      var val = (inputEl.value || '').trim();
+      var errEl = document.getElementById('uiPromptError');
+      if (_uiPromptValidate) {
+        var err = _uiPromptValidate(val);
+        if (err) { errEl.textContent = err; errEl.style.display = 'block'; return; }
+      }
+      var fn = _uiPromptOnSubmit;
+      var okBtn = document.getElementById('uiPromptOkBtn');
+      if (okBtn) { okBtn.disabled = true; okBtn.innerHTML = '<span class="ui-spin"></span>Saving…'; }
+      setTimeout(function() {
+        _uiClosePrompt();
+        if (fn) fn(val);
+      }, 250);
+    }
+    function _uiClosePrompt() {
+      var el = document.getElementById('uiPromptOverlay');
+      if (el) el.remove();
+      _uiPromptOnSubmit = null;
+      _uiPromptValidate = null;
+    }
+
+    /* ── Shared quiz-attempt records (same keys/shape knowledge-hub.html uses) ── */
+    function _cvUser() {
+      try { var u = JSON.parse(sessionStorage.getItem('seatrace_user')||'null'); if (u) return u; } catch(e) {}
+      return { name: 'Learner', email: '' };
+    }
+    function _sqRes(quizId) {
+      try { return JSON.parse(localStorage.getItem('sq_results_'+quizId+'::'+(_cvUser().email||'anon'))||'{}'); } catch(e) { return {}; }
+    }
+    function _saveSqRes(quizId, data) {
+      try { localStorage.setItem('sq_results_'+quizId+'::'+(_cvUser().email||'anon'), JSON.stringify(data)); } catch(e) {}
+    }
+    /* 15-day auto-reset: wipe results if both attempts failed and the window expired */
+    function _cvCheckAutoReset(quizId, r) {
+      if (!r.att1 || !r.att2 || r.att1.pass || r.att2.pass || r.att3) return r;
+      if (Date.now() > r.att2.ts + 15*24*3600000) {
+        var blank = {};
+        _saveSqRes(quizId, blank);
+        try {
+          var u = _cvUser();
+          var reqs = JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
+          var filtered = reqs.filter(function(x){ return !(String(x.quizId)===String(quizId) && (x.userName===u.name||x.userId===u.email)); });
+          localStorage.setItem('sq_schedule_requests', JSON.stringify(filtered));
+        } catch(e) {}
+        return blank;
+      }
+      return r;
+    }
+    /* Scheduled (early attempt-3-unlock) requests */
+    function _cvSchedule(quizId) {
+      try {
+        var u = _cvUser();
+        var reqs = JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
+        for (var i=reqs.length-1; i>=0; i--) {
+          var r=reqs[i];
+          if (String(r.quizId)===String(quizId) && (r.userName===u.name || r.userId===u.email)) return r;
+        }
+        return null;
+      } catch(e) { return null; }
+    }
+    function _cvSubmitAtt3Req(quizId, reason) {
+      try {
+        var existing = _cvSchedule(quizId);
+        if (existing && (existing.status==='pending'||existing.status==='approved')) return false;
+        var u = _cvUser();
+        var reqs = JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
+        reqs.push({
+          id: Date.now(), quizId: quizId, quizTitle: D.cls,
+          quizModule: D.mod, quizCls: D.cls,
+          userId: u.email||u.name||'', userName: u.name||'', userEmail: u.email||'',
+          reason: reason||'', requestedAt: Date.now(),
+          status: 'pending', adminNote: ''
+        });
+        localStorage.setItem('sq_schedule_requests', JSON.stringify(reqs));
+        return true;
+      } catch(e) { return false; }
+    }
+    /* Full reset ("Admin Requests") — after all 3 attempts exhausted */
+    function _cvResetReq(quizId) {
+      try {
+        var u = _cvUser();
+        var reqs = JSON.parse(localStorage.getItem('sq_reset_requests')||'[]');
+        for (var i=reqs.length-1; i>=0; i--) {
+          var r=reqs[i];
+          if (String(r.quizId)===String(quizId) && (r.userName===u.name || r.userEmail===u.email)) return r;
+        }
+        return null;
+      } catch(e) { return null; }
+    }
+    function _cvSubmitResetReq(quizId, reason) {
+      try {
+        var existing = _cvResetReq(quizId);
+        if (existing && existing.status==='pending') return false;
+        var u = _cvUser();
+        var reqs = JSON.parse(localStorage.getItem('sq_reset_requests')||'[]');
+        reqs.push({
+          id: Date.now(), quizId: quizId, quizTitle: D.cls,
+          userName: u.name||'Unknown', userEmail: u.email||'',
+          reason: reason||'', requestedAt: Date.now(),
+          status: 'pending'
+        });
+        localStorage.setItem('sq_reset_requests', JSON.stringify(reqs));
+        return true;
+      } catch(e) { return false; }
+    }
+    function cvRequestAtt3() {
+      if (!D.liveQuizId) { alert('No admin-assigned quiz found for this class. Contact your supervisor.'); return; }
+      _uiPrompt({
+        title: 'Request Early Attempt 3',
+        label: 'Briefly explain why you need Attempt 3 unlocked early for "' + D.cls + '"',
+        placeholder: 'Reason…',
+        multiline: true,
+        confirmLabel: 'Submit',
+        validate: function(reason) { return reason ? null : 'Please enter a reason.'; },
+        onSubmit: function(reason) {
+          var ok = _cvSubmitAtt3Req(D.liveQuizId, reason);
+          if (ok) { _uiToast('success', 'Request submitted. An admin will review it.'); renderAssessment(); }
+          else alert('You already have a request in progress for this class.');
+        }
+      });
+    }
+    function cvRequestReset() {
+      if (!D.liveQuizId) { alert('No admin-assigned quiz found for this class. Contact your supervisor.'); return; }
+      _uiPrompt({
+        title: 'Request Attempt Reset',
+        label: 'Briefly explain why you need your attempts reset for "' + D.cls + '"',
+        placeholder: 'Reason…',
+        multiline: true,
+        confirmLabel: 'Submit',
+        validate: function(reason) { return reason ? null : 'Please enter a reason.'; },
+        onSubmit: function(reason) {
+          var ok = _cvSubmitResetReq(D.liveQuizId, reason);
+          if (ok) { _uiToast('success', 'Reset request submitted. An admin will review it.'); renderAssessment(); }
+          else alert('You already have a pending reset request for this class.');
+        }
+      });
+    }
+
+    /* Compute where the learner stands: certified / locked / cooldown / exhausted / etc. */
+    function _cvAssessmentStatus() {
+      if (!D.liveQuizId) {
+        if ((D.a1 && D.a1.pass) || (D.a2 && D.a2.pass)) return { status: 'certified', legacy: true };
+        if (D.a2 && !D.a2.pass) return { status: 'quiz-failed' };
+        if (D.a1 && !D.a1.pass) {
+          if (D.cd && Date.now() < new Date(D.cd).getTime() + 24*3600000) return { status: 'cooldown', legacyCd: D.cd, legacyScore: D.a1.score };
+          return _vp >= 90 ? { status: 'att-ready', attemptNumber: 2, legacyPrev: D.a1 } : { status: 'locked' };
+        }
+        return _vp >= 90 ? { status: 'ready', attemptNumber: 1 } : { status: 'locked' };
+      }
+      var r = _cvCheckAutoReset(D.liveQuizId, _sqRes(D.liveQuizId));
+      var a1 = r.att1, a2 = r.att2, a3 = r.att3;
+      if ((a1&&a1.pass) || (a2&&a2.pass) || (a3&&a3.pass)) return { status: 'certified', r: r };
+      if (a3 && !a3.pass) return { status: 'quiz-failed', r: r };
+      if (a2 && !a2.pass) {
+        var req = _cvSchedule(D.liveQuizId);
+        var unlocked = false;
+        if (req) {
+          if (req.status === 'pending') return { status: 'sched-pending', r: r };
+          if (req.status === 'approved') unlocked = true;
+        }
+        if (!unlocked && Date.now() >= a2.ts + 7*24*3600000) unlocked = true;
+        if (!unlocked) return { status: (req && req.status==='denied') ? 'sched-denied' : 'exhausted', r: r };
+        return _vp >= 90 ? { status: 'att-ready', attemptNumber: 3, r: r } : { status: 'locked', r: r };
+      }
+      if (a1 && !a1.pass) {
+        if (Date.now() < a1.ts + 24*3600000) return { status: 'cooldown', r: r };
+        return _vp >= 90 ? { status: 'att-ready', attemptNumber: 2, r: r } : { status: 'locked', r: r };
+      }
+      return _vp >= 90 ? { status: 'ready', attemptNumber: 1, r: r } : { status: 'locked' };
+    }
 
     function _learnerLogout() {
       sessionStorage.removeItem('seatrace_role');
       window.location.href = 'index.html';
     }
+
+    /* ══ PROFILE PANEL — same mechanism as knowledge-hub.html ══ */
+    var AV_COLORS_CV = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#EF4444','#0EA5E9','#D97706','#9333EA','#059669','#DC2626','#2563EB','#0D9488','#EA580C','#6366F1','#DB2777','#65A30D','#0891B2'];
+    function _avColorCv(name) {
+      var h = 0;
+      for (var i = 0; i < name.length; i++) h = ((h << 5) - h + name.charCodeAt(i)) | 0;
+      return AV_COLORS_CV[Math.abs(h) % AV_COLORS_CV.length];
+    }
+
+    function _toggleProfilePanel() {
+      var p  = document.getElementById('profilePanel');
+      var np = document.getElementById('notifPanel');
+      if (!p) return;
+      var open = p.style.display === 'block';
+      p.style.display = open ? 'none' : 'block';
+      if (np) np.style.display = 'none';
+      if (!open) _renderProfilePanel();
+    }
+
+    function _renderProfilePanel() {
+      var body = document.getElementById('profilePanelBody');
+      if (!body) return;
+      var u = _cvUser();
+      var initials = (u.name || 'Learner').split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
+      body.innerHTML =
+        '<div style="padding:16px;display:flex;align-items:center;gap:12px">'
+          + '<div style="width:42px;height:42px;border-radius:50%;background:' + _avColorCv(u.name || 'Learner') + ';color:#fff;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
+          + '<div style="min-width:0">'
+            + '<div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name || 'Learner') + '</div>'
+            + '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.email || '') + '</div>'
+          + '</div>'
+        + '</div>';
+    }
+
+    /* ══ NOTIFICATION PANEL — same mechanism as knowledge-hub.html. There's no
+       event anywhere yet that pushes a real notification (that system isn't wired
+       up on the Module page either), so this always shows "No notifications yet" —
+       the panel itself opening/closing correctly is what was actually broken here. */
+    var _notifsCv = [];
+
+    function _updateNotifBellCv() {
+      var unread = _notifsCv.filter(function(n){ return !n.read; }).length;
+      var badge = document.getElementById('notifBellBadge');
+      if (badge) badge.style.display = unread ? 'block' : 'none';
+    }
+
+    function _toggleNotifPanel() {
+      var p  = document.getElementById('notifPanel');
+      var pp = document.getElementById('profilePanel');
+      if (!p) return;
+      var open = p.style.display === 'block';
+      p.style.display = open ? 'none' : 'block';
+      if (pp) pp.style.display = 'none';
+      if (!open) _renderNotifPanel();
+    }
+
+    function _markAllNotifsRead() {
+      _notifsCv.forEach(function(n){ n.read = true; });
+      _renderNotifPanel();
+      _updateNotifBellCv();
+    }
+
+    function _renderNotifPanel() {
+      var list = document.getElementById('notifList');
+      if (!list) return;
+      if (_notifsCv.length === 0) {
+        list.innerHTML = '<div class="notif-empty">'
+          + '<svg viewBox="0 0 24 24" fill="none" stroke="#C4C9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32" style="display:block;margin:0 auto 10px"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
+          + 'No notifications yet</div>';
+        return;
+      }
+      list.innerHTML = _notifsCv.map(function(n) {
+        return '<div class="notif-item' + (n.read ? '' : ' unread') + '">'
+          + '<span class="notif-dot ' + (n.read ? 'read' : 'amber') + '"></span>'
+          + '<div style="flex:1"><div class="notif-title">' + _escHtml(n.title) + '</div><div class="notif-sub">' + _escHtml(n.sub) + '</div></div>'
+        + '</div>';
+      }).join('');
+    }
+
+    /* Close panels on outside click */
+    document.addEventListener('click', function(e) {
+      var np = document.getElementById('notifPanel');
+      var nb = document.getElementById('notifBellBtn');
+      if (np && np.style.display === 'block' && !np.contains(e.target) && nb && !nb.contains(e.target))
+        np.style.display = 'none';
+      var pp = document.getElementById('profilePanel');
+      var pb = document.getElementById('profileBtn');
+      if (pp && pp.style.display === 'block' && !pp.contains(e.target) && pb && !pb.contains(e.target))
+        pp.style.display = 'none';
+    });
 
     /* ── IndexedDB helpers (same DB as admin.html for cross-page file access) ── */
     function _openLibDB() {
@@ -465,19 +1051,59 @@
     var _answers    = [];     // null until answered
     var _currentQ   = 0;
     var _attNum     = 1;
+    var _cvCountdownTimer = null;
+
+    /* Live-updating countdown — ticks the on-screen label down and auto-refreshes
+       the assessment state once the target time passes, no page reload needed. */
+    function _cvStartCountdown(targetTs, fmt) {
+      if (_cvCountdownTimer) { clearInterval(_cvCountdownTimer); _cvCountdownTimer = null; }
+      function tick() {
+        var el = document.getElementById('cvCountdownLabel');
+        var remMs = targetTs - Date.now();
+        if (remMs <= 0) {
+          clearInterval(_cvCountdownTimer);
+          _cvCountdownTimer = null;
+          renderAssessment();
+          return;
+        }
+        if (el) el.textContent = fmt(remMs);
+      }
+      tick();
+      _cvCountdownTimer = setInterval(tick, 30000);
+    }
+
+    function _topBarStart() {
+      var el = document.getElementById('topLoadBar');
+      if (!el) return;
+      el.style.transition = 'none';
+      el.style.opacity = '1';
+      el.style.width = '0%';
+      requestAnimationFrame(function() {
+        el.style.transition = 'width .25s ease';
+        el.style.width = '70%';
+      });
+    }
+    function _topBarDone() {
+      var el = document.getElementById('topLoadBar');
+      if (!el) return;
+      el.style.transition = 'width .15s ease';
+      el.style.width = '100%';
+      setTimeout(function() {
+        el.style.transition = 'opacity .25s ease';
+        el.style.opacity = '0';
+        setTimeout(function() { el.style.width = '0%'; }, 250);
+      }, 150);
+    }
 
     /* ── Bootstrap ── */
     (function init() {
+      _topBarStart();
       try { D = JSON.parse(sessionStorage.getItem('cv_class') || '{}'); } catch(e) { D = {}; }
       if (!D.mod) { document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#9CA3AF;font-size:14px">No class data found. Please open this page from the LMS.</div>'; return; }
 
       _vp = D.vp || 0;
       _questions = D.questions || [];
-      _attNum = D.a2 ? (D.a2.pass ? 3 : 3) : (D.a1 ? 2 : 1);
-      // If a1 passed → certified, a2 passed → certified
-      // Clamp attNum to what's actually available
-      if (D.a1 && D.a1.pass) _attNum = 99; // certified
-      if (D.a2 && D.a2.pass) _attNum = 99;
+      // Attempt number is now computed on demand from the shared quiz-attempt record (see _cvAssessmentStatus)
 
       var col = D.col || '#5189F3';
       document.documentElement.style.setProperty('--col', col);
@@ -497,32 +1123,60 @@
       renderTerms();
       renderAssessment();
       renderFooter();
+      setTimeout(_topBarDone, 120);
     })();
+
+    /* Pull real quiz definitions from the server (same per-Module/Class files
+       uploads use) in case they've changed since knowledge-hub.html last synced
+       them into this browser — read-only, class-viewer never writes quiz defs. */
+    function _loadQuizzesFromServer() {
+      fetch('/api/lms/quizzes').then(function(res) { return res.json(); }).then(function(data) {
+        if (!data || !Array.isArray(data.quizzes)) return;
+        var local = [];
+        try { local = JSON.parse(localStorage.getItem('lms_quizzes') || '[]'); } catch(e) {}
+        function key(q) { return q.module + '::' + q.cls; }
+        var serverKeys = {};
+        data.quizzes.forEach(function(sq) { serverKeys[key(sq)] = true; });
+        var localOnly = local.filter(function(q) { return !serverKeys[key(q)]; });
+        localStorage.setItem('lms_quizzes', JSON.stringify(data.quizzes.concat(localOnly)));
+        if (D && D.mod) renderAssessment();
+      }).catch(function(err) { console.error('Quiz server load failed:', err); });
+    }
+    if (D && D.mod) _loadQuizzesFromServer();
 
     /* ── Sidebar ── */
     function renderSidebar() {
       var mods = D.modules || [];
       var el = document.getElementById('sbModules');
       if (!el) return;
+      // Read the live curriculum directly rather than trusting the sessionStorage
+      // snapshot's class count — that snapshot can go stale (e.g. classes added/removed
+      // after this tab's session was created) while this key is always current.
+      var liveModData = {};
+      try { liveModData = (JSON.parse(localStorage.getItem('lms_module_data') || 'null') || {}).data || {}; } catch(e) {}
       el.innerHTML = mods.map(function(m) {
         var isActive = m.name === D.mod;
+        var liveClasses = liveModData[m.name] && liveModData[m.name].classes;
+        var cnt = liveClasses ? liveClasses.length : (m.classCount || 0);
         return '<button class="sb-item' + (isActive ? ' active' : '') + '" onclick="sbNavMod(\'' + esc(m.name) + '\')" style="' + (isActive ? '--active-col:' + m.color : '') + '">'
           + '<div class="sb-mod-dot" style="background:' + m.color + (isActive ? ';box-shadow:0 0 0 2px ' + m.color : '') + '"></div>'
-          + m.name
+          + '<span style="flex:1">' + m.name + '</span>'
+          + '<span class="sb-count" style="background:' + m.color + '18;color:' + m.color + '">' + cnt + '</span>'
           + '</button>';
       }).join('');
     }
     function sbNavMod(name) {
-      // Navigate back to knowledge-hub and open that module
-      sessionStorage.setItem('cv_nav_mod', name);
-      window.close();
+      // Real navigation (not window.close(), which only works on script-opened popups
+      // and silently does nothing when this page is a normal tab) — knowledge-hub.html
+      // reads the #module=... hash on load and opens straight to that module.
+      window.location.href = 'knowledge-hub.html#module=' + encodeURIComponent(name);
     }
 
     /* ── Hero status ── */
     function renderHeroStatus() {
       var col = D.col || '#5189F3';
       var el = document.getElementById('heroStatus');
-      var isCert = (_attNum === 99) || (D.a1 && D.a1.pass) || (D.a2 && D.a2.pass);
+      var isCert = _cvAssessmentStatus().status === 'certified';
       if (isCert) {
         el.innerHTML = '<div class="status-circle" style="background:#ECFDF5;border:2px solid #16a34a"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="status-label" style="color:#16a34a">Complete</div>';
       } else if (_vp >= 90) {
@@ -580,11 +1234,11 @@
         + '</div>';
     }
 
-    function _contentItemDoc(title, docType, version, url) {
+    function _contentItemDoc(title, docType, readTime, url) {
       var click = url ? 'window.open(\'' + esc(url) + '\',\'_blank\')' : 'openVideo(\'' + esc(title) + '\',\'doc\',\'—\')';
       return '<div class="content-item" onclick="' + click + '">'
         + '<div class="content-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>'
-        + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">' + (docType||'Document') + (version ? ' · ' + version : '') + '</div></div>'
+        + '<div class="content-info"><div class="content-title">' + title + '</div><div class="content-meta">' + (docType||'Document') + (readTime ? ' · ' + readTime : '') + '</div></div>'
         + '<div class="content-status"><div class="play-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="#9CA3AF"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="content-status-label" style="color:#9CA3AF">View</div></div>'
         + '</div>';
     }
@@ -608,7 +1262,7 @@
       } else {
         var adminD = D.adminDocs && D.adminDocs.length ? D.adminDocs : null;
         if (adminD) {
-          el.innerHTML = adminD.map(function(v){ return _contentItemDoc(v.title, v.docType, v.version, v.url); }).join('');
+          el.innerHTML = adminD.map(function(v){ return _contentItemDoc(v.title, v.docType, v.duration, v.url); }).join('');
         } else {
           el.innerHTML = '<div class="empty-tab">No documents attached to this class yet.</div>';
         }
@@ -627,50 +1281,123 @@
     }
 
     /* ── Assessment ── */
+    /* TEMPORARY testing aid — remove before real rollout. Lets you reset this class's
+       quiz attempts in one click instead of waiting out real cooldowns/timers. */
+    function _testResetBtnHtml() {
+      if (!_testToolsUnlocked()) return '';
+      return '<div style="margin-top:10px;text-align:center"><button onclick="_testResetAttempts()" style="font-size:11px;font-weight:700;color:#9CA3AF;background:none;border:1px dashed #DFE2E6;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit">🧪 Reset Attempts (Testing)</button></div>';
+    }
+    function _testResetAttempts() {
+      if (!D.liveQuizId) { alert('No admin-assigned quiz found for this class.'); return; }
+      _uiConfirm({
+        title: 'Reset attempts? (Testing)',
+        message: 'Testing only: wipe all attempts, requests, and video-watch progress for "' + D.cls + '"?',
+        danger: true,
+        confirmLabel: 'Wipe',
+        onConfirm: function() {
+          try {
+            var u = _cvUser();
+            localStorage.removeItem('sq_results_' + D.liveQuizId + '::' + (u.email||'anon'));
+            ['sq_schedule_requests','sq_reset_requests'].forEach(function(key) {
+              var reqs = JSON.parse(localStorage.getItem(key)||'[]');
+              var filtered = reqs.filter(function(r){ return !(String(r.quizId)===String(D.liveQuizId) && (r.userName===u.name||r.userId===u.email||r.userEmail===u.email)); });
+              localStorage.setItem(key, JSON.stringify(filtered));
+            });
+            var stv = JSON.parse(localStorage.getItem(LS_KEY()) || '{}');
+            if (stv[D.mod] && stv[D.mod][D.cls]) { stv[D.mod][D.cls].vp = 0; localStorage.setItem(LS_KEY(), JSON.stringify(stv)); }
+          } catch(e) {}
+          location.reload();
+        }
+      });
+    }
+
     function renderAssessment() {
+      _renderAssessmentBody();
+      var el = document.getElementById('assessmentBody');
+      if (D.liveQuizId) el.innerHTML += _testResetBtnHtml();
+    }
+
+    function _renderAssessmentBody() {
+      if (_cvCountdownTimer) { clearInterval(_cvCountdownTimer); _cvCountdownTimer = null; }
       var el = document.getElementById('assessmentBody');
       var col = D.col || '#5189F3';
-      var isCert = (D.a1 && D.a1.pass) || (D.a2 && D.a2.pass);
-      var exhausted = D.a2 && !D.a2.pass;
+      var clockIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+      var lockIcon  = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
 
-      if (isCert) {
-        var pass = D.a1 && D.a1.pass ? D.a1 : D.a2;
-        el.innerHTML = _resultHTML(pass.score, true, pass.c, D.questions ? D.questions.length : 0, pass.date);
-        return;
-      }
-      if (exhausted) {
-        el.innerHTML = '<div class="assessment-empty" style="border-color:#FECACA;background:#FEF2F2;color:#EF4444">All attempts used. Contact your supervisor to request a 3rd attempt.</div>';
-        return;
-      }
-      if (!_questions.length) {
+      if (!_questions.length && !D.liveQuizId) {
         el.innerHTML = '<div class="assessment-empty">No quiz assigned to this class.</div>';
         return;
       }
-      if (_vp < 90) {
-        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Watch video to unlock assessment</div><div style="font-size:12px;color:#B45309;font-weight:600">Complete at least 90% of the video content to enable the quiz.</div></div></div>';
+
+      var as = _cvAssessmentStatus();
+
+      if (as.status === 'certified') {
+        if (as.legacy) {
+          var passLeg = D.a1 && D.a1.pass ? D.a1 : D.a2;
+          el.innerHTML = _resultHTML(passLeg.score, true, passLeg.c, D.questions ? D.questions.length : 0, passLeg.date);
+        } else {
+          var passRec = (as.r.att1&&as.r.att1.pass) ? as.r.att1 : ((as.r.att2&&as.r.att2.pass) ? as.r.att2 : as.r.att3);
+          el.innerHTML = _resultHTML(passRec.pct, true, passRec.score, passRec.total, passRec.date);
+        }
         return;
       }
 
-      // Cooldown check for att2
-      if (D.a1 && !D.a1.pass && _attNum === 2) {
-        if (D.cd) {
-          var cdEnd = new Date(D.cd).getTime() + 24*60*60*1000;
-          var now = Date.now();
-          if (now < cdEnd) {
-            var remMs = cdEnd - now;
-            var remH = Math.floor(remMs/3600000);
-            var remM = Math.floor((remMs%3600000)/60000);
-            el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + D.a1.score + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in ' + (remH ? remH + 'h ' : '') + remM + 'm</div></div></div>';
-            return;
-          }
-        }
+      if (as.status === 'quiz-failed') {
+        var reqR = D.liveQuizId ? _cvResetReq(D.liveQuizId) : null;
+        var pending = reqR && reqR.status === 'pending';
+        el.innerHTML = '<div class="assessment-empty" style="border-color:#FECACA;background:#FEF2F2;color:#EF4444;display:flex;flex-direction:column;gap:10px;align-items:center;padding:24px">'
+          + '<div>All 3 attempts used.</div>'
+          + (pending
+              ? '<div style="font-size:12px;font-weight:700;color:#B45309">Reset request pending admin review…</div>'
+              : '<button class="btn-outline" onclick="cvRequestReset()">Request Reset</button>')
+          + '</div>';
+        return;
       }
 
+      if (as.status === 'sched-pending') {
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 3 request pending</div><div style="font-size:12px;color:#B45309;font-weight:600">An admin is reviewing your request.</div></div></div>';
+        return;
+      }
+
+      if (as.status === 'exhausted' || as.status === 'sched-denied') {
+        var att3Target = as.r.att2.ts + 7*24*3600000;
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div>'
+          + '<div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">' + (as.status==='sched-denied' ? 'Request denied' : 'Attempt 3 locked') + '</div>'
+          + '<div style="font-size:12px;color:#B45309;font-weight:600;margin-bottom:8px">Automatically unlocks in <span id="cvCountdownLabel"></span>, or request early access below.</div>'
+          + '<button class="btn-outline" onclick="cvRequestAtt3()">' + (as.status==='sched-denied'?'Re-request':'Request Early Unlock') + '</button>'
+          + '</div></div>';
+        _cvStartCountdown(att3Target, function(remMs){
+          var d=Math.floor(remMs/86400000), h=Math.floor((remMs%86400000)/3600000), m=Math.floor((remMs%3600000)/60000);
+          return d>0 ? d+'d '+h+'h' : h>0 ? h+'h '+m+'m' : m+'m';
+        });
+        return;
+      }
+
+      if (as.status === 'cooldown') {
+        var cdEnd = as.legacyCd ? new Date(as.legacyCd).getTime()+24*3600000 : as.r.att1.ts + 24*3600000;
+        var scoreShown = as.legacyCd ? as.legacyScore : as.r.att1.pct;
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + scoreShown + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in <span id="cvCountdownLabel"></span></div></div></div>';
+        _cvStartCountdown(cdEnd, function(remMs){
+          var h=Math.floor(remMs/3600000), m=Math.floor((remMs%3600000)/60000);
+          return (h ? h+'h ' : '') + m + 'm';
+        });
+        return;
+      }
+
+      if (as.status === 'locked') {
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + lockIcon + '</div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Watch video to unlock assessment</div><div style="font-size:12px;color:#B45309;font-weight:600">Complete at least 90% of the video content to enable the quiz.</div></div></div>';
+        return;
+      }
+
+      // 'ready' (attempt 1) or 'att-ready' (retry, already re-watched)
+      var attemptNum = as.attemptNumber || 1;
+      var prevScore = attemptNum === 2 ? (as.r && as.r.att1 ? as.r.att1.pct : (as.legacyPrev ? as.legacyPrev.score : null))
+                     : attemptNum === 3 ? (as.r && as.r.att2 ? as.r.att2.pct : null) : null;
       el.innerHTML = '<div class="assessment-ready">'
         + '<div class="assessment-meta">'
-        + '<div class="assessment-title">' + (D.a1 && !D.a1.pass ? 'Attempt 2 — Re-Assessment' : 'Class Assessment') + '</div>'
+        + '<div class="assessment-title">' + (attemptNum > 1 ? 'Attempt ' + attemptNum + ' — Re-Assessment' : 'Class Assessment') + '</div>'
         + '<div class="assessment-sub">' + _questions.length + ' questions · Pass mark: ' + D.passMark + '% · Approx. ' + Math.ceil(_questions.length * 1.5) + ' min</div>'
-        + (D.a1 && !D.a1.pass ? '<div style="margin-top:6px;font-size:11px;font-weight:700;color:#EF4444">Attempt 1: ' + D.a1.score + '% — did not pass</div>' : '')
+        + (prevScore !== null ? '<div style="margin-top:6px;font-size:11px;font-weight:700;color:#EF4444">Attempt ' + (attemptNum-1) + ': ' + prevScore + '% — did not pass</div>' : '')
         + '</div>'
         + '<button class="btn-start-quiz" onclick="startQuiz()">Start Assessment →</button>'
         + '</div>';
@@ -678,6 +1405,9 @@
 
     /* ── Quiz ── */
     function startQuiz() {
+      var as = _cvAssessmentStatus();
+      if (as.status !== 'ready' && as.status !== 'att-ready') { renderAssessment(); return; }
+      _attNum    = as.attemptNumber || 1;
       _quizPhase = 'taking';
       _currentQ  = 0;
       _answers   = new Array(_questions.length).fill(null);
@@ -743,23 +1473,56 @@
       var pct = total ? Math.round((correct / total) * 100) : 0;
       var pass = pct >= (D.passMark || 70);
       var today = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
-      var attKey = 'a' + _attNum;
+      var ts = Date.now();
 
-      // Save to localStorage (shared with knowledge-hub.html)
+      if (D.liveQuizId) {
+        var rec = _sqRes(D.liveQuizId);
+        var attKey = 'att' + _attNum;
+        rec[attKey] = { score: correct, total: total, pct: pct, pass: pass, date: today, ts: ts, quizVersion: 1 };
+        if (pass) rec.certIssuedAt = ts;
+        _saveSqRes(D.liveQuizId, rec);
+
+        if (_attNum === 3) {
+          try {
+            var u = _cvUser();
+            var reqs = JSON.parse(localStorage.getItem('sq_schedule_requests')||'[]');
+            var rq = null;
+            for (var ri=reqs.length-1; ri>=0; ri--) {
+              if (String(reqs[ri].quizId)===String(D.liveQuizId) && (reqs[ri].userName===u.name||reqs[ri].userId===u.email)) { rq=reqs[ri]; break; }
+            }
+            if (rq && rq.status==='approved') { rq.status='used'; rq.usedAt=ts; localStorage.setItem('sq_schedule_requests', JSON.stringify(reqs)); }
+          } catch(e) {}
+        }
+      } else {
+        // Legacy fallback (no admin-assigned quiz id) — kept for safety, should be unreachable
+        var attKeyLeg = 'a' + _attNum;
+        try {
+          var stLeg = JSON.parse(localStorage.getItem(LS_KEY()) || '{}');
+          if (!stLeg[D.mod]) stLeg[D.mod] = {};
+          if (!stLeg[D.mod][D.cls]) stLeg[D.mod][D.cls] = {};
+          stLeg[D.mod][D.cls][attKeyLeg] = { pass: pass, score: pct, date: today, c: correct, t: total };
+          if (!pass && _attNum === 1) stLeg[D.mod][D.cls].cd = new Date().toISOString();
+          localStorage.setItem(LS_KEY(), JSON.stringify(stLeg));
+          D[attKeyLeg] = { pass: pass, score: pct, date: today, c: correct, t: total };
+          if (!pass && _attNum === 1) D.cd = new Date().toISOString();
+        } catch(e) {}
+        if (_attNum === 1) D.a1 = D[attKeyLeg]; else D.a2 = D[attKeyLeg];
+      }
+
+      // Video-rewatch rule: passing keeps the video marked watched; failing resets it so the
+      // learner must re-watch 90%+ of the content again before the next attempt unlocks.
       try {
-        var st = JSON.parse(localStorage.getItem(LS) || '{}');
-        if (!st[D.mod]) st[D.mod] = {};
-        if (!st[D.mod][D.cls]) st[D.mod][D.cls] = {};
-        st[D.mod][D.cls][attKey] = { pass: pass, score: pct, date: today, c: correct, t: total };
-        if (!pass && _attNum === 1) st[D.mod][D.cls].cd = new Date().toISOString();
-        localStorage.setItem(LS, JSON.stringify(st));
-        // Update D so re-render shows result
-        D[attKey] = { pass: pass, score: pct, date: today, c: correct, t: total };
-        if (!pass && _attNum === 1) D.cd = new Date().toISOString();
+        var stv = JSON.parse(localStorage.getItem(LS_KEY()) || '{}');
+        if (!stv[D.mod]) stv[D.mod] = {};
+        if (!stv[D.mod][D.cls]) stv[D.mod][D.cls] = {};
+        stv[D.mod][D.cls].vp = pass ? 100 : 0;
+        localStorage.setItem(LS_KEY(), JSON.stringify(stv));
+        _vp = pass ? 100 : 0;
+        D.vp = _vp;
       } catch(e) {}
 
-      if (_attNum === 1) D.a1 = D[attKey]; else D.a2 = D[attKey];
       renderHeroStatus();
+      renderContent(_activeTab);
       document.getElementById('assessmentBody').innerHTML = _resultHTML(pct, pass, correct, total, today);
     }
 
@@ -779,13 +1542,79 @@
           + '<div class="result-stat"><div class="result-stat-num">' + correct + '/' + total + '</div><div class="result-stat-label">Correct</div></div>'
         + '</div>'
         + '<div style="font-size:11px;color:#9CA3AF;font-weight:600;margin-bottom:16px">Completed: ' + date + '</div>'
-        + (pass ? '' : '<div class="result-actions"><button class="btn-outline" onclick="startQuiz()">Retry Assessment</button></div>')
+        + (pass
+            ? '<div class="result-actions">'
+                + '<button class="btn-primary" onclick="_cvViewCertificate(' + pct + ',\'' + esc(date) + '\')" style="display:inline-flex;align-items:center;gap:7px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg> View Certificate</button>'
+                + '<button class="btn-outline" onclick="_cvDownloadCertDirect(' + pct + ',\'' + esc(date) + '\')" title="Download Certificate" aria-label="Download Certificate" style="display:inline-flex;align-items:center;justify-content:center;padding:9px 14px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>'
+              + '</div>'
+            : '<div class="result-actions"><button class="btn-outline" onclick="renderAssessment()">Continue</button></div>')
         + '</div>';
+    }
+
+    /* ── Certificate viewer — same mechanism as knowledge-hub.html, shown right where
+       the learner just passed instead of only being reachable from Certifications. ── */
+    function _cvHashStr(str) {
+      var h = 0;
+      for (var i = 0; i < str.length; i++) { h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+      return h;
+    }
+
+    function _cvViewCertificate(pct, date) {
+      var u   = _cvUser();
+      var col = D.col || '#5189F3';
+      var certId = 'STC-' + (D.mod.substring(0,2) + D.cls.substring(0,2)).toUpperCase().replace(/\s/g,'') + String(Math.abs(_cvHashStr(D.mod+D.cls))).substring(0,4);
+
+      ['certCornerTL','certCornerTR','certCornerBL','certCornerBR'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.borderColor = col;
+      });
+      var cb = document.getElementById('certCourseBox');
+      if (cb) { cb.style.borderColor = col + '44'; cb.style.background = col + '10'; }
+
+      var cnEl = document.getElementById('certClassName');
+      cnEl.textContent = 'SeaTrace Certified ' + D.cls + ' Specialist';
+      cnEl.style.color = col;
+      document.getElementById('certModName').textContent = D.cls + ' · ' + D.mod;
+      document.getElementById('certUserName').textContent = u.name;
+      document.getElementById('certUserRole').textContent = (u.role||'Learner') + (u.dept ? ' · ' + u.dept : '');
+      document.getElementById('certDate').textContent = date || '—';
+      document.getElementById('certId').textContent = certId;
+
+      var scoreEl   = document.getElementById('certScore');
+      var scoreWrap = document.getElementById('certScoreWrap');
+      if (pct !== null && pct !== undefined && !isNaN(pct)) {
+        scoreEl.textContent = pct + '%';
+        scoreWrap.style.display = 'inline-flex';
+      } else {
+        scoreWrap.style.display = 'none';
+      }
+
+      document.getElementById('certViewOverlay').style.display = 'flex';
+    }
+
+    function _cvCloseCertView() {
+      document.getElementById('certViewOverlay').style.display = 'none';
+    }
+
+    /* "Download" from the result card — populates the certificate exactly like View
+       Certificate does, then goes straight to the print/PDF dialog without an extra click. */
+    function _cvDownloadCertDirect(pct, date) {
+      _cvViewCertificate(pct, date);
+      downloadCertificatePdf();
+    }
+
+    function downloadCertificatePdf() {
+      var userName  = (document.getElementById('certUserName').textContent || 'Certificate').trim();
+      var className = (document.getElementById('certClassName').textContent || '').trim();
+      var origTitle = document.title;
+      document.title = (className || 'SeaTrace Certificate') + ' - ' + userName;
+      function restore() { document.title = origTitle; window.removeEventListener('afterprint', restore); }
+      window.addEventListener('afterprint', restore);
+      window.print();
     }
 
     /* ── Footer nav ── */
     function _cvIdx() {
-      var _list = CV_MODULES[D.mod] || [];
+      var _list = D.clsList || [];
       var i = _list.indexOf(D.cls);
       return i !== -1 ? i : (D.clsIdx || 0);
     }
@@ -793,22 +1622,27 @@
     function renderFooter() {
       var prev = document.getElementById('btnPrev');
       var next = document.getElementById('btnNext');
-      var _list = CV_MODULES[D.mod] || [];
+      var _list = D.clsList || [];
       var ci = _cvIdx();
       var _prevName = _list[ci - 1] || null;
       var _nextName = _list[ci + 1] || null;
-      if (_prevName) { prev.removeAttribute('disabled'); document.getElementById('btnPrevLabel').textContent = 'Previous'; } else { prev.setAttribute('disabled',''); document.getElementById('btnPrevLabel').textContent = 'Previous'; }
-      if (_nextName) { next.removeAttribute('disabled'); document.getElementById('btnNextLabel').textContent = 'Next'; } else { next.setAttribute('disabled',''); document.getElementById('btnNextLabel').textContent = 'Next'; }
+      if (_prevName) { prev.removeAttribute('disabled'); } else { prev.setAttribute('disabled',''); }
+      if (_nextName) { next.removeAttribute('disabled'); } else { next.setAttribute('disabled',''); }
+      var prevNameEl = document.getElementById('btnPrevName');
+      var nextNameEl = document.getElementById('btnNextName');
+      if (prevNameEl) prevNameEl.textContent = _prevName || '';
+      if (nextNameEl) nextNameEl.textContent = _nextName || (ci === _list.length - 1 ? 'Finish class' : '');
     }
 
     function navClass(dir) {
-      var _navList = CV_MODULES[D.mod] || [];
+      var _navList = D.clsList || [];
       var curIdx = _cvIdx();
       var newIdx = dir === 'next' ? curIdx + 1 : curIdx - 1;
       var cls = _navList[newIdx];
       if (!cls) return;
+      _topBarStart();
       var LS_val = {};
-      try { LS_val = JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e) {}
+      try { LS_val = JSON.parse(localStorage.getItem(LS_KEY()) || '{}'); } catch(e) {}
       var s = (LS_val[D.mod] || {})[cls] || {};
       var list = _navList;
       var nd = {
@@ -822,24 +1656,17 @@
         vp: s.vp || 0, a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null
       };
 
-      // Fix 1: restore class metadata from embedded CV_CLASS_META + CV_QQ (always available)
-      var _cvMeta = (CV_CLASS_META[D.mod] || {})[cls] || {};
-      if (_cvMeta.desc)        nd.desc        = _cvMeta.desc;
-      if (_cvMeta.videoTitle)  nd.videoTitle  = _cvMeta.videoTitle;
-      if (_cvMeta.voiceTitle)  nd.voiceTitle  = _cvMeta.voiceTitle;
-      if (_cvMeta.terms)       nd.terms       = _cvMeta.terms;
-      var _cvQQ = (CV_QQ[D.mod] || {})[cls] || {};
-      if (_cvQQ.questions)     nd.questions   = _cvQQ.questions;
-      if (_cvQQ.passMark)      nd.passMark    = _cvQQ.passMark;
-      // Override with admin live quiz if one exists in localStorage
+      // Restore class metadata + quiz from the real synced cache (built by knowledge-hub.html)
       try {
         var modMeta = JSON.parse(localStorage.getItem('lms_mod_meta_' + D.mod) || '{}');
         var clsMeta = modMeta[cls] || {};
-        if (clsMeta.liveQuizId) {
-          nd.liveQuizId = clsMeta.liveQuizId;
-          if (clsMeta.questions) nd.questions = clsMeta.questions;
-          if (clsMeta.passMark)  nd.passMark  = clsMeta.passMark;
-        }
+        if (clsMeta.desc)        nd.desc        = clsMeta.desc;
+        if (clsMeta.videoTitle)  nd.videoTitle  = clsMeta.videoTitle;
+        if (clsMeta.voiceTitle)  nd.voiceTitle  = clsMeta.voiceTitle;
+        if (clsMeta.terms)       nd.terms       = clsMeta.terms;
+        if (clsMeta.questions)   nd.questions   = clsMeta.questions;
+        if (clsMeta.passMark)    nd.passMark    = clsMeta.passMark;
+        if (clsMeta.liveQuizId)  nd.liveQuizId  = clsMeta.liveQuizId;
       } catch(e) {}
 
       // Fix 2: restore admin-uploaded content from localStorage
@@ -849,7 +1676,7 @@
         var _vo = JSON.parse(localStorage.getItem('lms_voiceover_library') || '[]');
         nd.adminVoices = _vo.filter(function(v){ return v.module===D.mod && v.cls===cls; });
         var _dl = JSON.parse(localStorage.getItem('lms_document_library') || '[]');
-        nd.adminDocs = _dl.filter(function(v){ return v.module===D.mod && v.cls===cls; });
+        nd.adminDocs = _dl.filter(function(v){ return v.module===D.mod && v.cls===cls && (v.status||'live')==='live'; });
       } catch(e) {}
 
       sessionStorage.setItem('cv_class', JSON.stringify(nd));
@@ -922,11 +1749,11 @@
       _vp = 100;
       // Persist to localStorage
       try {
-        var st = JSON.parse(localStorage.getItem(LS) || '{}');
+        var st = JSON.parse(localStorage.getItem(LS_KEY()) || '{}');
         if (!st[D.mod]) st[D.mod] = {};
         if (!st[D.mod][D.cls]) st[D.mod][D.cls] = {};
         st[D.mod][D.cls].vp = 100;
-        localStorage.setItem(LS, JSON.stringify(st));
+        localStorage.setItem(LS_KEY(), JSON.stringify(st));
         D.vp = 100;
       } catch(e) {}
       document.getElementById('vMarkBtn').style.display = 'none';
@@ -941,12 +1768,119 @@
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         if (document.getElementById('voverlay').classList.contains('open')) { closeVideo(); return; }
-        window.close();
+        history.length > 1 ? history.back() : window.close();
       }
     });
 
     /* ── Utility ── */
     function esc(s) { return (s||'').replace(/'/g,"\\'"); }
+
+    /* ══ PRODUCT TOUR — same mechanism as knowledge-hub.html, steps tailored to this page ══ */
+    var _tourStep = 0;
+    var _TOUR_STEPS = [
+      { ids:'sb-journey', pos:'right', title:'My Journey',
+        body:'Your personal dashboard. See your overall progress, module completion bars, quiz scores, skill points and the next class ready for you — all in one view.' },
+      { ids:'sbModules', pos:'right', title:'Modules — Your Classes',
+        body:'Jump straight to any other module from here without leaving this class.' },
+      { ids:'sb-certs', pos:'right', title:'Certifications',
+        body:'View all your earned certificates. Download printable copies, track pending ones, and request a 3rd quiz attempt directly from this section.' },
+      { ids:'sb-lb', pos:'right', title:'Team Leaderboard',
+        body:'See how your certifications and skill points rank you among your teammates. Updates in real time as the team earns certificates.' },
+      { ids:'tabBar', pos:'bottom', title:'Class Content',
+        body:'Switch between Video, Voice Over, and Document tabs to go through everything assigned to this class.' },
+      { ids:'assessmentBody', pos:'bottom', title:'Assessment',
+        body:'Once you\'ve gone through the content, take the quiz here — passing it unlocks the next class.' }
+    ];
+
+    function _tourStart() {
+      _tourStep = 0;
+      document.getElementById('tourHighlight').style.display = 'block';
+      document.getElementById('tourCard').style.display = 'block';
+      _renderTourStep();
+    }
+    function _tourClose() {
+      document.getElementById('tourHighlight').style.display = 'none';
+      document.getElementById('tourCard').style.display = 'none';
+    }
+    function _tourNext() { if (_tourStep < _TOUR_STEPS.length-1) { _tourStep++; _renderTourStep(); } }
+    function _tourPrev() { if (_tourStep > 0) { _tourStep--; _renderTourStep(); } }
+
+    function _tourGetRect(step) {
+      var idList = Array.isArray(step.ids) ? step.ids : [step.ids];
+      var top=Infinity, left=Infinity, bottom=-Infinity, right=-Infinity;
+      var found = false;
+      idList.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var r = el.getBoundingClientRect();
+        top    = Math.min(top, r.top);
+        left   = Math.min(left, r.left);
+        bottom = Math.max(bottom, r.bottom);
+        right  = Math.max(right, r.right);
+        found = true;
+      });
+      if (!found) return null;
+      return { top:top, left:left, bottom:bottom, right:right, width:right-left, height:bottom-top };
+    }
+
+    function _renderTourStep() {
+      var step  = _TOUR_STEPS[_tourStep];
+      var rect  = _tourGetRect(step);
+      var total = _TOUR_STEPS.length;
+      if (!rect) { if (_tourStep < total-1) { _tourStep++; _renderTourStep(); } return; }
+
+      var PAD = 7, gap = 14, cardW = 272;
+
+      var hl = document.getElementById('tourHighlight');
+      hl.style.top    = (rect.top - PAD) + 'px';
+      hl.style.left   = (rect.left - PAD) + 'px';
+      hl.style.width  = (rect.width + PAD*2) + 'px';
+      hl.style.height = (rect.height + PAD*2) + 'px';
+
+      var card = document.getElementById('tourCard');
+      var arr  = document.getElementById('tourArrow');
+      arr.className = '';
+      arr.style.cssText = '';
+
+      if (step.pos === 'right') {
+        var cardLeft = rect.right + gap;
+        var cardTop  = rect.top + rect.height/2 - 90;
+        cardTop = Math.max(16, Math.min(window.innerHeight - 250, cardTop));
+        if (cardLeft + cardW > window.innerWidth - 12) {
+          cardLeft = rect.left - cardW - gap;
+          arr.className = 'tour-arr-r';
+        } else {
+          arr.className = 'tour-arr-l';
+        }
+        card.style.top  = cardTop + 'px';
+        card.style.left = cardLeft + 'px';
+        card.style.right = 'auto';
+        arr.style.top = '50%';
+      } else {
+        var elCx = rect.left + rect.width/2;
+        var cleft = Math.max(12, Math.min(window.innerWidth - cardW - 12, elCx - cardW/2));
+        card.style.top  = (rect.bottom + gap) + 'px';
+        card.style.left = cleft + 'px';
+        card.style.right = 'auto';
+        arr.className = 'tour-arr-t';
+        arr.style.left = Math.max(16, Math.min(cardW-32, elCx - cleft - 8)) + 'px';
+      }
+
+      document.getElementById('tourStepLabel').textContent = 'Step ' + (_tourStep+1) + ' of ' + total;
+      document.getElementById('tourTitle').textContent = step.title;
+      document.getElementById('tourBody').textContent = step.body;
+
+      var dh = '';
+      for (var i=0; i<total; i++) {
+        dh += '<div style="width:'+(i===_tourStep?'16':'6')+'px;height:6px;border-radius:3px;background:'+(i===_tourStep?'#5189F3':'#E5E7EB')+';transition:all .2s;flex-shrink:0"></div>';
+      }
+      document.getElementById('tourDots').innerHTML = dh;
+
+      var isLast = _tourStep === total-1;
+      document.getElementById('tourBtnBack').style.display = _tourStep > 0 ? 'inline-flex' : 'none';
+      document.getElementById('tourBtnNext').style.display = !isLast ? 'inline-flex' : 'none';
+      document.getElementById('tourBtnDone').style.display = isLast ? 'inline-flex' : 'none';
+    }
   </script>
 </body>
 </html>
