@@ -34,8 +34,13 @@
     .nav-icon-btn:hover { background: #E4EEFF; color: #5189F3; }
     .nav-icon-btn svg { width: 18px; height: 18px; }
 
+    /* ── Mobile hamburger (hidden on desktop; shown under the responsive breakpoint) ── */
+    .hamburger-btn { display: none; width: 36px; height: 36px; background: none; border: none; cursor: pointer; align-items: center; justify-content: center; color: #374151; border-radius: 0; margin-right: 4px; flex-shrink: 0; }
+    .hamburger-btn:hover { background: #F3F4F6; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 490; }
+
     /* ── Layout ── */
-    .layout { display: flex; flex: 1; overflow: hidden; }
+    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
 
     /* ── Sidebar ── */
     .sidebar {
@@ -43,6 +48,7 @@
       display: flex; flex-direction: column; flex-shrink: 0;
       padding: 16px 0; overflow-y: auto;
     }
+
     .sidebar-label {
       font-size: 10px; font-weight: 700; color: #bbb; letter-spacing: .08em;
       text-transform: uppercase; padding: 0 20px 10px;
@@ -89,11 +95,12 @@
 
     /* ── Module header ── */
     .mod-section-head {
-      display: flex; align-items: center; gap: 12px;
       padding: 14px 20px; background: #fff;
       border: 1px solid #DFE2E6; border-radius: 2px 2px 0 0; border-bottom: none;
     }
-    .mod-section-name { font-size: 15px; font-weight: 800; color: #111; flex: 1; }
+    .mod-section-row { display: flex; align-items: center; gap: 12px; }
+    .mod-section-name { font-size: 15px; font-weight: 800; color: #111; line-height: 1.1; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mod-section-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: -3px; padding-left: 22px; }
     .mod-section-meta { font-size: 12px; font-weight: 600; color: #888; white-space: nowrap; }
     .mod-role-pill {
       font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
@@ -106,43 +113,12 @@
       border: 1px solid #DFE2E6; border-top: none;
       border-radius: 0 0 2px 2px; background: #fff; overflow: hidden;
     }
-    .class-row {
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 20px; border-bottom: 1px solid #F5F5F5;
-      transition: background 0.12s;
-    }
-    .class-row:last-child { border-bottom: none; }
-    .class-row:hover { background: #EEF3FF; cursor: pointer; }
-    .class-row:hover .class-row-name { color: #5189F3; }
-    .class-row:hover .class-row-chevron { color: #5189F3; }
-    .class-step-circle {
-      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800;
-    }
-    .class-row-name { font-size: 14px; font-weight: 700; color: #111; line-height: 1.2; }
-    .class-row-chips { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
     .attempt-chip {
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 2px;
     }
     .attempt-chip.pass { background: #F0FDF4; color: #16a34a; border: 1px solid #bbf7d0; }
     .attempt-chip.fail { background: #FEF2F2; color: #EF4444; border: 1px solid #fecaca; }
-    .quiz-pill-assigned {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
-      background: #DCFCE7; color: #16a34a; border: 1px solid #bbf7d0;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .quiz-pill-none { font-size: 11px; font-weight: 600; color: #C4C9D4; white-space: nowrap; flex-shrink: 0; }
-    .class-prog-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .class-prog-bar { width: 90px; height: 5px; background: #F0F0F0; border-radius: 3px; overflow: hidden; }
-    .class-prog-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
-    .class-prog-pct { font-size: 12px; font-weight: 800; min-width: 36px; text-align: right; }
-    .class-content-count { font-size: 11px; font-weight: 600; color: #C4C9D4; flex-shrink: 0; }
-    .class-card-btns { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-    .class-row-chevron { flex-shrink: 0; color: #C4C9D4; cursor: pointer; transition: color .15s; }
-    .class-row-chevron:hover { color: #5189F3; }
     /* legacy compat */
     .class-prog-track { height: 5px; background: #F0F0F0; border-radius: 2px; overflow: hidden; }
     .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: #5189F3; color: #fff; border: none; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
@@ -530,6 +506,7 @@
     .lb-table-head {
       display: flex; align-items: center; padding: 12px 16px;
       border-bottom: 1px solid #F0F0F0; gap: 10px;
+      position: sticky; top: 0; z-index: 3; background: #fff;
     }
     .lb-table-head-title { font-size: 13px; font-weight: 800; color: #111; flex: 1; }
     .lb-search {
@@ -543,6 +520,7 @@
       padding: 10px 14px; font-size: 10px; font-weight: 800; color: #aaa;
       text-transform: uppercase; letter-spacing: .05em; background: #FAFAFA;
       border-bottom: 1px solid #F0F0F0; text-align: left;
+      position: sticky; top: 52px; z-index: 2;
     }
     table.lb-tbl td { padding: 12px 14px; border-bottom: 1px solid #F5F5F5; vertical-align: middle; }
     table.lb-tbl tr:last-child td { border-bottom: none; }
@@ -656,16 +634,79 @@
       #certDoc { position: fixed !important; top: 50% !important; left: 0 !important; width: 100% !important; margin: 0 !important; transform: translateY(-50%) !important; box-sizing: border-box; border: none !important; }
       .cert-modal-actions { display: none !important; }
     }
+
+    /* ══════════════════════════════════════════════════════
+       RESPONSIVE — kept at the end of the stylesheet on purpose.
+       Plain (non-!important) CSS rules only win a tie against an earlier
+       rule of equal specificity if they come LATER in the source — a media
+       query does not get special priority just for being a media query.
+       Scattering these near each rule they override risked silently losing
+       to a base rule declared further down the file, so everything mobile/
+       tablet-related lives in this one place instead. Only the inline-style
+       fights above (the print block) need !important; these don't.
+    ══════════════════════════════════════════════════════ */
+    @media (max-width: 860px) {
+      .hamburger-btn { display: flex; }
+      .sidebar {
+        position: fixed; top: 52px; left: 0; bottom: 0; z-index: 500;
+        width: 78vw; max-width: 300px;
+        transform: translateX(-100%); transition: transform .22s ease;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      /* min-width:0 stops any unwrapped wide content inside .main (a flex child of
+         .layout) from silently forcing the whole page wider than the viewport. */
+      .main { padding: 16px; min-width: 0; }
+      .rg-2, .rg-3, .rg-4 { grid-template-columns: repeat(2, 1fr) !important; }
+      .kb-board { grid-template-columns: repeat(2, 1fr); }
+      .lb-table-wrap { overflow-x: auto; }
+      .lb-tbl { min-width: 640px; }
+    }
+    @media (max-width: 560px) {
+      .rg-2, .rg-3, .rg-4 { grid-template-columns: 1fr !important; }
+      .kb-board { grid-template-columns: 1fr; }
+      .lb-podium { flex-wrap: wrap; }
+      /* Class row (circle / name / quiz chips / progress / status / CTA) — shared by
+         both My Journey and the Modules tab. Keep it on one line by trimming the
+         lower-priority pieces instead of wrapping: hide the A1/A2 attempt chips
+         (redundant with the status pill) and shrink the circle/bar/pill/button so
+         the name keeps room. */
+      .j-class-row { gap: 6px; padding: 10px 14px; }
+      .j-quiz-chips { display: none; }
+      .j-circle { width: 24px !important; height: 24px !important; font-size: 10px !important; }
+      .j-prog-wrap { gap: 4px; }
+      .j-prog-bar { width: 34px !important; }
+      .j-prog-pct { min-width: 0 !important; font-size: 10px !important; }
+      .j-status-pill { padding: 2px 6px !important; font-size: 9px !important; }
+      .j-cta-btn { padding: 4px 8px !important; font-size: 10px !important; }
+      .j-cta-wrap { width: auto !important; }
+      /* Module Progress bars: the module-name label and "X/Y classes" count were
+         fixed-width and ate most of the row, leaving the flex:1 bar almost no room
+         to grow into — shrink both so the bar (the actual point of the row) reads
+         as a real bar instead of a sliver. */
+      .jmb-name { width: 64px !important; }
+      .jmb-count { min-width: 0 !important; font-size: 10px !important; }
+      /* Continue Learning banner: the status pill duplicates the CTA button's own
+         label (e.g. "Quiz Ready" pill next to a "Take Quiz" button) and was tight
+         on a phone — hide it there only; desktop keeps showing it. */
+      .cb-status-pill { display: none; }
+    }
   </style>
 </head>
 <body>
   <div id="topLoadBar"></div>
 
   <header class="navbar">
-    <div class="brand" onclick="_testToolsTapTrick()">
-      <img src="Assets/Seatrace logo.png" alt="SeaTrace" style="height:32px;object-fit:contain"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <span class="brand-name" style="display:none"><span class="sea">SEA</span>TRACE</span>
+    <div style="display:flex;align-items:center">
+      <button class="hamburger-btn" onclick="_toggleSidebar()" title="Menu" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="brand" onclick="_testToolsTapTrick()">
+        <img src="Assets/Seatrace logo.png" alt="SeaTrace" style="height:32px;object-fit:contain"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="brand-name" style="display:none"><span class="sea">SEA</span>TRACE</span>
+      </div>
     </div>
     <div class="nav-right">
       <span class="nav-role-badge">Learner</span>
@@ -714,7 +755,8 @@
   </header>
 
   <div class="layout">
-    <aside class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="_closeSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-label">Overview</div>
       <button class="sidebar-item active" id="sb-journey" onclick="switchSection('journey')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
@@ -763,7 +805,7 @@
         </div>
 
         <!-- Stats row -->
-        <div id="jStatsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+        <div id="jStatsGrid" class="rg-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
         </div>
 
         <!-- Module progress bars -->
@@ -793,7 +835,7 @@
             <p class="main-sub" style="margin-bottom:0" id="certSubtitle"></p>
           </div>
         </div>
-        <div id="certsSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px"></div>
+        <div id="certsSummary" class="rg-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px"></div>
         <div id="certsGrid"></div>
       </div>
 
@@ -914,7 +956,6 @@
             <div id="cvBreadcrumb" style="font-size:12px;color:#9CA3AF;margin-top:3px"></div>
           </div>
         </div>
-        <div id="cvLiveBadge" style="flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:2px;border:1.5px solid #16a34a;color:#16a34a;text-transform:uppercase;margin-top:2px">live</div>
       </div>
 
       <!-- Video area -->
@@ -1813,7 +1854,18 @@
       }, 150);
     }
 
+    /* ── Mobile sidebar drawer ── */
+    function _toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+    function _closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
     function switchSection(section, subMod) {
+      _closeSidebar();
       _topBarStart();
       document.getElementById('journeyView').style.display = 'none';
       document.getElementById('moduleView').style.display  = 'none';
@@ -1903,6 +1955,22 @@
       if (chev) chev.classList.toggle('open', !_jCollapsed[mod]);
     }
 
+    /* Shared status → color/label map — used by both the My Journey rows and the
+       Modules tab's class rows so the two stay visually consistent. */
+    var stColors = {
+      certified:    { bg:'#ECFDF5', color:'#059669', label:'Certified' },
+      'quiz-ready': { bg:'#F5F3FF', color:'#8B5CF6', label:'Quiz Ready' },
+      'in-progress':   { bg:'#EEF3FF', color:'#5189F3', label:'In Progress' },
+      cooldown:        { bg:'#FFFBEB', color:'#D97706', label:'Retry Soon' },
+      'att2-ready':    { bg:'#FFF7ED', color:'#EA580C', label:'Att 2 Ready' },
+      exhausted:       { bg:'#FFF7ED', color:'#B45309', label:'Both Used' },
+      'sched-pending': { bg:'#FFFBEB', color:'#D97706', label:'Request Pending' },
+      'sched-denied':  { bg:'#FEF2F2', color:'#DC2626', label:'Request Denied' },
+      'quiz-failed':   { bg:'#FEF2F2', color:'#EF4444', label:'All Used' },
+      available:       { bg:'#F3F4F6', color:'#6B7280', label:'Available' },
+      locked:          { bg:'#F3F4F6', color:'#9CA3AF', label:'Locked' },
+    };
+
     function renderJourney() {
       if (!_curUser) return;
       var u = _curUser;
@@ -1959,12 +2027,12 @@
         var col = _modColor(mod), bg = _modBg(mod);
         return '<div style="display:flex;align-items:center;gap:12px">'
           + '<div style="width:10px;height:10px;border-radius:50%;background:' + col + ';flex-shrink:0"></div>'
-          + '<span style="font-size:13px;font-weight:700;color:#1E2532;width:120px;flex-shrink:0">' + mod + '</span>'
+          + '<span class="jmb-name" style="font-size:13px;font-weight:700;color:#1E2532;width:120px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + mod + '</span>'
           + '<div style="flex:1;height:5px;background:#F0F0F0;border-radius:2px;overflow:hidden">'
             + '<div style="height:100%;width:' + pct + '%;background:' + col + ';border-radius:2px;transition:width .4s"></div>'
           + '</div>'
           + '<span style="font-size:12px;font-weight:800;color:' + col + ';min-width:36px;text-align:right">' + pct + '%</span>'
-          + '<span style="font-size:11px;color:#9CA3AF;font-weight:600;min-width:70px">' + cert + ' / ' + total + ' classes</span>'
+          + '<span class="jmb-count" style="font-size:11px;color:#9CA3AF;font-weight:600;min-width:70px">' + cert + ' / ' + total + ' classes</span>'
         + '</div>';
       }).join('') + '</div>';
 
@@ -1979,19 +2047,6 @@
         });
       });
 
-      var stColors = {
-        certified:    { bg:'#ECFDF5', color:'#059669', label:'Certified' },
-        'quiz-ready': { bg:'#EEF3FF', color:'#5189F3', label:'Quiz Ready' },
-        'in-progress':   { bg:'#EEF3FF', color:'#5189F3', label:'In Progress' },
-        cooldown:        { bg:'#FFFBEB', color:'#D97706', label:'Retry Soon' },
-        'att2-ready':    { bg:'#FFF7ED', color:'#EA580C', label:'Att 2 Ready' },
-        exhausted:       { bg:'#FFF7ED', color:'#B45309', label:'Both Used' },
-        'sched-pending': { bg:'#FFFBEB', color:'#D97706', label:'Request Pending' },
-        'sched-denied':  { bg:'#FEF2F2', color:'#DC2626', label:'Request Denied' },
-        'quiz-failed':   { bg:'#FEF2F2', color:'#EF4444', label:'All Used' },
-        available:       { bg:'#F3F4F6', color:'#6B7280', label:'Available' },
-        locked:          { bg:'#F3F4F6', color:'#9CA3AF', label:'Locked' },
-      };
 
       var continueBanner = '';
       if (nextUp) {
@@ -2007,7 +2062,7 @@
         var _nMod=nextUp.mod.replace(/'/g,"\\'"), _nCls=nextUp.cls.replace(/'/g,"\\'");
         var _nLq=_liveQuiz(nextUp.mod,nextUp.cls);
         var _nQid=_nLq?_nLq.id:'';
-        var nCtaLabel = nextUp.st==='quiz-ready'?'Take Assessment'
+        var nCtaLabel = nextUp.st==='quiz-ready'?'Take Quiz'
           : nextUp.st==='att2-ready'?'Attempt '+_nAtt
           : nextUp.st==='exhausted'?'Request 3rd Attempt'
           : nextUp.st==='sched-pending'?'Pending Approval'
@@ -2023,15 +2078,15 @@
             +'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>'
           +'</div>'
           +'<div style="flex:1;min-width:0">'
-            +'<div style="font-size:10px;font-weight:700;color:#5189F3;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Continue Learning</div>'
-            +'<div style="font-size:14px;font-weight:800;color:#111;margin-bottom:1px">'+nextUp.cls+'</div>'
-            +'<div style="font-size:11px;font-weight:600;color:#888">'+nextUp.mod+' · Class '+String(nextUp.idx+1).padStart(2,'0')+'</div>'
-            +'<div style="margin-top:8px;display:flex;align-items:center;gap:8px">'
+            +'<div style="font-size:10px;font-weight:700;color:#5189F3;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;white-space:nowrap">Continue Learning</div>'
+            +'<div style="font-size:14px;font-weight:800;color:#111;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nextUp.cls+'</div>'
+            +'<div style="font-size:11px;font-weight:600;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nextUp.mod+' · Class '+String(nextUp.idx+1).padStart(2,'0')+'</div>'
+            +'<div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap">'
               +'<div style="width:120px;height:4px;background:#c7d7fd;border-radius:2px;overflow:hidden">'
                 +'<div style="height:100%;width:'+nvp+'%;background:'+nCol+';border-radius:2px"></div>'
               +'</div>'
-              +'<span style="font-size:11px;font-weight:700;color:'+nCol+'">'+nvp+'%</span>'
-              +'<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;background:'+nsc.bg+';color:'+nsc.color+'">'+nsc.label+'</span>'
+              +'<span style="font-size:11px;font-weight:700;color:'+nCol+';flex-shrink:0;white-space:nowrap">'+nvp+'%</span>'
+              +'<span class="cb-status-pill" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;background:'+nsc.bg+';color:'+nsc.color+';flex-shrink:0;white-space:nowrap">'+nsc.label+'</span>'
             +'</div>'
           +'</div>'
           +'<button onclick="'+nCtaFn+'" style="flex-shrink:0;background:'+nCtaBg+';color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">'+nCtaLabel+' →</button>'
@@ -2063,29 +2118,29 @@
           var sm = mod.replace(/'/g,"\\'"), sc2 = cls.replace(/'/g,"\\'");
           var ctaBtn = '';
           if (st === 'locked') {
-            ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Watch</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Watch</button>';
           } else if (st === 'in-progress' || st === 'available') {
-            ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer;font-family:inherit">'+(st==='in-progress'?'Continue':'Start')+'</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer;font-family:inherit">'+(st==='in-progress'?'Continue':'Start')+'</button>';
           } else if (st === 'quiz-ready') {
-            ctaBtn = '<button onclick="startQuiz(\''+sm+'\',\''+sc2+'\',1)" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer;font-family:inherit">Take Quiz</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="startQuiz(\''+sm+'\',\''+sc2+'\',1)" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer;font-family:inherit">Take Quiz</button>';
           } else if (st === 'att2-ready') {
             var ja2=2; var jlq=_liveQuiz(mod,cls); if(jlq){var jlr=_sqRes(jlq.id);if(jlr.att2&&!jlr.att2.pass)ja2=3;}
-            ctaBtn = '<button onclick="startQuiz(\''+sm+'\',\''+sc2+'\','+ja2+')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#EA580C;color:#fff;cursor:pointer;font-family:inherit">Attempt '+ja2+'</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="startQuiz(\''+sm+'\',\''+sc2+'\','+ja2+')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#EA580C;color:#fff;cursor:pointer;font-family:inherit">Attempt '+ja2+'</button>';
           } else if (st === 'exhausted' || st === 'sched-denied') {
             var jlqe=_liveQuiz(mod,cls); var jqide=jlqe?jlqe.id:'';
-            ctaBtn = '<button onclick="openAtt3Form(\''+sm+'\',\''+sc2+'\',\''+jqide+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F59E0B;color:#fff;cursor:pointer;font-family:inherit">'+(st==='sched-denied'?'Re-request':'Request 3rd')+'</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="openAtt3Form(\''+sm+'\',\''+sc2+'\',\''+jqide+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F59E0B;color:#fff;cursor:pointer;font-family:inherit">'+(st==='sched-denied'?'Re-request':'Request 3rd')+'</button>';
           } else if (st === 'sched-pending') {
-            ctaBtn = '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Pending…</button>';
+            ctaBtn = '<button class="j-cta-btn" disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Pending…</button>';
           } else if (st === 'quiz-failed') {
             var jlqf=_liveQuiz(mod,cls); var jqidf=jlqf?jlqf.id:'';
             var jrr=jlqf?_sqResetReq(jlqf.id):null;
             ctaBtn = (jrr&&jrr.status==='pending')
-              ? '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Reset Pending…</button>'
-              : '<button onclick="requestAttemptReset(\''+sm+'\',\''+sc2+'\','+jqidf+')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #FECACA;background:#FEF2F2;color:#EF4444;cursor:pointer;font-family:inherit">Request Reset</button>';
+              ? '<button class="j-cta-btn" disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Reset Pending…</button>'
+              : '<button class="j-cta-btn" onclick="requestAttemptReset(\''+sm+'\',\''+sc2+'\','+jqidf+')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #FECACA;background:#FEF2F2;color:#EF4444;cursor:pointer;font-family:inherit">Request Reset</button>';
           } else if (st === 'cooldown') {
-            ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Rewatch</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Rewatch</button>';
           } else if (st === 'certified') {
-            ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">Rewatch</button>';
+            ctaBtn = '<button class="j-cta-btn" onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">Rewatch</button>';
           }
           var quizInfo = '';
           var lqj = _liveQuiz(mod, cls);
@@ -2101,27 +2156,27 @@
           }
           var jCircle;
           if(st==='certified'){
-            jCircle='<div style="width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
               +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
           }else if(st==='locked'){
-            jCircle='<div style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
+            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
           }else{
-            jCircle='<div style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
+            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
           }
           var vp=s.vp||0; var vpColor=vp===100?'#16a34a':vp>0?col:'#C4C9D4'; var vpLabel=vp===100?'Done':vp>0?vp+'%':'—';
           var statusLabel = sc.label;
           return '<div class="j-class-row" onclick="if(!event.target.closest(\'button\')) watchVid(\''+sm+'\',\''+sc2+'\')">'
             + jCircle
             + '<span class="j-cls-name" style="font-size:13px;font-weight:700;color:#111;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + cls + '</span>'
-            + quizInfo
-            + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
-              + '<div style="width:72px;height:4px;background:#F0F0F0;border-radius:3px;overflow:hidden">'
+            + (quizInfo ? '<span class="j-quiz-chips">'+quizInfo+'</span>' : '')
+            + '<div class="j-prog-wrap" style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
+              + '<div class="j-prog-bar" style="width:72px;height:4px;background:#F0F0F0;border-radius:3px;overflow:hidden">'
                 + '<div style="height:100%;width:' + vp + '%;background:' + vpColor + ';border-radius:3px"></div>'
               + '</div>'
-              + '<span style="font-size:11px;font-weight:800;color:' + vpColor + ';min-width:32px;text-align:right">' + vpLabel + '</span>'
+              + '<span class="j-prog-pct" style="font-size:11px;font-weight:800;color:' + vpColor + ';min-width:32px;text-align:right">' + vpLabel + '</span>'
             + '</div>'
-            + '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + sc.bg + ';color:' + sc.color + ';flex-shrink:0;white-space:nowrap">' + statusLabel + '</span>'
-            + (ctaBtn ? '<div style="margin-left:4px">'+ctaBtn+'</div>' : '<div style="width:70px;flex-shrink:0"></div>')
+            + '<span class="j-status-pill" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + sc.bg + ';color:' + sc.color + ';flex-shrink:0;white-space:nowrap">' + statusLabel + '</span>'
+            + (ctaBtn ? '<div class="j-cta-wrap" style="margin-left:4px">'+ctaBtn+'</div>' : '<div class="j-cta-wrap" style="width:70px;flex-shrink:0"></div>')
           + '</div>';
         }).join('');
         var key = mod.replace(/\s/g,'_');
@@ -2224,7 +2279,7 @@
       var _eyeGray  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
 
       /* 3-column grid — one card per module, class rows inside */
-      var html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">';
+      var html = '<div class="rg-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">';
 
       Object.keys(MODULES).forEach(function(mod) {
         var m = MODULES[mod], col = m.color, bg = _modBg(mod);
@@ -2308,12 +2363,16 @@
 
       document.getElementById('moduleHeader').innerHTML=
         '<div class="mod-section-head">'
-        +'<div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></div>'
-        +'<span class="mod-section-name">'+curMod+'</span>'
-        +(u.role?'<span class="mod-role-pill">'+u.role+'</span>':'')
-        +'<span class="mod-section-meta">'+cls.length+' classes · '+quizCount+'/'+cls.length+' quizzes assigned</span>'
-        +ringHtml
-        +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4C9D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
+        +'<div class="mod-section-row">'
+          +'<div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></div>'
+          +'<span class="mod-section-name">'+curMod+'</span>'
+          +ringHtml
+          +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4C9D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
+        +'</div>'
+        +'<div class="mod-section-meta-row">'
+          +(u.role?'<span class="mod-role-pill">'+u.role+'</span>':'')
+          +'<span class="mod-section-meta">'+cls.length+' classes · '+quizCount+'/'+cls.length+' quizzes assigned</span>'
+        +'</div>'
         +'</div>';
 
       document.getElementById('classList').innerHTML=cls.map(function(c,i){return renderCard(curMod,c,i);}).join('');
@@ -2325,40 +2384,22 @@
       var col=_modColor(mod), bg=_modBg(mod);
       var vp=s.vp||0;
       var sm=mod.replace(/'/g,"\\'"), sc=cls.replace(/'/g,"\\'");
-
-      /* Step circle */
-      var stepHtml;
-      if(st==='certified'){
-        stepHtml='<div class="class-step-circle" style="background:#16a34a;color:#fff">'
-          +'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-          +'</div>';
-      }else if(locked){
-        stepHtml='<div class="class-step-circle" style="border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4">'+(idx+1)+'</div>';
-      }else{
-        stepHtml='<div class="class-step-circle" style="border:2px solid '+col+';background:'+bg+';color:'+col+'">'+(idx+1)+'</div>';
-      }
-
-      /* Quiz pill — only show when admin has created a quiz for this class */
       var lq=_liveQuiz(mod,cls);
-      var hasQuiz=!!lq;
-      var quizPill=hasQuiz
-        ?'<span class="quiz-pill-assigned"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Quiz assigned</span>'
-        :'<span class="quiz-pill-none">No quiz assigned</span>';
 
-      /* Video count — only admin-uploaded videos (not seeded defaults) */
-      var videoCount = 0;
-      try {
-        var _vlc = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
-        videoCount = _vlc.filter(function(v){ return v.module===mod && v.cls===cls && v.status==='live' && v._adminUploaded; }).length;
-      } catch(e) {}
+      /* Step circle — same compact style as the My Journey rows */
+      var jCircle;
+      if(st==='certified'){
+        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+          +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+      }else if(locked){
+        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(idx+1)+'</div>';
+      }else{
+        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(idx+1)+'</div>';
+      }
 
       /* Progress */
       var pctColor=vp===100?'#16a34a':vp>0?col:'#C4C9D4';
       var pctLabel=vp===100?'Done':vp>0?vp+'%':'—';
-      var progHtml=locked?'':'<div class="class-prog-wrap">'
-        +'<div class="class-prog-bar"><div class="class-prog-fill" style="width:'+vp+'%;background:'+pctColor+'"></div></div>'
-        +'<span class="class-prog-pct" style="color:'+pctColor+'">'+pctLabel+'</span>'
-        +'</div>';
 
       /* Attempt chips — from live results or legacy ST */
       var chips='';
@@ -2387,49 +2428,50 @@
       /* Action button */
       var actionBtn='';
       if(locked){
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Watch</button>';
+        actionBtn='<button class="btn-outline j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Watch</button>';
       }else if(st==='certified'){
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
+        actionBtn='<button class="btn-outline j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
       }else if(st==='quiz-ready'){
-        actionBtn='<button class="btn-primary" style="padding:5px 12px;font-size:12px" onclick="startQuiz(\''+sm+'\',\''+sc+'\',1)">'+I.quiz+' Take Quiz</button>';
+        actionBtn='<button class="btn-primary j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="startQuiz(\''+sm+'\',\''+sc+'\',1)">'+I.quiz+' Take Quiz</button>';
       }else if(st==='in-progress'||st==='available'){
-        actionBtn='<button class="btn-primary" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">'+(st==='in-progress'?'Continue':'Start')+'</button>';
+        actionBtn='<button class="btn-primary j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">'+(st==='in-progress'?'Continue':'Start')+'</button>';
       }else if(st==='cooldown'){
         var cdLbl=cdRemain(mod,cls)||'soon';
-        actionBtn='<button disabled style="padding:5px 12px;font-size:12px;font-weight:600;font-family:inherit;border-radius:7px;border:1px solid #FDE68A;background:#FFFBEB;color:#D97706;cursor:not-allowed;display:inline-flex;align-items:center;gap:5px">'+I.clock+' Retry in '+cdLbl+'</button>'
-          +'<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
+        actionBtn='<button class="j-cta-btn" disabled style="padding:5px 12px;font-size:12px;font-weight:600;font-family:inherit;border-radius:7px;border:1px solid #FDE68A;background:#FFFBEB;color:#D97706;cursor:not-allowed;display:inline-flex;align-items:center;gap:5px">'+I.clock+' Retry in '+cdLbl+'</button>'
+          +'<button class="btn-outline j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
       }else if(st==='att2-ready'){
         var attNum=2; if(lq){var lr2=_sqRes(lq.id);if(lr2.att2&&!lr2.att2.pass)attNum=3;}
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
-          +'<button class="btn-primary" style="padding:5px 12px;font-size:12px;background:#EA580C" onclick="startQuiz(\''+sm+'\',\''+sc+'\','+attNum+')">'+I.retry+' Attempt '+attNum+'</button>';
+        actionBtn='<button class="btn-outline j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
+          +'<button class="btn-primary j-cta-btn" style="padding:5px 12px;font-size:12px;background:#EA580C" onclick="startQuiz(\''+sm+'\',\''+sc+'\','+attNum+')">'+I.retry+' Attempt '+attNum+'</button>';
       }else if(st==='exhausted'){
         var exLq=lq; var exId=exLq?exLq.id:'';
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
-          +'<button class="btn-amber" style="padding:5px 12px;font-size:12px" onclick="openAtt3Form(\''+sm+'\',\''+sc+'\',\''+exId+'\')">'+I.retry+' Request 3rd Attempt</button>';
+        actionBtn='<button class="btn-outline j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
+          +'<button class="btn-amber j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="openAtt3Form(\''+sm+'\',\''+sc+'\',\''+exId+'\')">'+I.retry+' Request 3rd Attempt</button>';
       }else if(st==='sched-pending'||st==='sched-denied'){
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
-          +(st==='sched-denied'?'<button class="btn-amber" style="padding:5px 12px;font-size:12px" onclick="openAtt3Form(\''+sm+'\',\''+sc+'\',\''+(lq?lq.id:'')+'\')">'+I.retry+' Re-request</button>':'');
+        actionBtn='<button class="btn-outline j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
+          +(st==='sched-denied'?'<button class="btn-amber j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="openAtt3Form(\''+sm+'\',\''+sc+'\',\''+(lq?lq.id:'')+'\')">'+I.retry+' Re-request</button>':'');
       }else if(st==='quiz-failed'){
         var qfLq=lq; var qfId=qfLq?qfLq.id:'';
         var qfReq=qfLq?_sqResetReq(qfLq.id):null;
         actionBtn=(qfReq&&qfReq.status==='pending')
-          ? '<button class="btn-disabled" style="padding:5px 12px;font-size:12px" title="Waiting for admin">'+I.clock+' Reset Pending…</button>'
-          : '<button class="btn-amber" style="padding:5px 12px;font-size:12px" onclick="requestAttemptReset(\''+sm+'\',\''+sc+'\','+qfId+')">'+I.retry+' Request Reset</button>';
+          ? '<button class="btn-disabled j-cta-btn" style="padding:5px 12px;font-size:12px" title="Waiting for admin">'+I.clock+' Reset Pending…</button>'
+          : '<button class="btn-amber j-cta-btn" style="padding:5px 12px;font-size:12px" onclick="requestAttemptReset(\''+sm+'\',\''+sc+'\','+qfId+')">'+I.retry+' Request Reset</button>';
       }
 
-      return '<div class="class-row" style="cursor:pointer" onclick="if(!event.target.closest(\'button\')) watchVid(\''+sm+'\',\''+sc+'\')">'
-        +stepHtml
-        +'<div style="flex:1;min-width:0">'
-          +'<div class="class-row-name">'+cls+'</div>'
-          +(chips?'<div class="class-row-chips">'+chips+'</div>':'')
-          +(locked?'<div style="font-size:11px;color:#C4C9D4;margin-top:3px">'+I.lock+' Quiz unlocks after completing previous class</div>':'')
-        +'</div>'
-        +'<div style="display:flex;align-items:center;gap:14px;flex-shrink:0">'
-          +(locked?'':''+quizPill+progHtml)
-          +(videoCount>0?'<span class="class-content-count">'+videoCount+(videoCount===1?' video':' videos')+'</span>':'')
-          +'<div class="class-card-btns">'+actionBtn+'</div>'
-          +'<svg class="class-row-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>'
-        +'</div>'
+      var scPill = stColors[st] || stColors.locked;
+
+      return '<div class="j-class-row" style="cursor:pointer" onclick="if(!event.target.closest(\'button\')) watchVid(\''+sm+'\',\''+sc+'\')">'
+        + jCircle
+        + '<span class="j-cls-name" style="font-size:13px;font-weight:700;color:#111;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + cls + '</span>'
+        + (chips ? '<span class="j-quiz-chips">'+chips+'</span>' : '')
+        + '<div class="j-prog-wrap" style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
+          + '<div class="j-prog-bar" style="width:72px;height:4px;background:#F0F0F0;border-radius:3px;overflow:hidden">'
+            + '<div style="height:100%;width:' + vp + '%;background:' + pctColor + ';border-radius:3px"></div>'
+          + '</div>'
+          + '<span class="j-prog-pct" style="font-size:11px;font-weight:800;color:' + pctColor + ';min-width:32px;text-align:right">' + pctLabel + '</span>'
+        + '</div>'
+        + '<span class="j-status-pill" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + scPill.bg + ';color:' + scPill.color + ';flex-shrink:0;white-space:nowrap">' + scPill.label + '</span>'
+        + (actionBtn ? '<div class="j-cta-wrap" style="margin-left:4px">'+actionBtn+'</div>' : '<div class="j-cta-wrap" style="width:70px;flex-shrink:0"></div>')
       +'</div>';
     }
 

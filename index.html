@@ -221,8 +221,11 @@
     }
 
     @media (max-width: 600px) {
-      .roles { grid-template-columns: 1fr; }
-      .brand-headline { font-size: 22px; }
+      body { padding: 16px; }
+      .roles { grid-template-columns: 1fr; gap: 14px; }
+      .brand-headline { font-size: 19px; }
+      .role-card { padding: 22px 18px 20px; }
+      .role-cta { min-height: 44px; width: 100%; justify-content: center; }
     }
     :focus-visible { outline: 2px solid #5189F3 !important; outline-offset: 2px !important; border-radius: 2px; }
   </style>

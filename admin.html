@@ -196,7 +196,7 @@
     .upload-type-tab svg{flex-shrink:0}
     /* ── Content panel (non-video types) ── */
     .content-panel{flex:1;overflow-y:auto;padding:20px;background:#F7F8FA;display:flex;flex-direction:column;gap:16px}
-    .cp-toolbar{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;padding:12px 0;border-bottom:1px solid #F0F0F0}
+    .cp-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;padding:12px 0;border-bottom:1px solid #F0F0F0}
     .lib-filt-sel{height:32px;padding:0 28px 0 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;color:#374151;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer;transition:border-color .15s}
     .lib-filt-sel:focus{border-color:#5189F3}
     .cp-title{font-size:15px;font-weight:800;color:#111}
@@ -260,7 +260,7 @@
     /* ── Grouped library (table layout) ── */
     .lib-group{border:1px solid #E5E7EB;border-radius:0;overflow:hidden;background:#fff}
     .lib-group+.lib-group{border-top:none}
-    .lib-mod-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#F8F9FB;cursor:pointer;user-select:none;border-bottom:1px solid #EAECF0}
+    .lib-mod-hdr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 14px;background:#F8F9FB;cursor:pointer;user-select:none;border-bottom:1px solid #EAECF0}
     .lib-mod-hdr:hover{background:#EFF1F5}
     .lib-mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
     .lib-mod-name{font-size:12px;font-weight:800;color:#111;flex:1}
@@ -269,7 +269,7 @@
     .lib-mod-hdr.collapsed .lib-mod-chev{transform:rotate(-90deg)}
     .lib-mod-hdr-hidden{opacity:0.6}
     .lib-mod-actions{display:flex;align-items:center;gap:4px;margin-left:auto;margin-right:6px;flex-shrink:0}
-    .lib-act-btn{padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:10px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
+    .lib-act-btn{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:10px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
     .lib-act-btn:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
     .lib-act-btn-hide{color:#F59E0B;border-color:#FDE68A;background:#FFFBEB}
     .lib-act-btn-show{color:#10B981;border-color:#10B981;background:#F0FDF4}
@@ -284,7 +284,7 @@
     .lib-tbl-head .lib-th-cls{width:120px}
     .lib-tbl-head .lib-th-status{width:80px;text-align:center}
     .lib-tbl-head .lib-th-ico{width:36px}
-    .lib-tbl-head .lib-th-act{width:240px;text-align:right}
+    .lib-tbl-head .lib-th-act{width:300px;text-align:right}
     .lib-tbl tr{border-bottom:1px solid #F3F4F6}
     .lib-tbl tr:last-child{border-bottom:none}
     .lib-tbl tr:hover td{background:#FAFBFF}
@@ -442,7 +442,7 @@
     .lb-section-label::after{content:'';flex:1;height:1px;background:#F0F0F0}
 
     /* ── Quiz section ── */
-    .page-header-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+    .page-header-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
     .btn-primary {
       display: flex; align-items: center; gap: 6px;
       background: #5189F3; color: #fff; border: none; border-radius: 6px;
@@ -1384,11 +1384,15 @@
 
     /* ── Signing Authority strip ── */
     .cert-authority-strip {
-      display: flex; align-items: center; gap: 14px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
       background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
       padding: 12px 18px; margin-bottom: 20px;
     }
-    .cert-auth-sig-icon { color: #5189F3; flex-shrink: 0; }
+    /* align-self (not the strip's own align-items) keeps this pinned to the top of the
+       row even when the form next to it wraps onto two lines (inputs, then Save/Cancel)
+       — otherwise it centers against the *whole* wrapped height and drifts down between
+       the rows. The margin-top nudges it to match the 32px input boxes' vertical center. */
+    .cert-auth-sig-icon { color: #5189F3; flex-shrink: 0; align-self: flex-start; margin-top: 7px; }
     .cert-auth-sig-icon svg { width: 18px; height: 18px; display: block; }
     .cert-auth-name-display { font-size: 14px; font-weight: 800; color: #111; font-style: italic; }
     .cert-auth-title-display { font-size: 11px; color: #888; margin-top: 1px; }
@@ -1630,12 +1634,17 @@
 
     /* ── Hub Admin View ── */
     .had-card{background:#fff;border:1.5px solid #E8EBF0;border-radius:10px;margin-bottom:14px;overflow:hidden}
-    .had-mod-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .12s}
+    .had-mod-hdr{padding:14px 18px;cursor:pointer;user-select:none;transition:background .12s}
     .had-mod-hdr:hover{background:#FAFBFF}
+    /* Dot + name + buttons + chevron all live in this single-line row, so
+       align-items:center lines them all up against each other correctly — the
+       multi-line meta text sits below, outside this row, so it can no longer
+       throw off that centering. */
+    .had-mod-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
     .had-mod-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-    .had-mod-name{font-size:15px;font-weight:900;color:#111;flex:1}
-    .had-mod-meta{font-size:11px;color:#CBD5E1;font-weight:600}
-    .had-mod-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .had-mod-name{font-size:15px;font-weight:900;color:#111;flex:1;min-width:80px}
+    .had-mod-meta{display:block;font-size:11px;color:#CBD5E1;font-weight:600;margin-top:4px;padding-left:22px}
+    .had-mod-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;flex-shrink:0}
     .had-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;border:1px solid #E4E7EC;background:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;transition:border-color .12s,color .12s}
     .had-btn:hover{border-color:#5189F3;color:#5189F3}
     .had-btn-danger{border-color:#FECACA;color:#EF4444;background:#FFF5F5}
@@ -1655,11 +1664,16 @@
     .hub-module-section { margin-bottom:30px; }
     /* Hub v3 — accordion list */
     .hub-module-card { background:#fff; border:1px solid #E8EBF0; border-radius:12px; overflow:hidden; margin-bottom:14px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
-    .hub-module-card-hdr { display:flex; align-items:center; justify-content:space-between; padding:16px 22px; cursor:pointer; user-select:none; gap:14px; transition:background 0.12s; }
+    .hub-module-card-hdr { padding:16px 22px; cursor:pointer; user-select:none; transition:background 0.12s; }
     .hub-module-card-hdr:hover { background:#FAFBFF; }
     .hub-module-card-hdr.open { border-bottom:1px solid #F2F4F7; }
-    .hub-module-card-hdr-l { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+    /* Top line only (dot, name, cert pill, progress ring, chevron) — kept separate from
+       the meta text below so align-items:center lines these up against each other,
+       instead of centering against the whole (taller, 2-line) header block. */
+    .hub-module-card-hdr-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 14px; }
+    .hub-module-card-hdr-l { display:flex; flex-wrap:wrap; align-items:center; gap:10px; flex:1; min-width:0; }
     .hub-module-card-hdr-r { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+    .hub-module-card-hdr-meta { display:block; font-size:11px; color:#CBD5E1; font-weight:600; margin-top:6px; padding-left:20px; }
     .hub-chev { transition:transform 0.22s; flex-shrink:0; }
 
     .hub-cls-row { display:flex; align-items:center; padding:11px 22px; cursor:pointer; border-bottom:1px solid #F7F8FA; transition:background 0.1s; gap:14px; }
@@ -1847,6 +1861,120 @@
     /* Keyboard-only focus ring — never shown for mouse clicks, always shown for Tab
        navigation, and forced to win over the many inline outline:none declarations. */
     :focus-visible { outline: 2px solid #5189F3 !important; outline-offset: 2px !important; border-radius: 2px; }
+
+    /* ── Mobile hamburger (hidden on desktop) + drawer overlay ── */
+    .hamburger-btn { display: none; width: 36px; height: 36px; background: none; border: none; cursor: pointer; align-items: center; justify-content: center; color: #374151; border-radius: 0; margin-right: 4px; flex-shrink: 0; }
+    .hamburger-btn:hover { background: #F3F4F6; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 490; }
+
+    /* ══════════════════════════════════════════════════════
+       RESPONSIVE — kept at the very end of the stylesheet on purpose.
+       A plain CSS rule only wins a same-specificity tie by appearing LATER
+       in the source than what it overrides — a media query gets no special
+       priority for being a media query. Putting every mobile/tablet rule
+       here (instead of scattered near each base rule) guarantees that.
+       !important is reserved for the handful of places actually fighting
+       an inline style="..." attribute, which always beats a plain rule
+       regardless of source order.
+    ══════════════════════════════════════════════════════ */
+    @media (max-width: 860px) {
+      .hamburger-btn { display: flex; }
+      /* Class detail header (breadcrumb+title | Complete ring): center the ring
+         against the full title block on mobile/tablet only — desktop keeps its
+         original top-alignment. */
+      .hub-detail-hdr-row { align-items: center; }
+      .sidebar {
+        position: fixed; top: 52px; left: 0; bottom: 0; z-index: 500;
+        width: 78vw; max-width: 300px;
+        transform: translateX(-100%); transition: transform .22s ease;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      /* min-width:0 is the actual fix here: .main is a flex child of .layout, and flex
+         items default to min-width:auto — meaning ANY unwrapped wide content inside .main
+         (a table, an unwrapped button row, etc.) silently forces the whole page wider than
+         the viewport instead of just overflowing within its own box. This is what turned a
+         single overflowing toolbar row into the entire page shifting sideways. */
+      .main { padding: 16px; min-width: 0; }
+      .rg-2, .rg-3, .rg-4 { grid-template-columns: repeat(2, 1fr) !important; }
+      .table-scroll { overflow-x: auto; }
+      .lb-table { min-width: 700px; }
+      .lib-tbl { min-width: 560px; }
+      /* User Journey split panel (Select Employee | journey detail) — stack instead of
+         side-by-side; both pieces are inline-styled so their overrides need !important. */
+      .uj-split { flex-direction: column !important; height: auto !important; }
+      .uj-list-pane { width: 100% !important; border-right: none !important; border-bottom: 1px solid #F0F0F0; max-height: 260px; }
+      .uj-detail-pane { padding: 16px !important; height: auto !important; overflow-y: visible !important; }
+      .qc-row { flex-wrap: wrap; }
+      .qc-field { min-width: 220px; }
+      /* Quiz preview modal's "Preview as" bar: the <select> has flex:1 but flex
+         items get an automatic min-width equal to their content, so the longest
+         option ("Preview: Production Manager") kept it from shrinking — pushing
+         Reset Attempts off the edge of the modal on a phone. */
+      .qm-user-bar { flex-wrap: wrap; row-gap: 8px; }
+      .qm-user-bar select { min-width: 0; }
+      .qm-reset-btn { flex-shrink: 0; }
+      .lb-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .lbd-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+      .lbd-lang-grid { grid-template-columns: repeat(2, 1fr); }
+      .lb-group-grid { grid-template-columns: 1fr; }
+      .cert-cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .hub-stats { grid-template-columns: repeat(2, 1fr); }
+      /* Quick Guides split panel (Forms/Modules list | content editor) — stacking
+         both full-width made the page too tall to scroll through comfortably;
+         a 40/60 split keeps both visible together with less total height, weighted
+         toward the content editor since it holds the actual upload actions. */
+      .qg-grid { grid-template-columns: 4fr 6fr !important; }
+    }
+    @media (max-width: 560px) {
+      .rg-2, .rg-3, .rg-4 { grid-template-columns: 1fr !important; }
+      .lb-stats-grid { grid-template-columns: 1fr; }
+      .lbd-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .lbd-lang-grid { grid-template-columns: 1fr; }
+      .cert-cards-grid { grid-template-columns: 1fr; }
+      .hub-stats { grid-template-columns: repeat(2, 1fr); }
+      /* This dev-only floating bar is a plain row of ~9 buttons with no wrap/scroll
+         handling — on a narrow phone it can run wider than the viewport and force
+         the whole page to scroll sideways. Pin it near the edges with its own
+         scrollbar instead. !important is needed since its sizing/position come
+         from an inline style, which otherwise always wins over a plain rule. */
+      #floatWarpBar { left: 2vw !important; right: 2vw !important; max-width: 96vw !important; transform: none !important; overflow-x: auto !important; padding: 6px 10px !important; }
+      /* Content library table: drop Duration/Status on a phone so Title/Class/Actions
+         fit without needing to scroll sideways just to reach the Edit/Delete buttons. */
+      .lib-th-dur, .lib-td-dur, .lib-th-status, .lib-td-status { display: none; }
+      .lib-tbl { min-width: 0; table-layout: auto; }
+      /* 4 action buttons (Edit/Hide/View/Delete) in one nowrap cell was the other
+         big width driver — let them wrap to a 2nd line instead of forcing scroll. */
+      .lib-td-act { white-space: normal; min-width: 120px; }
+      /* Icon-only actions on phone — the text label is still there for screen readers
+         and the button's title="" tooltip, just visually hidden to save space. */
+      .lib-btn-label { display: none; }
+      .lib-btn { padding: 5px 7px; }
+      /* Quiz list table: 7 columns never fit a phone screen, and its "expand to see
+         questions" row (colspan=7) visually detached from its own row once the table
+         was scrolled sideways — a question's Edit button would appear to float alone
+         between two unrelated rows. Dropping to 4 columns removes the need to scroll
+         sideways at all for the common case. */
+      .q-col-sno, .q-col-module, .q-col-passmark { display: none; }
+      /* Signing Authority strip: the "· Signs every issued certificate" note has
+         white-space:nowrap and the whole strip never wrapped, so on a phone it
+         collided with the Edit Authority button. The note is decorative — drop it
+         on a phone rather than truncate it awkwardly. */
+      .cert-auth-note { display: none; }
+      /* Quiz attempt row (Attempt N / score / verdict / date / View Result): every
+         child is flex-shrink:0, so on a phone the row ran wider than its card and
+         got cut off before reaching the View Result button. Drop the date (already
+         redundant with the PASSED/FAILED pill) and wrap as a fallback. */
+      .hub-att-row { flex-wrap: wrap; row-gap: 6px; }
+      .hub-att-date { display: none; }
+      .hub-att-label { min-width: 0; }
+      /* Quick Guides Admin/User toggle: margin-left:auto pins it flush-right on
+         desktop, which is fine there — but when the header wraps on a phone, it
+         forces the toggle onto its own line still pinned right instead of flush
+         left under the title. Drop the auto-margin only at this width. */
+      .qg-view-tabs { margin-left: 0 !important; }
+    }
   </style>
 </head>
 <body>
@@ -1855,8 +1983,13 @@
 
   <!-- Navbar -->
   <header class="navbar">
-    <div class="brand">
-      <img src="Assets/Seatrace logo.png" alt="SEATRACE" height="32" style="display:block;object-fit:contain">
+    <div style="display:flex;align-items:center">
+      <button class="hamburger-btn" onclick="_toggleSidebar()" title="Menu" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="brand">
+        <img src="Assets/Seatrace logo.png" alt="SEATRACE" height="32" style="display:block;object-fit:contain">
+      </div>
     </div>
     <div class="nav-right">
       <span class="admin-badge">Admin</span>
@@ -1933,9 +2066,10 @@
   </div>
 
   <div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="_closeSidebar()"></div>
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-label">Management</div>
 
       <button class="nav-item active" onclick="switchTab('leaderboard', this)">
@@ -2001,7 +2135,7 @@
             <h1>Leaderboard</h1>
             <p>Rankings by completion and certifications across all employees.</p>
           </div>
-          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:auto">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-left:auto">
             <!-- Search -->
             <div class="table-search-wrap" style="width:190px">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2010,19 +2144,6 @@
               <input type="text" id="lbSearch" placeholder="Search users…" oninput="_srchTog('lbSrchX',this);_renderLbTableDebounced()" />
               <button class="srch-x" id="lbSrchX" onclick="_srchClr('lbSearch','lbSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
-            <div style="width:1px;height:22px;background:#DFE2E6;flex-shrink:0"></div>
-            <!-- View tabs -->
-            <div class="lb-view-tabs" id="lbViewTabs" style="margin:0">
-              <button class="lb-view-tab active" id="lbTabLeaderboard" onclick="_switchLbMain('leaderboard',this)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Leaderboard
-              </button>
-              <button class="lb-view-tab" id="lbTabDashboard" onclick="_switchLbMain('dashboard',this)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                User Journey
-              </button>
-            </div>
-            <div style="width:1px;height:22px;background:#DFE2E6;flex-shrink:0"></div>
             <!-- Month filter -->
             <div style="position:relative">
               <button class="lb-month-chip" id="lbMonthBtn" onclick="toggleMonthPicker()" style="cursor:pointer;border:none;background:#fff">
@@ -2038,6 +2159,18 @@
                 <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
                 <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
               </div>
+            </div>
+            <div style="width:1px;height:22px;background:#DFE2E6;flex-shrink:0"></div>
+            <!-- View tabs -->
+            <div class="lb-view-tabs" id="lbViewTabs" style="margin:0">
+              <button class="lb-view-tab active" id="lbTabLeaderboard" onclick="_switchLbMain('leaderboard',this)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Leaderboard
+              </button>
+              <button class="lb-view-tab" id="lbTabDashboard" onclick="_switchLbMain('dashboard',this)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                User Journey
+              </button>
             </div>
           </div>
         </div>
@@ -2133,16 +2266,18 @@
       <div id="section-quiz" class="section">
 
         <div class="page-header-row">
-          <div class="page-header" style="margin-bottom:0">
-            <h1>Quiz</h1>
-            <p>Create mandatory quizzes tied to specific modules, classes, and topics.</p>
+          <div class="page-header" style="margin-bottom:0;width:100%">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <h1 style="margin-bottom:0">Quiz</h1>
+              <button class="btn-primary" onclick="toggleQuizForm()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Create Quiz
+              </button>
+            </div>
+            <p style="margin-top:4px">Create mandatory quizzes tied to specific modules, classes, and topics.</p>
           </div>
-          <button class="btn-primary" onclick="toggleQuizForm()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            Create Quiz
-          </button>
         </div>
 
         <!-- Creator panel -->
@@ -2262,12 +2397,12 @@
             <table>
               <thead>
                 <tr>
-                  <th style="width:52px">S.No</th>
+                  <th class="q-col-sno" style="width:52px">S.No</th>
                   <th>Quiz Title</th>
-                  <th>Module</th>
+                  <th class="q-col-module">Module</th>
                   <th>Class</th>
                   <th style="width:80px">Questions</th>
-                  <th style="width:90px">Pass Mark</th>
+                  <th class="q-col-passmark" style="width:90px">Pass Mark</th>
                   <th style="width:110px">Actions</th>
                 </tr>
               </thead>
@@ -2278,7 +2413,7 @@
 
         <!-- Schedule Requests panel -->
         <div class="table-card" id="schedRequestsCard" style="margin-top:20px">
-          <div class="table-toolbar" style="border-bottom:none">
+          <div class="table-toolbar" style="border-bottom:none;display:block">
             <div style="display:flex;align-items:center;gap:10px">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
@@ -2287,14 +2422,14 @@
               <span style="font-weight:800;font-size:14px;color:#111">Schedule Requests</span>
               <span id="schedPendingBadge" style="display:none;background:#F59E0B;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px">0</span>
             </div>
-            <span style="font-size:12px;color:#aaa">3rd attempt requests from employees who failed both standard attempts</span>
+            <span style="display:block;font-size:12px;color:#aaa;margin-top:4px">3rd attempt requests from employees who failed both standard attempts</span>
           </div>
           <div id="schedRequestsBody"></div>
         </div>
 
         <!-- Reset Requests panel -->
         <div class="table-card" id="resetRequestsCard" style="margin-top:20px">
-          <div class="table-toolbar" style="border-bottom:none">
+          <div class="table-toolbar" style="border-bottom:none;display:block">
             <div style="display:flex;align-items:center;gap:10px">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
@@ -2302,7 +2437,7 @@
               <span style="font-weight:800;font-size:14px;color:#111">Admin Requests</span>
               <span id="resetPendingBadge" style="display:none;background:#DC2626;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px">0</span>
             </div>
-            <span style="font-size:12px;color:#aaa">Employees who exhausted all 3 attempts and are requesting a reset</span>
+            <span style="display:block;font-size:12px;color:#aaa;margin-top:4px">Employees who exhausted all 3 attempts and are requesting a reset</span>
           </div>
           <div id="resetRequestsBody"></div>
         </div>
@@ -2333,10 +2468,10 @@
             </div>
             <span class="cert-auth-note">· Signs every issued certificate</span>
           </div>
-          <div id="certAuthForm" style="display:none;align-items:center;gap:8px;flex:1;min-width:0">
-            <input class="cert-auth-input" id="certAuthNameInput" value="" placeholder="Authority name" style="flex:1" />
-            <input class="cert-auth-input" id="certAuthTitleInput" value="" placeholder="Title / Designation" style="flex:1.5" />
-            <button class="btn-primary" onclick="saveAuthoritySign()" style="padding:6px 14px;font-size:12px;white-space:nowrap">Save</button>
+          <div id="certAuthForm" style="display:none;flex-wrap:wrap;align-items:center;gap:8px;flex:1;min-width:0">
+            <input class="cert-auth-input" id="certAuthNameInput" value="" placeholder="Authority name" style="flex:1;min-width:140px" />
+            <input class="cert-auth-input" id="certAuthTitleInput" value="" placeholder="Title / Designation" style="flex:1.5;min-width:140px" />
+            <button class="btn-primary" onclick="saveAuthoritySign()" style="padding:6px 14px;font-size:12px;white-space:nowrap;margin-left:auto">Save</button>
             <button class="btn-ghost" onclick="cancelAuthorityEdit()" style="padding:6px 12px;font-size:12px">Cancel</button>
           </div>
           <button class="cert-auth-edit-btn" onclick="toggleAuthorityEdit()">✎ Edit Authority</button>
@@ -2425,31 +2560,29 @@
       <div id="section-hub" class="section">
 
         <!-- Hub Header -->
-        <div style="display:flex;align-items:center;width:100%;margin-bottom:20px;gap:16px">
-          <div style="flex:1">
+        <div id="hubPageHeader" style="display:flex;flex-wrap:wrap;align-items:center;width:100%;margin-bottom:20px;gap:12px 16px">
+          <div style="flex:1;min-width:160px">
             <h1 style="font-size:20px;font-weight:800;color:#111;margin-bottom:4px">Knowledge Hub</h1>
             <p style="font-size:13px;color:#888;margin:0" id="hubSubtitle">Manage modules, classes, content and quizzes</p>
           </div>
-          <!-- View As — shown only in User Preview tab: pick which real learner's
-               data this preview (and the Testing Tools panel) reflects -->
-          <div id="hubViewAsWrap" style="display:none;align-items:center;gap:6px;flex-shrink:0">
-            <label style="font-size:11px;font-weight:700;color:#9CA3AF;white-space:nowrap">View as</label>
-            <select id="hubViewAsSelect" onchange="_onHubViewAsChange()" style="height:36px;padding:0 10px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:12px;font-family:inherit;color:#111;background:#fff;max-width:200px"></select>
-          </div>
-          <!-- Search — shown only in User Preview tab -->
-          <div id="hubSearchWrap" style="display:none;position:relative;width:220px;flex-shrink:0">
-            <svg style="position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input id="hubSearch" type="text" placeholder="Search classes…" oninput="filterHub(this.value);_srchTog('hubSrchX',this)" style="height:36px;width:100%;box-sizing:border-box;padding:0 28px 0 34px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111;background:#fff;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E4E7EC'">
-            <button class="srch-x" id="hubSrchX" onclick="_srchClr('hubSearch','hubSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-          </div>
-          <!-- Admin / User tab toggle -->
-          <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0">
-            <button id="hubTabAdmin" onclick="_switchHubTab('admin')" class="hub-tab-btn hub-tab-active">
-              Admin View
-            </button>
-            <button id="hubTabUser" onclick="_switchHubTab('user')" class="hub-tab-btn">
-              User Preview
-            </button>
+          <!-- Admin/User toggle + Search — kept on one line always; the search box
+               shrinks (down to 110px) rather than wrapping onto its own separate line. -->
+          <div style="display:flex;flex-wrap:nowrap;align-items:center;gap:10px">
+            <!-- Admin / User tab toggle -->
+            <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0">
+              <button id="hubTabAdmin" onclick="_switchHubTab('admin')" class="hub-tab-btn hub-tab-active">
+                Admin View
+              </button>
+              <button id="hubTabUser" onclick="_switchHubTab('user')" class="hub-tab-btn">
+                User Preview
+              </button>
+            </div>
+            <!-- Search — shown only in User Preview tab -->
+            <div id="hubSearchWrap" style="display:none;position:relative;flex:1 1 150px;min-width:110px;max-width:260px">
+              <svg style="position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="hubSearch" type="text" placeholder="Search classes…" oninput="filterHub(this.value);_srchTog('hubSrchX',this)" style="height:36px;width:100%;box-sizing:border-box;padding:0 28px 0 34px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111;background:#fff;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E4E7EC'">
+              <button class="srch-x" id="hubSrchX" onclick="_srchClr('hubSearch','hubSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
           </div>
         </div>
 
@@ -2479,12 +2612,12 @@
 
       <!-- ── Quick Guides section ─────────────────────────────── -->
       <div id="section-quickguides" class="section">
-        <div style="display:flex;align-items:center;width:100%;margin-bottom:22px;gap:16px">
-          <div style="flex:1">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;width:100%;margin-bottom:22px;gap:12px 16px">
+          <div style="flex:1;min-width:160px">
             <h1 style="font-size:20px;font-weight:800;color:#111;margin:0 0 4px">Quick Guides</h1>
             <p style="font-size:13px;color:#888;margin:0">Upload 2–5 min demos (video, voiceover &amp; document) per form — accessed via the help icon in the platform</p>
           </div>
-          <div class="lb-view-tabs" style="margin:0;flex-shrink:0;margin-left:auto">
+          <div class="lb-view-tabs qg-view-tabs" style="margin:0;margin-left:auto;flex-shrink:0">
             <button class="lb-view-tab active" id="qgTabAdmin" onclick="qgSwitchView('admin')">Admin View</button>
             <button class="lb-view-tab" id="qgTabUser" onclick="qgSwitchView('user')">User Preview</button>
           </div>
@@ -2492,7 +2625,7 @@
 
         <!-- ── ADMIN VIEW ── -->
         <div id="qgAdminView">
-          <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
+          <div class="qg-grid" style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
 
             <!-- Left: Form list -->
             <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow:hidden;flex-shrink:0">
@@ -2520,55 +2653,55 @@
                   </div>
                 </div>
                 <!-- 3 asset cards -->
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+                <div class="rg-3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
 
                   <!-- VIDEO -->
                   <div style="background:#fff;border:1px solid #DFE2E6;border-radius:6px;overflow:hidden">
-                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
-                      <div style="display:flex;align-items:center;gap:9px">
+                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0">
+                      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
                         <div style="width:32px;height:32px;border-radius:4px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                         </div>
-                        <div>
-                          <div style="font-size:13px;font-weight:800;color:#111">Video</div>
-                          <div style="font-size:10px;color:#aaa;font-weight:600">2–5 min demo</div>
+                        <div style="min-width:0">
+                          <div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Video</div>
+                          <div style="font-size:10px;color:#aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">2–5 min demo</div>
                         </div>
                       </div>
-                      <button onclick="qgOpenUploadModal('video')" style="padding:4px 11px;background:#5189F3;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
+                      <button onclick="qgOpenUploadModal('video')" style="width:100%;padding:6px 11px;background:#5189F3;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
                     </div>
                     <div id="qgVideoItems" style="padding:8px;min-height:56px"></div>
                   </div>
 
                   <!-- VOICEOVER -->
                   <div style="background:#fff;border:1px solid #DFE2E6;border-radius:6px;overflow:hidden">
-                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
-                      <div style="display:flex;align-items:center;gap:9px">
+                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0">
+                      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
                         <div style="width:32px;height:32px;border-radius:4px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
                         </div>
-                        <div>
-                          <div style="font-size:13px;font-weight:800;color:#111">Voiceover</div>
-                          <div style="font-size:10px;color:#aaa;font-weight:600">Audio narration</div>
+                        <div style="min-width:0">
+                          <div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Voiceover</div>
+                          <div style="font-size:10px;color:#aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Audio narration</div>
                         </div>
                       </div>
-                      <button onclick="qgOpenUploadModal('voiceover')" style="padding:4px 11px;background:#16a34a;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
+                      <button onclick="qgOpenUploadModal('voiceover')" style="width:100%;padding:6px 11px;background:#16a34a;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
                     </div>
                     <div id="qgVoiceoverItems" style="padding:8px;min-height:56px"></div>
                   </div>
 
                   <!-- DOCUMENT -->
                   <div style="background:#fff;border:1px solid #DFE2E6;border-radius:6px;overflow:hidden">
-                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
-                      <div style="display:flex;align-items:center;gap:9px">
+                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0">
+                      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
                         <div style="width:32px;height:32px;border-radius:4px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                         </div>
-                        <div>
-                          <div style="font-size:13px;font-weight:800;color:#111">Document</div>
-                          <div style="font-size:10px;color:#aaa;font-weight:600">Reference guide / PDF</div>
+                        <div style="min-width:0">
+                          <div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Document</div>
+                          <div style="font-size:10px;color:#aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Reference guide / PDF</div>
                         </div>
                       </div>
-                      <button onclick="qgOpenUploadModal('document')" style="padding:4px 11px;background:#ea580c;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
+                      <button onclick="qgOpenUploadModal('document')" style="width:100%;padding:6px 11px;background:#ea580c;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
                     </div>
                     <div id="qgDocumentItems" style="padding:8px;min-height:56px"></div>
                   </div>
@@ -2589,7 +2722,7 @@
             <span style="font-size:12px;font-weight:800;color:#555">Language:</span>
             <div id="qgLangPills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
           </div>
-          <div id="qgUserCards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px"></div>
+          <div id="qgUserCards" class="rg-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px"></div>
           <div id="qgUserEmpty" style="display:none;text-align:center;padding:48px 20px;color:#bbb;font-size:13px;font-weight:600;background:#fff;border:1px solid #DFE2E6;border-radius:4px">No demos uploaded yet — switch to Admin View to add quick guides.</div>
         </div>
 
@@ -2651,6 +2784,16 @@
     function _adminLogout() {
       sessionStorage.removeItem('seatrace_role');
       window.location.href = 'index.html';
+    }
+
+    /* ── Mobile sidebar drawer ── */
+    function _toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+    function _closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
     }
 
     /* ══ ADMIN PROFILE — one identity per browser, same pattern as the learner sign-up ══ */
@@ -2809,6 +2952,7 @@
       hub: 'Knowledge Hub', quickguides: 'Quick Guides'
     };
     function switchTab(id, btn) {
+      _closeSidebar();
       _topBarStart();
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -2952,6 +3096,17 @@
       if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
     }
 
+    /* Icons for the library table's action buttons — shown alongside the text label on
+       desktop/tablet, and alone (label hidden via CSS) on phone widths to save space. */
+    const _libIco = {
+      edit:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+      hide:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19M1 1l22 22"/></svg>',
+      show:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+      view:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+      del:    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+      upload: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'
+    };
+
     function _buildGroupedListHtml(items, type, emptyMods) {
       const groups = {};
       items.forEach(v => {
@@ -2995,10 +3150,10 @@
           <td class="lib-td-dur">${dur}</td>
           ${type==='video'?`<td class="lib-td-status">${statusHtml}</td>`:''}
           <td class="lib-td-act">
-            <button class="lib-btn edit" onclick="${editFn}">Edit</button>
-            <button class="lib-btn ${isItemHidden?'lib-btn-show':'lib-btn-hide'}" onclick="${hideFn}">${isItemHidden?'Show':'Hide'}</button>
-            <button class="lib-btn" onclick="${viewFn}">View</button>
-            <button class="lib-btn del" onclick="${delFn}">Delete</button>
+            <button class="lib-btn edit" title="Edit" onclick="${editFn}">${_libIco.edit}<span class="lib-btn-label">Edit</span></button>
+            <button class="lib-btn ${isItemHidden?'lib-btn-show':'lib-btn-hide'}" title="${isItemHidden?'Show':'Hide'}" onclick="${hideFn}">${isItemHidden?_libIco.show:_libIco.hide}<span class="lib-btn-label">${isItemHidden?'Show':'Hide'}</span></button>
+            <button class="lib-btn" title="View" onclick="${viewFn}">${_libIco.view}<span class="lib-btn-label">View</span></button>
+            <button class="lib-btn del" title="Delete" onclick="${delFn}">${_libIco.del}<span class="lib-btn-label">Delete</span></button>
           </td>
         </tr>`;
       }
@@ -3015,7 +3170,7 @@
           <td><span class="lib-cls-chip" style="background:${clsColor}1a;color:${clsColor};border:1px solid ${clsColor}40">${cls}</span></td>
           <td class="lib-td-dur">—</td>
           ${type==='video'?`<td class="lib-td-status"><span class="lib-status" style="background:#F3F4F6;color:#6B7280">—</span></td>`:''}
-          <td class="lib-td-act"><button class="lib-btn" onclick="_libUploadForClass('${safeMod}','${safeCls}','${type}')">Upload</button></td>
+          <td class="lib-td-act"><button class="lib-btn" title="Upload" onclick="_libUploadForClass('${safeMod}','${safeCls}','${type}')">${_libIco.upload}<span class="lib-btn-label">Upload</span></button></td>
         </tr>`;
       }
 
@@ -3038,19 +3193,19 @@
             <span class="lib-mod-name">${mod}${isModHidden?' <span style="font-size:9px;color:#F59E0B;font-weight:700;margin-left:4px">(hidden)</span>':''}</span>
             <span class="lib-mod-count">${modItems.length} item${modItems.length!==1?'s':''}</span>
             <div class="lib-mod-actions" onclick="event.stopPropagation()">
-              <button class="lib-act-btn" onclick="_libModAddClass('${safeMod}','${type}')">+ Add Class</button>
-              <button class="lib-act-btn" onclick="_libModRename('${safeMod}','${type}')">Rename</button>
-              <button class="lib-act-btn ${isModHidden?'lib-act-btn-show':'lib-act-btn-hide'}" onclick="_libModHide('${safeMod}','${type}')">${isModHidden?'Show':'Hide'}</button>
-              <button class="lib-act-btn lib-act-btn-del" onclick="_libModDelete('${safeMod}','${type}')">Delete</button>
+              <button class="lib-act-btn" title="Add Class" onclick="_libModAddClass('${safeMod}','${type}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span class="lib-btn-label">Add Class</span></button>
+              <button class="lib-act-btn" title="Rename" onclick="_libModRename('${safeMod}','${type}')">${_libIco.edit}<span class="lib-btn-label">Rename</span></button>
+              <button class="lib-act-btn ${isModHidden?'lib-act-btn-show':'lib-act-btn-hide'}" title="${isModHidden?'Show':'Hide'}" onclick="_libModHide('${safeMod}','${type}')">${isModHidden?_libIco.show:_libIco.hide}<span class="lib-btn-label">${isModHidden?'Show':'Hide'}</span></button>
+              <button class="lib-act-btn lib-act-btn-del" title="Delete" onclick="_libModDelete('${safeMod}','${type}')">${_libIco.del}<span class="lib-btn-label">Delete</span></button>
             </div>
             ${chevSvg}
           </div>
-          ${collapsed?'':(hasRows ? `<table class="lib-tbl">
+          ${collapsed?'':(hasRows ? `<div class="table-scroll"><table class="lib-tbl">
             <thead class="lib-tbl-head"><tr>
               <th class="lib-th-ico"></th><th>Title</th><th class="lib-th-cls">Class</th><th class="lib-th-dur">Duration</th>${statusCol}<th class="lib-th-act"></th>
             </tr></thead>
             <tbody>${tableBody}</tbody>
-          </table>` : `<div style="padding:14px 20px;color:#9CA3AF;font-size:12px">No classes yet in this module. Use "+ Add Class" to create one.</div>`)}
+          </table></div>` : `<div style="padding:14px 20px;color:#9CA3AF;font-size:12px">No classes yet in this module. Use "+ Add Class" to create one.</div>`)}
         </div>`;
       }).join('');
     }
@@ -3083,7 +3238,7 @@
       panel.innerHTML = `
         <div class="cp-toolbar">
           <span class="cp-title">Video Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${_videoLibrary.length} video${_videoLibrary.length!==1?'s':''}</span></span>
-          <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto">
             <select class="lib-filt-sel" onchange="_libModFilterChange('video',this.value)">${modOptVid}</select>
             <div style="position:relative;display:flex;align-items:center">
               <svg style="position:absolute;left:9px;color:#9CA3AF;pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -4199,7 +4354,7 @@
       panel.innerHTML = `
         <div class="cp-toolbar">
           <span class="cp-title">${label} Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${allItems.length} file${allItems.length!==1?'s':''}</span></span>
-          <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto">
             <select class="lib-filt-sel" onchange="_libModFilterChange('${type}',this.value)">${modOptCp}</select>
             <div style="position:relative;display:flex;align-items:center">
               <svg style="position:absolute;left:9px;color:#9CA3AF;pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -5400,10 +5555,10 @@
 
       panel.innerHTML =
         /* ── Split layout ── */
-        '<div style="display:flex;gap:0;height:620px;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;background:#fff">' +
+        '<div class="uj-split" style="display:flex;gap:0;height:620px;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;background:#fff">' +
 
           /* Left: user list — independent scroll */
-          '<div style="width:270px;flex-shrink:0;border-right:1px solid #F0F0F0;display:flex;flex-direction:column;height:100%;overflow:hidden">' +
+          '<div class="uj-list-pane" style="width:270px;flex-shrink:0;border-right:1px solid #F0F0F0;display:flex;flex-direction:column;height:100%;overflow:hidden">' +
             '<div style="padding:14px 14px 10px;border-bottom:1px solid #F0F0F0;flex-shrink:0">' +
               '<div style="font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Select Employee</div>' +
               '<div style="position:relative">' +
@@ -5416,7 +5571,7 @@
           '</div>' +
 
           /* Right: journey detail — independent scroll */
-          '<div style="flex:1;overflow-y:auto;padding:24px 28px;height:100%;box-sizing:border-box;min-height:0" id="ujDetail">' +
+          '<div class="uj-detail-pane" style="flex:1;overflow-y:auto;padding:24px 28px;height:100%;box-sizing:border-box;min-height:0" id="ujDetail">' +
             '<div style="color:#C4C9D4;font-size:13px;font-weight:700;text-align:center;padding:60px 0">Select an employee to view their learning journey</div>' +
           '</div>' +
 
@@ -6657,12 +6812,12 @@
         qs.forEach(function(q) {
           sno++;
           html += '<tr>' +
-            '<td><span class="sno">' + String(sno).padStart(2,'0') + '</span></td>' +
+            '<td class="q-col-sno"><span class="sno">' + String(sno).padStart(2,'0') + '</span></td>' +
             '<td style="font-weight:600;color:#111;">' + q.title + '</td>' +
-            '<td><span class="quiz-module-tag">' + q.module + '</span></td>' +
+            '<td class="q-col-module"><span class="quiz-module-tag">' + q.module + '</span></td>' +
             '<td style="color:#555;font-size:13px;">' + q.cls + '</td>' +
             '<td style="color:#5189F3;font-weight:700;text-align:center;">' + q.questions.length + '</td>' +
-            '<td style="text-align:center"><span class="qm-status-badge qm-status-avail" style="font-size:12px">' + (q.passMark||70) + '%</span></td>' +
+            '<td class="q-col-passmark" style="text-align:center"><span class="qm-status-badge qm-status-avail" style="font-size:12px">' + (q.passMark||70) + '%</span></td>' +
             '<td style="white-space:nowrap">' +
               '<button class="action-btn expand" id="qexpandbtn-' + q.id + '" onclick="toggleQuizExpand(' + q.id + ')" title="View questions" style="transition:transform 0.2s">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
@@ -7806,9 +7961,11 @@
     function toggleAuthorityEdit() {
       const disp = document.getElementById('certAuthDisplay');
       const form = document.getElementById('certAuthForm');
+      const btn  = document.querySelector('.cert-auth-edit-btn');
       const isEditing = form.style.display === 'flex';
       disp.style.display = isEditing ? 'flex' : 'none';
       form.style.display = isEditing ? 'none' : 'flex';
+      if (btn) btn.style.display = isEditing ? '' : 'none';
       if (!isEditing) {
         document.getElementById('certAuthNameInput').value  = certAuthority.name;
         document.getElementById('certAuthTitleInput').value = certAuthority.title;
@@ -7823,10 +7980,14 @@
       document.getElementById('certAuthTitleEl').textContent = t;
       document.getElementById('certAuthForm').style.display    = 'none';
       document.getElementById('certAuthDisplay').style.display = 'flex';
+      const btn = document.querySelector('.cert-auth-edit-btn');
+      if (btn) btn.style.display = '';
     }
     function cancelAuthorityEdit() {
       document.getElementById('certAuthForm').style.display    = 'none';
       document.getElementById('certAuthDisplay').style.display = 'flex';
+      const btn = document.querySelector('.cert-auth-edit-btn');
+      if (btn) btn.style.display = '';
     }
 
     /* ── Tier badge gradients ── */
@@ -8197,6 +8358,18 @@
         '<div class="clscert-cols-row">' + colPanels + '</div>';
     }
 
+    /* Per-module collapse state for the Class Certifications list — lets the admin
+       fold away modules they don't need right now instead of scrolling past every
+       class in every module (this page can get long on a phone). */
+    var _certModOpen = {};
+    function _toggleCertModGroup(modKey) {
+      _certModOpen[modKey] = !(_certModOpen[modKey] !== false);
+      var list = document.getElementById('clscert-list-' + modKey);
+      var chev = document.getElementById('clscert-chev-' + modKey);
+      if (list) list.style.display = _certModOpen[modKey] !== false ? '' : 'none';
+      if (chev) chev.style.transform = _certModOpen[modKey] !== false ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
     function renderClassCertPanel() {
       const panel = document.getElementById('classCertPanel');
       if (!panel) return;
@@ -8222,12 +8395,15 @@
         if (filteredClasses.length === 0) return;
         totalRendered += filteredClasses.length;
 
+        const modKey = mod.replace(/[^a-zA-Z0-9]/g,'_');
+        const modOpen = _certModOpen[modKey] !== false; // default open
         html += '<div class="clscert-module-group">';
-        html += '<div class="clscert-module-header">';
+        html += '<div class="clscert-module-header" onclick="_toggleCertModGroup(\'' + modKey + '\')" style="cursor:pointer">';
         html += '<span class="clscert-module-name" style="color:' + cfg.color + ';background:' + cfg.bg + '">' + mod + '</span>';
         html += '<span class="clscert-module-line"></span>';
+        html += '<svg class="clscert-mod-chev" id="clscert-chev-' + modKey + '" style="transform:' + (modOpen?'rotate(180deg)':'rotate(0deg)') + ';transition:transform .2s;color:#C4C9D4;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
         html += '</div>';
-        html += '<div class="clscert-list">';
+        html += '<div class="clscert-list" id="clscert-list-' + modKey + '"' + (modOpen ? '' : ' style="display:none"') + '>';
 
         filteredClasses.forEach(function(cls) {
           const holders = _getClassCertHolders(mod, cls);
@@ -8704,32 +8880,14 @@
     let hubClassMod = null, hubClassCls = null, hubClassIdx = null;
     var _hubPreviewUser = LB_USERS[0] || { name: 'User', email: '' };
 
-    function _initHubViewAsSelect() {
-      var sel = document.getElementById('hubViewAsSelect');
-      if (!sel) return;
-      if (!LB_USERS.length) {
-        sel.innerHTML = '<option value="">No learners signed up yet</option>';
-        sel.disabled = true;
-        return;
-      }
-      sel.disabled = false;
-      // If we don't yet have a real previewed learner (e.g. no one had signed up
-      // when the page first loaded), default to the first real one now.
+    /* Picks who the User Preview tab shows — defaults to the first signed-up
+       learner. There's no "View as" picker anymore, so this always resolves
+       to the same learner rather than an admin-chosen one. */
+    function _resolveHubPreviewUser() {
+      if (!LB_USERS.length) return;
       if (!_hubPreviewUser || !_hubPreviewUser.email || !LB_USERS.find(function(u){ return u.email === _hubPreviewUser.email; })) {
         _hubPreviewUser = LB_USERS[0];
       }
-      sel.innerHTML = LB_USERS.map(function(u) {
-        return '<option value="' + u.email + '">' + u.name + ' &lt;' + u.email + '&gt;</option>';
-      }).join('');
-      sel.value = _hubPreviewUser.email;
-    }
-    function _onHubViewAsChange() {
-      var sel = document.getElementById('hubViewAsSelect');
-      var user = LB_USERS.find(function(u) { return u.email === sel.value; });
-      if (!user) return;
-      _hubPreviewUser = user;
-      if (hubView === 'class') openHubClass(hubClassMod, hubClassCls, hubClassIdx);
-      else _renderHubOverview();
     }
 
     function _hubGoTo(sectionId) {
@@ -8828,6 +8986,8 @@
     }
 
     function _renderHubContent() {
+      var hdr = document.getElementById('hubPageHeader');
+      if (hdr) hdr.style.display = hubView === 'class' ? 'none' : 'flex';
       if (hubView === 'class') { _renderHubClassDetail(); } else { _renderHubOverview(); }
     }
 
@@ -8911,19 +9071,21 @@
         var assignedQuizCount = classes.filter(function(cls){ return quizzes.some(function(q){ return q.module===mod && q.cls===cls; }); }).length;
         return '<div class="hub-module-card">' +
           '<div id="hub-hdr-' + modKey + '" class="hub-module-card-hdr' + (isOpen?' open':'') + '" onclick="_toggleHubMod(\'' + modKey + '\')">' +
-            '<div class="hub-module-card-hdr-l">' +
-              '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></div>' +
-              '<span style="font-size:15px;font-weight:900;color:#111">' + mod + '</span>' +
-              (cert ? '<span class="hub-cert-pill" style="background:' + certMap.bg + ';color:' + certMap.color + '">T' + cert.tier + ' · ' + cert.shortName + '</span>' : '') +
-              '<span style="font-size:11px;color:#CBD5E1;font-weight:600">' + classes.length + ' classes · ' + assignedQuizCount + '/' + classes.length + ' quizzes assigned</span>' +
-            '</div>' +
-            '<div class="hub-module-card-hdr-r">' +
-              '<div style="display:flex;align-items:center;gap:6px">' +
-                _progressRing(modPct, 26, color) +
-                '<span style="font-size:12px;font-weight:700;color:' + (modPct>=80?'#16a34a':color) + '">' + modPct + '%</span>' +
+            '<div class="hub-module-card-hdr-row">' +
+              '<div class="hub-module-card-hdr-l">' +
+                '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></div>' +
+                '<span style="font-size:15px;font-weight:900;color:#111">' + mod + '</span>' +
+                (cert ? '<span class="hub-cert-pill" style="background:' + cert.tierBg + ';color:' + cert.tierColor + '">T' + cert.tier + ' · ' + cert.shortName + '</span>' : '') +
               '</div>' +
-              chevSvg +
+              '<div class="hub-module-card-hdr-r">' +
+                '<div style="display:flex;align-items:center;gap:6px">' +
+                  _progressRing(modPct, 26, color) +
+                  '<span style="font-size:12px;font-weight:700;color:' + (modPct>=80?'#16a34a':color) + '">' + modPct + '%</span>' +
+                '</div>' +
+                chevSvg +
+              '</div>' +
             '</div>' +
+            '<div class="hub-module-card-hdr-meta">' + classes.length + ' classes · ' + assignedQuizCount + '/' + classes.length + ' quizzes assigned</div>' +
           '</div>' +
           '<div id="hub-rows-' + modKey + '"' + (isOpen?'':' style="display:none"') + '>' + rows + '</div>' +
         '</div>';
@@ -8946,8 +9108,8 @@
       document.getElementById('hubAdminView').style.display  = tab === 'admin' ? 'block' : 'none';
       document.getElementById('hubUserView').style.display   = tab === 'user'  ? 'block' : 'none';
       document.getElementById('hubSearchWrap').style.display  = tab === 'user'  ? 'block' : 'none';
-      var vaw = document.getElementById('hubViewAsWrap');
-      if (vaw) vaw.style.display = tab === 'user' ? 'flex' : 'none';
+      var hdr = document.getElementById('hubPageHeader');
+      if (hdr) hdr.style.display = (tab === 'user' && typeof hubView !== 'undefined' && hubView === 'class') ? 'none' : 'flex';
       document.getElementById('hubTabAdmin').className = 'hub-tab-btn' + (tab === 'admin' ? ' hub-tab-active' : '');
       document.getElementById('hubTabUser').className  = 'hub-tab-btn' + (tab === 'user'  ? ' hub-tab-active' : '');
       var wb = document.getElementById('floatWarpBar');
@@ -8959,7 +9121,7 @@
       if (tab === 'admin') _renderHubAdminView();
       else {
         _refreshLiveUserData();
-        _initHubViewAsSelect();
+        _resolveHubPreviewUser();
         _renderHubOverview();
         _notifyUserOfClearedRequests();
       }
@@ -9072,39 +9234,41 @@
             '<div class="had-card">' +
               /* Module header */
               '<div class="had-mod-hdr" onclick="_hadToggle(\'' + mKey + '\')">' +
+              '<div class="had-mod-row">' +
                 '<div class="had-mod-dot" style="background:' + color + '"></div>' +
                 '<div class="had-mod-name" style="' + (isHide ? 'color:#9CA3AF;text-decoration:line-through' : '') + '">' + mod + (isHide ? ' <span style="font-size:11px;font-weight:600;color:#F59E0B;text-decoration:none">(hidden)</span>' : '') + '</div>' +
-                '<div class="had-mod-meta">' + classes.length + ' class' + (classes.length!==1?'es':'') + ' · ' + quizCnt + ' quiz · ' + vidCnt + ' video' + (vidCnt!==1?'s':'') + '</div>' +
                 '<div class="had-mod-actions" onclick="event.stopPropagation()">' +
-                  '<button class="had-btn" onclick="_addClassToModule(\'' + emsMod + '\')">' +
-                    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Class' +
+                  '<button class="had-btn" title="Add Class" onclick="_addClassToModule(\'' + emsMod + '\')">' +
+                    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span class="lib-btn-label">Add Class</span>' +
                   '</button>' +
-                  '<button class="had-btn" onclick="_renameModule(\'' + emsMod + '\')">' +
-                    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Rename' +
+                  '<button class="had-btn" title="Rename" onclick="_renameModule(\'' + emsMod + '\')">' +
+                    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="lib-btn-label">Rename</span>' +
                   '</button>' +
-                  '<button class="had-btn" onclick="_toggleModuleHide(\'' + emsMod + '\')" style="color:' + (isHide?'#10B981':'#555') + '">' +
+                  '<button class="had-btn" title="' + (isHide?'Show':'Hide') + '" onclick="_toggleModuleHide(\'' + emsMod + '\')" style="color:' + (isHide?'#10B981':'#555') + '">' +
                     (isHide
-                      ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Show'
-                      : '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>Hide') +
+                      ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="lib-btn-label">Show</span>'
+                      : '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg><span class="lib-btn-label">Hide</span>') +
                   '</button>' +
-                  '<button class="had-btn had-btn-danger" onclick="_deleteModuleConfirm(\'' + emsMod + '\')">' +
-                    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>Delete Module' +
+                  '<button class="had-btn had-btn-danger" title="Delete Module" onclick="_deleteModuleConfirm(\'' + emsMod + '\')">' +
+                    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg><span class="lib-btn-label">Delete Module</span>' +
                   '</button>' +
                 '</div>' +
                 '<svg class="had-chev" id="had-chev-' + mKey + '" style="transform:' + (isOpen?'rotate(180deg)':'rotate(0deg)') + ';margin-left:6px" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>' +
+              '</div>' +
+              '<div class="had-mod-meta">' + classes.length + ' class' + (classes.length!==1?'es':'') + ' · ' + quizCnt + ' quiz · ' + vidCnt + ' video' + (vidCnt!==1?'s':'') + '</div>' +
               '</div>' +
               /* Class table */
               '<div id="had-body-' + mKey + '" style="' + (isOpen?'':'display:none') + '">' +
                 (classes.length === 0
                   ? '<div style="text-align:center;padding:20px;font-size:13px;color:#aaa">No classes yet. Use &quot;+ Add Class&quot; to create one.</div>'
-                  : '<table class="had-cls-table"><thead><tr>' +
+                  : '<div class="table-scroll"><table class="had-cls-table"><thead><tr>' +
                       '<th>#</th><th>Class Name</th><th>Quiz</th>' +
                       '<th style="text-align:center">Videos</th>' +
                       '<th style="text-align:center">VO</th>' +
                       '<th style="text-align:center">Docs</th>' +
                       '<th>Completion</th>' +
                       '<th>Actions</th>' +
-                    '</tr></thead><tbody>' + clsRows + '</tbody></table>') +
+                    '</tr></thead><tbody>' + clsRows + '</tbody></table></div>') +
               '</div>' +
             '</div>';
         });
@@ -9918,7 +10082,7 @@
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="15 18 9 12 15 6"/></svg>' +
             ' Back to Hub' +
           '</button>' +
-          '<div style="display:flex;align-items:flex-start;gap:20px;margin-bottom:4px">' +
+          '<div class="hub-detail-hdr-row" style="display:flex;align-items:flex-start;gap:20px;margin-bottom:4px">' +
             '<div style="flex:1;min-width:0">' +
               '<div class="hub-detail-breadcrumb">' +
                 '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></div>' +
@@ -9928,7 +10092,7 @@
               '</div>' +
               '<div class="hub-detail-title">' + cls + '</div>' +
             '</div>' +
-            '<div style="flex-shrink:0;text-align:center;padding-top:4px">' +
+            '<div style="flex-shrink:0;text-align:center">' +
               _progressRing(overallPct, 56, color) +
               '<div style="font-size:11px;font-weight:700;color:' + (overallPct>=80?'#16a34a':color) + ';margin-top:3px">' +
                 (overallPct>=80?'Complete':overallPct+'% done') +
@@ -10157,7 +10321,10 @@
       var labels = { video: 'Video', voiceover: 'Voiceover', document: 'Document' };
       document.getElementById('qgModalTitle').textContent = 'Add ' + labels[type] + ' — ' + _qgSelectedForm;
       document.getElementById('qgModalDurationRow').style.display = (type === 'document') ? 'none' : '';
-      document.getElementById('qgModalLang').value = 'en';
+      var _qgData = _qgGetData();
+      var _qgExistingLangs = (((_qgData[_qgSelectedForm] || {})[type]) || []).map(function(it) { return it.lang; });
+      var _qgDefaultLang = (QG_LANGS.find(function(l) { return _qgExistingLangs.indexOf(l.code) === -1; }) || QG_LANGS[0]).code;
+      document.getElementById('qgModalLang').value = _qgDefaultLang;
       document.getElementById('qgModalTitle2').value = '';
       document.getElementById('qgModalFile').value = '';
       document.getElementById('qgModalDuration').value = '';
