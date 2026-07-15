@@ -2079,6 +2079,13 @@
          they actually fit, with wrap as a fallback for the narrowest devices. */
       .hub-tab-btn { padding: 6px 10px !important; font-size: 11px !important; }
       .hub-tab-toggle-wrap { padding: 2px !important; }
+      /* .lb-view-tab is the same segmented-toggle pattern used by Quick Guides
+         (Admin View/User Preview) and the Leaderboard/User Journey switch, but
+         it never got the same mobile shrink as the Knowledge Hub toggle above
+         — matching it here so every segmented toggle in the app is the same
+         size on a phone. */
+      .lb-view-tab { padding: 6px 10px !important; font-size: 11px !important; }
+      .lb-view-tabs { padding: 2px !important; }
       #hubSearchWrap { min-width: 80px !important; }
       .hub-toggle-search-row { gap: 6px; flex-wrap: wrap; row-gap: 8px; }
       /* Table toolbars (search box + "N items" count, used by Leaderboard and Quiz
@@ -2605,13 +2612,17 @@
             </div>
             <span class="cert-auth-note">· Signs every issued certificate</span>
           </div>
-          <div id="certAuthForm" style="display:none;flex-wrap:wrap;align-items:center;gap:8px;flex:1;min-width:0">
-            <input class="cert-auth-input" id="certAuthNameInput" value="" placeholder="Authority name" style="flex:1;min-width:140px" />
-            <input class="cert-auth-input" id="certAuthTitleInput" value="" placeholder="Title / Designation" style="flex:1.5;min-width:140px" />
-            <!-- Grouped so Save/Cancel always wrap onto a new line TOGETHER as a
-                 pair instead of each wrapping independently (Save was landing
-                 beside the Title input while Cancel dropped alone below it). -->
-            <div class="cert-auth-btn-group" style="display:flex;gap:8px;margin-left:auto;flex-shrink:0">
+          <div id="certAuthForm" style="display:none;flex-direction:column;gap:10px;flex:1;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+              <input class="cert-auth-input" id="certAuthNameInput" value="" placeholder="Authority name" style="flex:1;min-width:140px" />
+              <input class="cert-auth-input" id="certAuthTitleInput" value="" placeholder="Title / Designation" style="flex:1.5;min-width:140px" />
+            </div>
+            <!-- Own row, explicitly right-aligned via justify-content — margin-left:auto
+                 on a flex item only pushes it right reliably when it's sharing a line
+                 with something else; once it wrapped alone, its position depended on
+                 exactly how much space was left, which wasn't consistent across
+                 viewport widths. This is right-aligned unconditionally, every time. -->
+            <div class="cert-auth-btn-group" style="display:flex;gap:8px;justify-content:flex-end">
               <button class="btn-primary" onclick="saveAuthoritySign()" style="padding:6px 14px;font-size:12px;white-space:nowrap">Save</button>
               <button class="btn-ghost" onclick="cancelAuthorityEdit()" style="padding:6px 12px;font-size:12px">Cancel</button>
             </div>

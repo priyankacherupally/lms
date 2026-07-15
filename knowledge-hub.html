@@ -3139,6 +3139,10 @@
           +'</div>'
         +'</div>';
       }).join('');
+      /* With fewer than 3 learners there's no podium to show, but the empty
+         .lb-podium container (background/border/padding) still rendered as a
+         mysterious blank bordered strip. Hide the whole thing in that case. */
+      document.getElementById('lbPodium').style.display = podiumSlots.length ? 'flex' : 'none';
 
       renderLbTable(ranked);
     }
