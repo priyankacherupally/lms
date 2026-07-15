@@ -7,7 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Nunito', sans-serif; background: #F7F8FA; color: #111; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    /* height:100vh on mobile is computed against the LARGEST possible viewport
+       (as if the browser's address bar were hidden) — the actually-visible area
+       is smaller whenever that bar is showing, so the bottom of the page sat
+       behind the browser's own chrome no matter how much bottom padding .main
+       had. 100dvh tracks the real, current visible viewport; the 100vh above
+       it is a fallback for browsers that don't support dvh. */
+    body { font-family: 'Nunito', sans-serif; background: #F7F8FA; color: #111; display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 
     /* ── Navbar ── */
     .navbar {
@@ -671,6 +677,20 @@
       .rg-2, .rg-3, .rg-4 { grid-template-columns: 1fr !important; }
       .kb-board { grid-template-columns: 1fr; }
       .lb-podium { flex-wrap: wrap; }
+      /* Navbar on a phone: hamburger + logo + Learner badge + avatar + bell +
+         logout all sat edge-to-edge with the same desktop padding/gaps, reading
+         as one solid clump (same issue already fixed for admin.html's navbar —
+         this file has its own separate CSS, so it needed the same fix here). */
+      .navbar { padding: 0 12px; }
+      .nav-role-badge { display: none; }
+      .nav-icons { gap: 6px; }
+      /* "All Learners" + search row: the search box's fixed 200px width left too
+         little room for the title, which then wrapped onto 2 lines ("All" /
+         "Learners") instead of staying on one — same class of bug already fixed
+         for admin.html's own table toolbars. Let the search box shrink and keep
+         the title on one line. */
+      .lb-table-head-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+      .lb-search { width: auto; flex: 1 1 100px; min-width: 0; }
       /* Class row (circle / name / quiz chips / progress / status / CTA) — shared by
          both My Journey and the Modules tab. Keep it on one line by trimming the
          lower-priority pieces instead of wrapping: hide the A1/A2 attempt chips

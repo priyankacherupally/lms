@@ -7,7 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Nunito', sans-serif; background: #f5f5f5; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    /* height:100vh on mobile is computed against the LARGEST possible viewport
+       (as if the browser's address bar were hidden) — the actually-visible area
+       is smaller whenever that bar is showing, so the bottom of the page sat
+       behind the browser's own chrome no matter how much padding .main had.
+       100dvh tracks the real, current visible viewport; the 100vh above it is
+       a fallback for browsers that don't support dvh. */
+    body { font-family: 'Nunito', sans-serif; background: #f5f5f5; display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 
     /* ── Navbar ── */
     .navbar {
@@ -1889,6 +1895,11 @@
       background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
       padding: 0 12px; height: 36px; font-size: 13px; font-weight: 400; color: #111;
       transition: border-color .15s, box-shadow .15s;
+      /* The trigger also carries over the original select's own class (e.g.
+         .cp-sel/.lib-filt-sel) so context-specific overrides below can apply —
+         but those classes' own background-image arrow (meant for a native
+         select) would otherwise double up with this trigger's own chevron SVG. */
+      background-image: none;
     }
     .csel-trigger:hover { border-color: #c7d2e0; }
     .csel-wrap.csel-open .csel-trigger, .csel-trigger:focus { outline: none; border-color: #5189F3; box-shadow: 0 0 0 2px rgba(81,137,243,0.12); }
@@ -1912,6 +1923,13 @@
     .csel-item:hover, .csel-item.focused { background: #F5F8FF; }
     .csel-item.selected { background: #EEF3FF; color: #5189F3; font-weight: 800; }
     .csel-item.disabled { color: #ccc; cursor: default; pointer-events: none; }
+    /* Per-context overrides — the base .csel-trigger style matches .qc-field's
+       own inputs (2px radius, regular weight), but the app has two other
+       distinct input "families" with their own radius/weight the surrounding
+       fields already use, so a dropdown sitting among THEM needs to match
+       those instead of the default. */
+    .csel-trigger.lib-filt-sel { height: 32px; padding: 0 10px; border-radius: 7px; border-color: #E5E7EB; font-size: 12px; font-weight: 700; color: #374151; }
+    .udm-field .csel-trigger { border-radius: 7px; font-weight: 600; }
 
     /* ══════════════════════════════════════════════════════
        RESPONSIVE — kept at the very end of the stylesheet on purpose.
@@ -2054,10 +2072,16 @@
       .table-search-wrap { width: auto !important; flex: 1 1 auto; min-width: 0; }
       .table-count { white-space: nowrap; flex-shrink: 0; }
       /* Add Module row: icon + input + button in one nowrap-ish row ran out of
-         space on a phone, pushing the button past the card's edge. Let the row
-         wrap and give the button its own full-width line instead of overflowing. */
+         space on a phone, pushing the button past the card's edge. Force an
+         unconditional column stack (icon+input on their own row, button below,
+         full width) rather than relying on flex-wrap's packing order, which
+         depends on precise width math that's harder to guarantee. */
       .hub-add-module-row { flex-wrap: wrap; row-gap: 8px; }
-      .hub-add-module-btn { flex: 1 1 100% !important; }
+      .hub-add-module-row input { flex-basis: 100% !important; order: 1; }
+      .hub-add-module-btn { flex: 1 1 100% !important; order: 2; width: 100%; }
+      /* Upload page's Video/Voice Over/Docs tab row: generous desktop padding
+         left the 3 tabs fighting for space on a phone. */
+      .upload-type-tab { padding: 10px 12px; }
     }
   </style>
 </head>
@@ -2220,28 +2244,32 @@
             <p>Rankings by completion and certifications across all employees.</p>
           </div>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-left:auto">
-            <!-- Search -->
-            <div class="table-search-wrap" style="width:190px">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
-              <input type="text" id="lbSearch" placeholder="Search users…" oninput="_srchTog('lbSrchX',this);_renderLbTableDebounced()" />
-              <button class="srch-x" id="lbSrchX" onclick="_srchClr('lbSearch','lbSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-            </div>
-            <!-- Month filter -->
-            <div style="position:relative">
-              <button class="lb-month-chip" id="lbMonthBtn" onclick="toggleMonthPicker()" style="cursor:pointer;border:none;background:#fff">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <!-- Search + Month grouped together so they move as a pair when this
+                 row wraps on a phone — previously each was its own flex item and
+                 the wrap algorithm split them onto separate lines individually. -->
+            <div class="lb-search-month-group" style="display:flex;align-items:center;gap:10px;flex:1 1 auto;min-width:0">
+              <div class="table-search-wrap" style="width:190px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
-                <span id="lbCurrentMonth">June 2026</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;margin-left:2px">
-                  <polyline points="6 9 12 15 18 9"/>
-                </svg>
-              </button>
-              <div id="lbMonthPicker" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:100;min-width:200px;overflow:hidden">
-                <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
-                <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
+                <input type="text" id="lbSearch" placeholder="Search users…" oninput="_srchTog('lbSrchX',this);_renderLbTableDebounced()" />
+                <button class="srch-x" id="lbSrchX" onclick="_srchClr('lbSearch','lbSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+              <!-- Month filter -->
+              <div style="position:relative;flex-shrink:0">
+                <button class="lb-month-chip" id="lbMonthBtn" onclick="toggleMonthPicker()" style="cursor:pointer;border:none;background:#fff">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  <span id="lbCurrentMonth">June 2026</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;margin-left:2px">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+                <div id="lbMonthPicker" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:100;min-width:200px;overflow:hidden">
+                  <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
+                  <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
+                </div>
               </div>
             </div>
             <div style="width:1px;height:22px;background:#DFE2E6;flex-shrink:0"></div>
@@ -2318,7 +2346,7 @@
           </button>
           <button class="upload-type-tab" onclick="switchUploadType('document',this)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            Document
+            Docs
           </button>
         </div>
 
@@ -2536,6 +2564,13 @@
             <h1>Certifications</h1>
             <p>Awarded when employees complete all class videos and pass the quiz.</p>
           </div>
+          <!-- Moved here from the Class Certifications toolbar below — this is
+               the primary/mandatory action for this page, so it belongs in the
+               header, right-aligned, not buried under the search row. -->
+          <button class="cp-add-btn" onclick="openIssueCertModal()" style="flex-shrink:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create Certificate
+          </button>
         </div>
 
         <!-- Signing Authority -->
@@ -2555,8 +2590,13 @@
           <div id="certAuthForm" style="display:none;flex-wrap:wrap;align-items:center;gap:8px;flex:1;min-width:0">
             <input class="cert-auth-input" id="certAuthNameInput" value="" placeholder="Authority name" style="flex:1;min-width:140px" />
             <input class="cert-auth-input" id="certAuthTitleInput" value="" placeholder="Title / Designation" style="flex:1.5;min-width:140px" />
-            <button class="btn-primary" onclick="saveAuthoritySign()" style="padding:6px 14px;font-size:12px;white-space:nowrap;margin-left:auto">Save</button>
-            <button class="btn-ghost" onclick="cancelAuthorityEdit()" style="padding:6px 12px;font-size:12px">Cancel</button>
+            <!-- Grouped so Save/Cancel always wrap onto a new line TOGETHER as a
+                 pair instead of each wrapping independently (Save was landing
+                 beside the Title input while Cancel dropped alone below it). -->
+            <div class="cert-auth-btn-group" style="display:flex;gap:8px;margin-left:auto;flex-shrink:0">
+              <button class="btn-primary" onclick="saveAuthoritySign()" style="padding:6px 14px;font-size:12px;white-space:nowrap">Save</button>
+              <button class="btn-ghost" onclick="cancelAuthorityEdit()" style="padding:6px 12px;font-size:12px">Cancel</button>
+            </div>
           </div>
           <button class="cert-auth-edit-btn" onclick="toggleAuthorityEdit()">✎ Edit Authority</button>
         </div>
@@ -2570,10 +2610,6 @@
             <input type="text" id="clscertSearch" placeholder="Search employee or class…" oninput="_srchTog('clscertSrchX',this);_renderClassCertPanelDebounced()" />
             <button class="srch-x" id="clscertSrchX" onclick="_srchClr('clscertSearch','clscertSrchX')" style="right:4px"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
-          <button class="cp-add-btn" onclick="openIssueCertModal()" style="flex-shrink:0">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Create Certificate
-          </button>
         </div>
         <div class="clscert-stat-strip" id="clscertStatStrip"></div>
         <div id="classCertPanel"></div>
@@ -2964,6 +3000,8 @@
         if (sel.classList.contains('csel-native')) return;
         if (enhanced) { if (enhanced.has(sel)) return; enhanced.add(sel); }
 
+        var origClasses = sel.className;
+
         var wrap = document.createElement('div');
         wrap.className = 'csel-wrap';
         sel.parentNode.insertBefore(wrap, sel);
@@ -2974,7 +3012,11 @@
 
         var trigger = document.createElement('button');
         trigger.type = 'button';
-        trigger.className = 'csel-trigger';
+        /* Carry over the original select's own class(es) (e.g. "lib-filt-sel")
+           so a context-specific CSS rule can restyle the trigger to match
+           whatever toolbar/form it actually sits in, instead of every select
+           in the app looking identical regardless of its surroundings. */
+        trigger.className = 'csel-trigger ' + origClasses;
         trigger.setAttribute('aria-haspopup', 'listbox');
         trigger.innerHTML = '<span class="csel-trigger-label"></span>' +
           '<svg class="csel-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>';
