@@ -1868,6 +1868,52 @@
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 490; }
 
     /* ══════════════════════════════════════════════════════
+       CUSTOM DROPDOWN — replaces native <select> visuals everywhere.
+       Android's native <select> picker renders with the OS's own font size
+       and can't be restyled via CSS (that's what caused the huge,
+       inconsistent-looking text on mobile) — so every <select> in this file
+       gets wrapped with a custom-built trigger + list that matches the app's
+       existing rounded/white-card look, on every screen size (not just
+       mobile — this is a deliberate consistency change, not a width-forced
+       compromise). The real <select> stays in the DOM, invisible and
+       non-interactive, purely so every existing .value read/write and
+       onchange="" handler across the file keeps working untouched. */
+    .csel-wrap { position: relative; }
+    .csel-native { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+    .csel-trigger {
+      /* radius/weight matched to the plain text inputs (.qc-field, .cp-field,
+         .udm-field) these dropdowns sit beside in the same form — a rounder,
+         bolder trigger looked visibly inconsistent next to them. */
+      width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-family: 'Nunito', sans-serif; cursor: pointer; text-align: left;
+      background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
+      padding: 0 12px; height: 36px; font-size: 13px; font-weight: 400; color: #111;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .csel-trigger:hover { border-color: #c7d2e0; }
+    .csel-wrap.csel-open .csel-trigger, .csel-trigger:focus { outline: none; border-color: #5189F3; box-shadow: 0 0 0 2px rgba(81,137,243,0.12); }
+    .csel-wrap.csel-disabled .csel-trigger { background: #f9f9f9; color: #bbb; cursor: not-allowed; }
+    .csel-trigger-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .csel-trigger-label.csel-placeholder { color: #aaa; font-weight: 500; }
+    .csel-chev { color: #9CA3AF; flex-shrink: 0; transition: transform .15s; }
+    .csel-wrap.csel-open .csel-chev { transform: rotate(180deg); }
+    /* Portal-positioned (appended to <body>, position:fixed) rather than nested
+       inside .csel-wrap, so it never gets clipped by an ancestor modal/card with
+       overflow:hidden the way a nested absolute dropdown would be. */
+    .csel-list {
+      position: fixed; background: #fff; border: 1px solid #DFE2E6; border-radius: 10px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.16); overflow-y: auto;
+      z-index: 9999; padding: 4px; box-sizing: border-box;
+    }
+    .csel-item {
+      padding: 9px 12px; font-size: 13px; font-weight: 600; color: #333;
+      border-radius: 7px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .csel-item:hover, .csel-item.focused { background: #F5F8FF; }
+    .csel-item.selected { background: #EEF3FF; color: #5189F3; font-weight: 800; }
+    .csel-item.disabled { color: #ccc; cursor: default; pointer-events: none; }
+
+    /* ══════════════════════════════════════════════════════
        RESPONSIVE — kept at the very end of the stylesheet on purpose.
        A plain CSS rule only wins a same-specificity tie by appearing LATER
        in the source than what it overrides — a media query gets no special
@@ -1896,7 +1942,11 @@
          (a table, an unwrapped button row, etc.) silently forces the whole page wider than
          the viewport instead of just overflowing within its own box. This is what turned a
          single overflowing toolbar row into the entire page shifting sideways. */
-      .main { padding: 16px; min-width: 0; }
+      /* Extra bottom padding: on a real phone the browser's own bottom bar/gesture
+         strip sits on top of the page with no reserved space, so the last bit of
+         scrollable content (e.g. the last leaderboard rows) reads as cut off even
+         though it's technically reachable by scrolling further. */
+      .main { padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px) + 32px) 16px; min-width: 0; }
       .rg-2, .rg-3, .rg-4 { grid-template-columns: repeat(2, 1fr) !important; }
       .table-scroll { overflow-x: auto; }
       .lb-table { min-width: 700px; }
@@ -1990,6 +2040,24 @@
       .hub-tab-toggle-wrap { padding: 2px !important; }
       #hubSearchWrap { min-width: 80px !important; }
       .hub-toggle-search-row { gap: 6px; flex-wrap: wrap; row-gap: 8px; }
+      /* Leaderboard month picker: right:0 anchors its right edge to the (narrow)
+         month button, so the 200px-wide panel hung 200px to the LEFT of it — on
+         a phone the button sits close to the screen's left edge, so the panel
+         ran off-screen and got clipped. Anchor from the left instead. */
+      #lbMonthPicker { left: 0 !important; right: auto !important; }
+      /* Table toolbars (search box + "N items" count, used by Leaderboard and Quiz
+         list): the search box had a fixed width (190/240px) that alone ate almost
+         the whole toolbar on a phone, leaving no room for the count — it either
+         touched the search box or wrapped onto its own line. Let the search box
+         shrink and keep the count on one line with real breathing room. */
+      .table-toolbar { gap: 10px; }
+      .table-search-wrap { width: auto !important; flex: 1 1 auto; min-width: 0; }
+      .table-count { white-space: nowrap; flex-shrink: 0; }
+      /* Add Module row: icon + input + button in one nowrap-ish row ran out of
+         space on a phone, pushing the button past the card's edge. Let the row
+         wrap and give the button its own full-width line instead of overflowing. */
+      .hub-add-module-row { flex-wrap: wrap; row-gap: 8px; }
+      .hub-add-module-btn { flex: 1 1 100% !important; }
     }
   </style>
 </head>
@@ -2609,10 +2677,10 @@
           <!-- Admin module table -->
           <div id="hubAdminContent"></div>
           <!-- Add module form -->
-          <div style="display:flex;gap:8px;align-items:center;margin-top:16px;padding:16px;background:#fff;border:1.5px dashed #DFE2E6;border-radius:10px">
+          <div class="hub-add-module-row" style="display:flex;gap:8px;align-items:center;margin-top:16px;padding:16px;background:#fff;border:1.5px dashed #DFE2E6;border-radius:10px">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <input id="newModuleName" type="text" placeholder="New module name…" style="flex:1;height:38px;padding:0 12px;border:1.5px solid #DFE2E6;border-radius:6px;font-size:13px;font-family:inherit;outline:none;color:#111;transition:border-color .15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" onkeydown="if(event.key==='Enter')_addModule()">
-            <button onclick="_addModule()" style="height:38px;padding:0 18px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">+ Add Module</button>
+            <input id="newModuleName" type="text" placeholder="New module name…" style="flex:1;min-width:0;height:38px;padding:0 12px;border:1.5px solid #DFE2E6;border-radius:6px;font-size:13px;font-family:inherit;outline:none;color:#111;transition:border-color .15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" onkeydown="if(event.key==='Enter')_addModule()">
+            <button class="hub-add-module-btn" onclick="_addModule()" style="height:38px;padding:0 18px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">+ Add Module</button>
           </div>
         </div>
 
@@ -2795,6 +2863,167 @@
       if (sessionStorage.getItem('seatrace_role') !== 'admin') {
         window.location.replace('index.html');
       }
+    })();
+
+    /* ══════════════════════════════════════════════════════
+       CUSTOM DROPDOWN ENHANCER — see the .csel-* CSS block for rationale.
+       Wraps every <select> (present now or added later, e.g. inside a
+       modal's innerHTML swap) with a styled trigger + list, while leaving
+       the real <select> in the DOM so .value / onchange="" keep working
+       exactly as every other function in this file already expects. */
+    (function() {
+      var enhanced = (typeof WeakSet !== 'undefined') ? new WeakSet() : null;
+      var openWrap = null, openList = null;
+
+      function closeOpen() {
+        if (openList && openList.parentNode) openList.parentNode.removeChild(openList);
+        if (openWrap) openWrap.classList.remove('csel-open');
+        openWrap = null; openList = null;
+      }
+
+      function positionList(wrap, list) {
+        var rect = wrap.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var spaceBelow = vh - rect.bottom, spaceAbove = rect.top;
+        var maxH = Math.max(100, Math.min(240, Math.max(spaceBelow, spaceAbove) - 12));
+        list.style.maxHeight = maxH + 'px';
+        list.style.left = rect.left + 'px';
+        list.style.width = rect.width + 'px';
+        if (spaceBelow >= 140 || spaceBelow >= spaceAbove) {
+          list.style.top = (rect.bottom + 4) + 'px'; list.style.bottom = '';
+        } else {
+          list.style.bottom = (vh - rect.top + 4) + 'px'; list.style.top = '';
+        }
+      }
+
+      function syncTrigger(wrap) {
+        var sel = wrap._cselSelect;
+        var label = wrap.querySelector('.csel-trigger-label');
+        var opt = sel.options[sel.selectedIndex];
+        label.textContent = opt ? opt.textContent : '';
+        label.classList.toggle('csel-placeholder', !!opt && opt.value === '');
+        wrap.classList.toggle('csel-disabled', !!sel.disabled);
+      }
+
+      function openDropdown(wrap) {
+        var sel = wrap._cselSelect;
+        if (sel.disabled) return;
+        closeOpen();
+        var list = document.createElement('div');
+        list.className = 'csel-list';
+        list.setAttribute('role', 'listbox');
+        list.tabIndex = -1;
+        function choose(i) {
+          if (sel.selectedIndex !== i) {
+            sel.selectedIndex = i;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            sel.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          syncTrigger(wrap);
+          closeOpen();
+          wrap.querySelector('.csel-trigger').focus();
+        }
+        Array.prototype.forEach.call(sel.options, function(opt, i) {
+          var item = document.createElement('div');
+          item.className = 'csel-item' + (i === sel.selectedIndex ? ' selected' : '') + (opt.disabled ? ' disabled' : '');
+          item.textContent = opt.textContent;
+          item.setAttribute('role', 'option');
+          if (!opt.disabled) item.onclick = function(e) { e.stopPropagation(); choose(i); };
+          list.appendChild(item);
+        });
+        document.body.appendChild(list);
+        positionList(wrap, list);
+        wrap.classList.add('csel-open');
+        openWrap = wrap; openList = list;
+
+        list.onkeydown = function(e) {
+          var items = Array.prototype.slice.call(list.querySelectorAll('.csel-item:not(.disabled)'));
+          var cur = list.querySelector('.csel-item.focused') || list.querySelector('.csel-item.selected');
+          var idx = items.indexOf(cur);
+          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (cur) cur.classList.remove('focused');
+            idx = idx === -1 ? 0 : (idx + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+            items[idx].classList.add('focused');
+            items[idx].scrollIntoView({ block: 'nearest' });
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            var target = list.querySelector('.csel-item.focused') || cur;
+            if (target) target.click();
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closeOpen();
+            wrap.querySelector('.csel-trigger').focus();
+          }
+        };
+        list.focus();
+      }
+
+      function enhance(sel) {
+        if (!sel || sel.tagName !== 'SELECT' || sel.multiple) return;
+        if (sel.classList.contains('csel-native')) return;
+        if (enhanced) { if (enhanced.has(sel)) return; enhanced.add(sel); }
+
+        var wrap = document.createElement('div');
+        wrap.className = 'csel-wrap';
+        sel.parentNode.insertBefore(wrap, sel);
+        wrap.appendChild(sel);
+        sel.classList.add('csel-native');
+        sel.tabIndex = -1;
+        wrap._cselSelect = sel;
+
+        var trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'csel-trigger';
+        trigger.setAttribute('aria-haspopup', 'listbox');
+        trigger.innerHTML = '<span class="csel-trigger-label"></span>' +
+          '<svg class="csel-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>';
+        wrap.appendChild(trigger);
+
+        trigger.onclick = function(e) {
+          e.stopPropagation();
+          if (openWrap === wrap) { closeOpen(); return; }
+          openDropdown(wrap);
+        };
+        trigger.onkeydown = function(e) {
+          if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (openWrap !== wrap) openDropdown(wrap);
+          }
+        };
+
+        new MutationObserver(function() { syncTrigger(wrap); })
+          .observe(sel, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled'] });
+
+        syncTrigger(wrap);
+      }
+
+      function enhanceAll(root) {
+        var scope = root || document;
+        if (scope.tagName === 'SELECT') { enhance(scope); return; }
+        if (scope.querySelectorAll) {
+          var found = scope.querySelectorAll('select:not(.csel-native)');
+          for (var i = 0; i < found.length; i++) enhance(found[i]);
+        }
+      }
+
+      document.addEventListener('click', closeOpen);
+      window.addEventListener('resize', closeOpen);
+      window.addEventListener('scroll', closeOpen, true);
+
+      function boot() {
+        enhanceAll();
+        new MutationObserver(function(muts) {
+          for (var i = 0; i < muts.length; i++) {
+            var added = muts[i].addedNodes;
+            for (var j = 0; j < added.length; j++) {
+              if (added[j].nodeType === 1) enhanceAll(added[j]);
+            }
+          }
+        }).observe(document.body, { childList: true, subtree: true });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+      else boot();
     })();
 
     function _adminLogout() {

@@ -657,7 +657,11 @@
       .sidebar-overlay.open { display: block; }
       /* min-width:0 stops any unwrapped wide content inside .main (a flex child of
          .layout) from silently forcing the whole page wider than the viewport. */
-      .main { padding: 16px; min-width: 0; }
+      /* Extra bottom padding: on a real phone the browser's own bottom bar/gesture
+         strip sits on top of the page with no reserved space, so the last bit of
+         scrollable content reads as cut off even though it's technically reachable
+         by scrolling further. */
+      .main { padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px) + 32px) 16px; min-width: 0; }
       .rg-2, .rg-3, .rg-4 { grid-template-columns: repeat(2, 1fr) !important; }
       .kb-board { grid-template-columns: repeat(2, 1fr); }
       .lb-table-wrap { overflow-x: auto; }
@@ -691,6 +695,29 @@
          label (e.g. "Quiz Ready" pill next to a "Take Quiz" button) and was tight
          on a phone — hide it there only; desktop keeps showing it. */
       .cb-status-pill { display: none; }
+      /* Guide/tour popup: at max-width:540px it filled almost the entire phone
+         screen edge to edge, reading as a full page rather than a popup. Shrink
+         the card and its internal padding/icon/type sizes so real backdrop shows
+         on all sides. */
+      .guide-overlay { padding: 32px 18px; }
+      .guide-modal { max-width: 320px; }
+      .guide-step-wrap { padding: 22px 20px 18px; }
+      .guide-icon-circle { width: 46px; height: 46px; border-radius: 12px; margin-bottom: 14px; }
+      .guide-step-title { font-size: 17px; margin-bottom: 4px; }
+      .guide-step-sub { font-size: 12px; margin-bottom: 16px; }
+      /* Step 2's 2x2 "what you gain" grid: each tile was only ~half the modal's
+         already-shrunk width, so titles like "Leaderboard Rank" wrapped to 2
+         lines. A single column gives each card the full width it needs for one
+         line, and shrinking the icon/padding keeps the total height in check. */
+      .guide-gain-grid { grid-template-columns: 1fr !important; }
+      .guide-gain-card { padding: 9px 12px !important; display: flex !important; align-items: center !important; gap: 10px !important; text-align: left !important; }
+      .guide-gain-icon { font-size: 18px !important; margin-bottom: 0 !important; flex-shrink: 0; }
+      .guide-gain-text { flex: 1; min-width: 0; }
+      .guide-gain-title { margin-bottom: 1px !important; }
+      /* Step 3's "Watch → Quiz → Certify → Next Class" strip: 4 labels + 3 arrows
+         at gap:16px ran wider than the shrunk modal — let it wrap onto 2 lines
+         with a smaller gap rather than overflow. */
+      .guide-flow-strip { flex-wrap: wrap; gap: 8px !important; row-gap: 6px !important; }
     }
   </style>
 </head>
@@ -3652,7 +3679,7 @@
           + '</div>'
           + '<div class="guide-step-title">Why This Matters for You</div>'
           + '<div class="guide-step-sub">Learning here is not just a task — it directly builds your professional standing within SeaTrace.</div>'
-          + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'
+          + '<div class="guide-gain-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'
             + _gGainCard('#5189F3', '#EEF3FF', '&#127941;', 'Certifications', 'Official proof of your skills — recognised by management')
             + _gGainCard('#059669', '#ECFDF5', '&#128200;', 'Leaderboard Rank', 'Your certs and scores earn you a visible rank among peers')
             + _gGainCard('#7C3AED', '#F5F3FF', '&#128218;', 'Role Mastery', 'Deep knowledge of the processes you perform every day')
@@ -3674,7 +3701,7 @@
             + '<div style="width:2px;height:16px;background:#E5E7EB;margin-left:19px"></div>'
             + _gProcessStep('3', '#059669', '#ECFDF5', 'Earn Your Certificate', 'Complete all classes in a module and your certificate is issued instantly — printable and permanently on your profile.')
           + '</div>'
-          + '<div style="display:flex;align-items:center;justify-content:center;gap:16px;padding:10px;background:#F8FAFF;border-radius:10px">'
+          + '<div class="guide-flow-strip" style="display:flex;align-items:center;justify-content:center;gap:16px;padding:10px;background:#F8FAFF;border-radius:10px">'
             + '<span style="font-size:12px;font-weight:800;color:#5189F3">Watch</span>'
             + '<span style="color:#DFE2E6;font-size:16px">&#8594;</span>'
             + '<span style="font-size:12px;font-weight:800;color:#D97706">Quiz</span>'
@@ -3752,10 +3779,12 @@
       + '</div>';
     }
     function _gGainCard(color, bg, icon, title, desc) {
-      return '<div style="background:' + bg + ';border-radius:10px;padding:12px;text-align:center">'
-        + '<div style="font-size:22px;margin-bottom:6px">' + icon + '</div>'
-        + '<div style="font-size:12px;font-weight:800;color:' + color + ';margin-bottom:4px">' + title + '</div>'
-        + '<div style="font-size:10px;font-weight:600;color:#888;line-height:1.45">' + desc + '</div>'
+      return '<div class="guide-gain-card" style="background:' + bg + ';border-radius:10px;padding:12px;text-align:center">'
+        + '<div class="guide-gain-icon" style="font-size:22px;margin-bottom:6px">' + icon + '</div>'
+        + '<div class="guide-gain-text">'
+          + '<div class="guide-gain-title" style="font-size:12px;font-weight:800;color:' + color + ';margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + title + '</div>'
+          + '<div class="guide-gain-desc" style="font-size:10px;font-weight:600;color:#888;line-height:1.45">' + desc + '</div>'
+        + '</div>'
       + '</div>';
     }
     function _gProcessStep(num, color, bg, title, desc) {
@@ -3837,24 +3866,27 @@
       arr.className = '';
       arr.style.cssText = '';
 
-      if (step.pos === 'right') {
-        var cardLeft = rect.right + gap;
+      var fitsRight = step.pos === 'right' && (rect.right + gap + cardW <= window.innerWidth - 12);
+      var fitsLeft  = step.pos === 'right' && (rect.left - cardW - gap >= 12);
+
+      if (step.pos === 'right' && (fitsRight || fitsLeft)) {
+        var cardLeft = fitsRight ? rect.right + gap : rect.left - cardW - gap;
         var cardTop  = rect.top + rect.height/2 - 90;
         cardTop = Math.max(16, Math.min(window.innerHeight - 250, cardTop));
-        if (cardLeft + cardW > window.innerWidth - 12) {
-          cardLeft = rect.left - cardW - gap;
-          arr.className = 'tour-arr-r';
-        } else {
-          arr.className = 'tour-arr-l';
-        }
+        arr.className = fitsRight ? 'tour-arr-l' : 'tour-arr-r';
         card.style.top  = cardTop + 'px';
         card.style.left = cardLeft + 'px';
         card.style.right = 'auto';
         arr.style.top = '50%';
       } else {
+        /* Also used as the fallback for 'right'-positioned steps when the
+           viewport has no room on either side — e.g. on mobile the sidebar
+           drawer alone takes up ~78vw, leaving nothing to flip into and
+           pushing the card fully off-screen. Drop below the highlighted
+           item instead, same as a native 'bottom' step. */
         var elCx = rect.left + rect.width/2;
         var cleft = Math.max(12, Math.min(window.innerWidth - cardW - 12, elCx - cardW/2));
-        card.style.top  = (rect.bottom + gap) + 'px';
+        card.style.top  = Math.min(rect.bottom + gap, window.innerHeight - 260) + 'px';
         card.style.left = cleft + 'px';
         card.style.right = 'auto';
         arr.className = 'tour-arr-t';

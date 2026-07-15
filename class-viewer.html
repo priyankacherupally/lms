@@ -266,7 +266,11 @@
       }
       .sidebar.open { transform: translateX(0); }
       .sidebar-overlay.open { display: block; }
-      .page-body { padding: 20px; }
+      /* Extra bottom padding: on a real phone the browser's own bottom bar/gesture
+         strip sits on top of the page with no reserved space, so the last bit of
+         scrollable content reads as cut off even though it's technically reachable
+         by scrolling further. */
+      .page-body { padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px) + 32px) 20px; }
       .hero { padding: 20px 90px 20px 20px; }
       .page-footer { padding: 14px 16px; }
       .nav-btn { padding: 9px 12px; }
@@ -1887,24 +1891,27 @@
       arr.className = '';
       arr.style.cssText = '';
 
-      if (step.pos === 'right') {
-        var cardLeft = rect.right + gap;
+      var fitsRight = step.pos === 'right' && (rect.right + gap + cardW <= window.innerWidth - 12);
+      var fitsLeft  = step.pos === 'right' && (rect.left - cardW - gap >= 12);
+
+      if (step.pos === 'right' && (fitsRight || fitsLeft)) {
+        var cardLeft = fitsRight ? rect.right + gap : rect.left - cardW - gap;
         var cardTop  = rect.top + rect.height/2 - 90;
         cardTop = Math.max(16, Math.min(window.innerHeight - 250, cardTop));
-        if (cardLeft + cardW > window.innerWidth - 12) {
-          cardLeft = rect.left - cardW - gap;
-          arr.className = 'tour-arr-r';
-        } else {
-          arr.className = 'tour-arr-l';
-        }
+        arr.className = fitsRight ? 'tour-arr-l' : 'tour-arr-r';
         card.style.top  = cardTop + 'px';
         card.style.left = cardLeft + 'px';
         card.style.right = 'auto';
         arr.style.top = '50%';
       } else {
+        /* Also used as the fallback for 'right'-positioned steps when the
+           viewport has no room on either side — e.g. on mobile the sidebar
+           drawer alone takes up ~78vw, leaving nothing to flip into and
+           pushing the card fully off-screen. Drop below the highlighted
+           item instead, same as a native 'bottom' step. */
         var elCx = rect.left + rect.width/2;
         var cleft = Math.max(12, Math.min(window.innerWidth - cardW - 12, elCx - cardW/2));
-        card.style.top  = (rect.bottom + gap) + 'px';
+        card.style.top  = Math.min(rect.bottom + gap, window.innerHeight - 260) + 'px';
         card.style.left = cleft + 'px';
         card.style.right = 'auto';
         arr.className = 'tour-arr-t';
