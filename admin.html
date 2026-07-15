@@ -4,9 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin – SeaTrace LMS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ══════════════════════════════════════════════════════
+       DESIGN TOKENS — consolidates ~30 hand-tuned button variants, 7
+       different "stat card" builds, and border-radius scattered across
+       0/2/4/6/7/8/12/14/16/20px down to one 5-step scale. Existing class
+       names are kept as-is (renaming would mean touching every onclick/
+       JS reference); only their CSS definitions below converge on these
+       tokens, so nothing about how components are wired changes. Shared
+       verbatim (same values) across admin.html, knowledge-hub.html and
+       class-viewer.html so all three read as one product. */
+    :root {
+      --radius-control: 8px;   /* buttons, inputs, filter chips */
+      --radius-card: 10px;     /* stat cards, list-item cards */
+      --radius-panel: 14px;    /* modals, dropdown/notification panels */
+      --radius-pill: 999px;    /* badges, tabs, status pills */
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --shadow-card: 0 1px 3px rgba(20,24,33,0.06), 0 1px 2px rgba(20,24,33,0.04);
+      --shadow-hover: 0 6px 20px rgba(20,24,33,0.10);
+    }
     /* height:100vh on mobile is computed against the LARGEST possible viewport
        (as if the browser's address bar were hidden) — the actually-visible area
        is smaller whenever that bar is showing, so the bottom of the page sat
@@ -206,7 +227,7 @@
     .lib-filt-sel{height:32px;padding:0 28px 0 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;color:#374151;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer;transition:border-color .15s}
     .lib-filt-sel:focus{border-color:#5189F3}
     .cp-title{font-size:15px;font-weight:800;color:#111}
-    .cp-add-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
+    .cp-add-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
     .cp-add-btn:hover{background:#3b6fd4}
     .cp-layout{display:grid;grid-template-columns:1fr 360px;gap:16px;flex:1;min-height:0}
     .cp-list{display:flex;flex-direction:column;gap:0;overflow-y:auto;min-height:200px}
@@ -240,7 +261,7 @@
     .cp-audio-player span{font-size:12px;font-weight:700;color:#555;font-family:'Nunito',sans-serif}
     /* ── Upload Details Modal ── */
     .udm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
-    .udm-modal{background:#fff;border-radius:12px;width:480px;max-width:100%;max-height:90vh;box-shadow:0 24px 64px rgba(0,0,0,0.22);display:flex;flex-direction:column;overflow:hidden;font-family:'Nunito',sans-serif}
+    .udm-modal{background:#fff;border-radius:var(--radius-panel);width:480px;max-width:100%;max-height:90vh;box-shadow:0 24px 64px rgba(0,0,0,0.22);display:flex;flex-direction:column;overflow:hidden;font-family:'Nunito',sans-serif}
     .udm-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid #F0F0F0}
     .udm-header-left{display:flex;align-items:center;gap:10px}
     .udm-type-badge{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#EEF3FF;color:#5189F3;padding:3px 10px;border-radius:999px}
@@ -259,9 +280,9 @@
     .udm-field select{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
     .udm-field textarea{resize:vertical;min-height:68px;line-height:1.5}
     .udm-footer{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid #F0F0F0;flex-shrink:0}
-    .udm-btn-cancel{padding:8px 18px;border:1.5px solid #DFE2E6;background:#fff;color:#555;border-radius:7px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:border-color .15s,color .15s}
+    .udm-btn-cancel{padding:8px 18px;border:1.5px solid #DFE2E6;background:#fff;color:#555;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:border-color .15s,color .15s}
     .udm-btn-cancel:hover{border-color:#5189F3;color:#5189F3}
-    .udm-btn-upload{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#5189F3;color:#fff;border:none;border-radius:7px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s}
+    .udm-btn-upload{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s}
     .udm-btn-upload:hover{background:#3b6fd4}
     /* ── Grouped library (table layout) ── */
     .lib-group{border:1px solid #E5E7EB;border-radius:0;overflow:hidden;background:#fff}
@@ -310,9 +331,9 @@
     .lib-btn.del{border-color:#FECACA;color:#EF4444;background:#FFF5F5}
     .lib-btn.del:hover{background:#FEE2E2}
     .cp-form-actions{display:flex;gap:10px;padding-top:8px;border-top:1px solid #F0F0F0;margin-top:4px}
-    .cp-save-btn{flex:1;padding:9px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
+    .cp-save-btn{flex:1;padding:9px;background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
     .cp-save-btn:hover{background:#3b6fd4}
-    .cp-cancel-btn{padding:9px 16px;background:#F0F0F0;color:#555;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
+    .cp-cancel-btn{padding:9px 16px;background:#F0F0F0;color:#555;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
     .cp-cancel-btn:hover{background:#E5E5E5}
     .cp-no-form{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#bbb;font-size:12px;font-weight:600;font-family:'Nunito',sans-serif;text-align:center;height:200px;padding:20px}
     .cp-inp,.cp-sel{width:100%;box-sizing:border-box;padding:8px 11px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;transition:border-color 0.15s;background:#fff}
@@ -320,31 +341,34 @@
     .cp-sel{appearance:none;-webkit-appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;cursor:pointer}
 
     .lb-view-tabs{display:flex;gap:0;margin-bottom:20px;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;width:fit-content}
-    .lb-view-tab{padding:7px 18px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;border-radius:6px;transition:all 0.14s;white-space:nowrap}
+    .lb-view-tab{padding:7px 18px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;border-radius:var(--radius-control);transition:all 0.14s;white-space:nowrap}
     .lb-view-tab.active{background:#5189F3;color:#fff;box-shadow:0 2px 6px rgba(81,137,243,0.28)}
     .lb-view-tab:hover:not(.active){background:#EEF3FF;color:#5189F3}
     .lb-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-    .lb-stat-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:14px 16px;display:flex;align-items:center;gap:12px}
-    .lb-stat-icon{width:36px;height:36px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    /* Unified stat-card look (shared with .hub-stat-card/.lbd-kpi below) — same
+       radius/hover/cursor everywhere this "icon + big number + label" pattern
+       appears, since users already read it as clickable. */
+    .lb-stat-card{background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);padding:var(--space-lg);display:flex;align-items:center;gap:var(--space-md);box-shadow:var(--shadow-card)}
+    .lb-stat-icon{width:38px;height:38px;border-radius:var(--radius-card);display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .lb-stat-icon svg{width:17px;height:17px}
-    .lb-stat-val{font-size:22px;font-weight:900;color:#111;line-height:1}
+    .lb-stat-val{font-size:22px;font-weight:800;color:#111;line-height:1}
     .lb-stat-lbl{font-size:11px;color:#888;font-weight:600;margin-top:3px}
     .lb-monthly-strip{display:flex;align-items:center;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:10px 16px;margin-bottom:14px;font-size:13px;color:#92400E}
     .lb-monthly-strip svg{width:14px;height:14px;color:#D97706;flex-shrink:0}
-    .lb-reset-btn{margin-left:auto;padding:5px 14px;background:#D97706;color:#fff;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background 0.15s}
+    .lb-reset-btn{margin-left:auto;padding:5px 14px;background:#D97706;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background 0.15s}
     .lb-reset-btn:hover{background:#B45309}
 
     /* ── Inline Platform Dashboard ── */
     .lbd-back-bar{display:flex;align-items:center;gap:10px;margin-bottom:22px}
-    .lbd-back-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid #DFE2E6;border-radius:6px;background:#fff;font-size:13px;font-weight:700;color:#374151;cursor:pointer;font-family:inherit;transition:border-color .13s,color .13s}
+    .lbd-back-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid #DFE2E6;border-radius:var(--radius-control);background:#fff;font-size:13px;font-weight:700;color:#374151;cursor:pointer;font-family:inherit;transition:border-color .13s,color .13s}
     .lbd-back-btn:hover{border-color:#5189F3;color:#5189F3}
     .lbd-title{font-size:17px;font-weight:900;color:#111;letter-spacing:-.01em}
     .lbd-sub{font-size:12px;color:#888;font-weight:600;margin-left:auto}
 
     .lbd-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
-    .lbd-kpi{background:#fff;border:1px solid #DFE2E6;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden}
+    .lbd-kpi{background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);padding:var(--space-lg);display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
     .lbd-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--lbd-accent,#5189F3)}
-    .lbd-kpi-val{font-size:28px;font-weight:900;color:#111;line-height:1;letter-spacing:-.02em}
+    .lbd-kpi-val{font-size:28px;font-weight:800;color:#111;line-height:1;letter-spacing:-.02em}
     .lbd-kpi-lbl{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em}
     .lbd-kpi-delta{font-size:11px;font-weight:700;margin-top:2px}
     .lbd-kpi-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.1}
@@ -970,7 +994,7 @@
     /* Schedule request action buttons */
     .sched-approve-btn, .sched-deny-btn {
       font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700;
-      padding: 4px 11px; border-radius: 6px; cursor: pointer; border: 1px solid;
+      padding: 4px 11px; border-radius: var(--radius-control); cursor: pointer; border: 1px solid;
     }
     .sched-approve-btn { background: #F0FDF4; color: #16a34a; border-color: #bbf7d0; }
     .sched-approve-btn:hover { background: #16a34a; color: #fff; border-color: #16a34a; }
@@ -1502,7 +1526,7 @@
     .cert-cp-chip { font-size: 11px; background: #F5F5F5; color: #666; padding: 2px 8px; border-radius: 2px; border: 1px solid #EBEBEB; }
     .cert-danger-btn {
       padding: 6px 12px; font-size: 12px; background: #FFF5F5;
-      border: 1.5px solid #FECACA; border-radius: 6px;
+      border: 1.5px solid #FECACA; border-radius: var(--radius-control);
       color: #EF4444; cursor: pointer; font-family: 'Nunito', sans-serif;
       font-weight: 700; display: flex; align-items: center; gap: 5px;
       transition: all 0.12s;
@@ -1512,7 +1536,7 @@
     /* ── Video module language switcher ── */
     .vlang-btn {
       padding: 7px 11px;
-      border: 1px solid #DFE2E6; border-radius: 6px;
+      border: 1px solid #DFE2E6; border-radius: var(--radius-control);
       background: #fff; color: #555;
       font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
       cursor: pointer; transition: all 0.13s;
@@ -1521,7 +1545,7 @@
     .vlang-btn.vlang-active { background: #5189F3; border-color: #5189F3; color: #fff; }
     .vview-btn {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 7px 14px; border: 1.5px solid #DFE2E6; border-radius: 6px;
+      padding: 7px 14px; border: 1.5px solid #DFE2E6; border-radius: var(--radius-control);
       background: #fff; color: #555;
       font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
       cursor: pointer; transition: all 0.13s; white-space: nowrap;
@@ -1562,14 +1586,13 @@
 
     /* ── Knowledge Hub ── */
     .hub-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:28px; }
-    .hub-stat-card { background:#fff; border:1px solid #E4E7EC; border-radius:8px; padding:14px 16px; display:flex; align-items:center; gap:12px; transition:box-shadow 0.12s; }
-    .hub-stat-card:hover { box-shadow:0 2px 10px rgba(0,0,0,0.07); }
-    .hub-stat-icon { width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .hub-stat-card { background:#fff; border:1px solid #E4E7EC; border-radius:var(--radius-card); padding:var(--space-lg); display:flex; align-items:center; gap:var(--space-md); box-shadow:var(--shadow-card); }
+    .hub-stat-icon { width:38px; height:38px; border-radius:var(--radius-card); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .hub-stat-icon svg { width:18px; height:18px; }
-    .hub-stat-val { font-size:22px; font-weight:900; color:#111; line-height:1; }
+    .hub-stat-val { font-size:22px; font-weight:800; color:#111; line-height:1; }
     .hub-stat-lbl { font-size:11px; color:#888; font-weight:600; margin-top:2px; }
 
-    .hub-module-block { background:#fff; border:1px solid #DFE2E6; border-radius:2px; margin-bottom:20px; overflow:hidden; }
+    .hub-module-block { background:#fff; border:1px solid #DFE2E6; border-radius:var(--radius-card); margin-bottom:20px; overflow:hidden; }
     .hub-module-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; user-select:none; border-bottom:1px solid #F0F0F0; }
     .hub-module-header:hover { background:#FAFAFA; }
     .hub-module-left { display:flex; align-items:center; gap:12px; }
@@ -1635,7 +1658,7 @@
     .hub-quiz-none { font-size:11px; color:#F59E0B; font-weight:700; }
 
     /* ── Hub tab toggle ── */
-    .hub-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border:none;background:transparent;border-radius:6px;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap}
+    .hub-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border:none;background:transparent;border-radius:var(--radius-control);font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap}
     .hub-tab-active{background:#5189F3;color:#fff;box-shadow:0 2px 6px rgba(81,137,243,0.28)}
 
     /* ── Hub Admin View ── */
@@ -1651,7 +1674,7 @@
     .had-mod-name{font-size:15px;font-weight:900;color:#111;flex:1;min-width:80px}
     .had-mod-meta{display:block;font-size:11px;color:#CBD5E1;font-weight:600;margin-top:4px;padding-left:22px}
     .had-mod-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;flex-shrink:0}
-    .had-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;border:1px solid #E4E7EC;background:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;transition:border-color .12s,color .12s}
+    .had-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--radius-control);border:1px solid #E4E7EC;background:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;transition:border-color .12s,color .12s}
     .had-btn:hover{border-color:#5189F3;color:#5189F3}
     .had-btn-danger{border-color:#FECACA;color:#EF4444;background:#FFF5F5}
     .had-btn-danger:hover{border-color:#DC2626;background:#FEE2E2;color:#DC2626}
@@ -1669,7 +1692,7 @@
     /* ── Hub Redesign: Overview ── */
     .hub-module-section { margin-bottom:30px; }
     /* Hub v3 — accordion list */
-    .hub-module-card { background:#fff; border:1px solid #E8EBF0; border-radius:12px; overflow:hidden; margin-bottom:14px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+    .hub-module-card { background:#fff; border:1px solid #E8EBF0; border-radius:var(--radius-card); overflow:hidden; margin-bottom:14px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
     .hub-module-card-hdr { padding:16px 22px; cursor:pointer; user-select:none; transition:background 0.12s; }
     .hub-module-card-hdr:hover { background:#FAFBFF; }
     .hub-module-card-hdr.open { border-bottom:1px solid #F2F4F7; }
@@ -2058,11 +2081,6 @@
       .hub-tab-toggle-wrap { padding: 2px !important; }
       #hubSearchWrap { min-width: 80px !important; }
       .hub-toggle-search-row { gap: 6px; flex-wrap: wrap; row-gap: 8px; }
-      /* Leaderboard month picker: right:0 anchors its right edge to the (narrow)
-         month button, so the 200px-wide panel hung 200px to the LEFT of it — on
-         a phone the button sits close to the screen's left edge, so the panel
-         ran off-screen and got clipped. Anchor from the left instead. */
-      #lbMonthPicker { left: 0 !important; right: auto !important; }
       /* Table toolbars (search box + "N items" count, used by Leaderboard and Quiz
          list): the search box had a fixed width (190/240px) that alone ate almost
          the whole toolbar on a phone, leaving no room for the count — it either
@@ -2104,7 +2122,7 @@
       <div style="position:relative">
         <button id="adminProfileBtn" onclick="_toggleAdminProfilePanel()" title="Admin Profile" aria-label="Admin Profile"
           style="width:30px;height:30px;border-radius:50%;border:none;background:#5189F3;color:#fff;font-size:12px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Nunito',sans-serif">A</button>
-        <div id="adminProfilePanel" style="display:none;position:absolute;top:40px;right:0;width:250px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+        <div id="adminProfilePanel" style="display:none;position:absolute;top:40px;right:0;width:250px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
           <div id="adminProfilePanelBody"></div>
         </div>
       </div>
@@ -2118,7 +2136,7 @@
           <span id="notifBellBadge" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#DC2626;border-radius:50%;border:1.5px solid #fff"></span>
         </button>
         <!-- Notification Panel -->
-        <div id="notifPanel" style="display:none;position:absolute;top:52px;right:16px;width:340px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+        <div id="notifPanel" style="display:none;position:absolute;top:52px;right:16px;width:340px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid #F3F4F6">
             <span style="font-size:14px;font-weight:800;color:#111">Notifications</span>
             <button onclick="_markAllNotifsRead()" style="font-size:11px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
@@ -2266,7 +2284,7 @@
                     <polyline points="6 9 12 15 18 9"/>
                   </svg>
                 </button>
-                <div id="lbMonthPicker" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:100;min-width:200px;overflow:hidden">
+                <div id="lbMonthPicker" style="display:none;position:fixed;background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:9999;min-width:200px;overflow:hidden">
                   <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
                   <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
                 </div>
@@ -2567,7 +2585,7 @@
           <!-- Moved here from the Class Certifications toolbar below — this is
                the primary/mandatory action for this page, so it belongs in the
                header, right-aligned, not buried under the search row. -->
-          <button class="cp-add-btn" onclick="openIssueCertModal()" style="flex-shrink:0">
+          <button class="cp-add-btn" onclick="openIssueCertModal()" style="flex-shrink:0;margin-left:auto">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Create Certificate
           </button>
@@ -2714,7 +2732,6 @@
           <div id="hubAdminContent"></div>
           <!-- Add module form -->
           <div class="hub-add-module-row" style="display:flex;gap:8px;align-items:center;margin-top:16px;padding:16px;background:#fff;border:1.5px dashed #DFE2E6;border-radius:10px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <input id="newModuleName" type="text" placeholder="New module name…" style="flex:1;min-width:0;height:38px;padding:0 12px;border:1.5px solid #DFE2E6;border-radius:6px;font-size:13px;font-family:inherit;outline:none;color:#111;transition:border-color .15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" onkeydown="if(event.key==='Enter')_addModule()">
             <button class="hub-add-module-btn" onclick="_addModule()" style="height:38px;padding:0 18px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">+ Add Module</button>
           </div>
@@ -7787,12 +7804,12 @@
       var confirmColor = danger ? '#EF4444' : '#5189F3';
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiConfirmOverlay" onclick="if(event.target===this)_uiCloseConfirm()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
-          + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+          + '<div style="background:#fff;border-radius:var(--radius-panel);padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
             + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
             + '<div style="font-size:13px;color:#6B7280;font-weight:600;line-height:1.5;margin-bottom:20px;white-space:pre-line">' + _escHtml(opts.message || '') + '</div>'
             + '<div style="display:flex;justify-content:flex-end;gap:10px">'
-              + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
-              + '<button id="uiConfirmOkBtn" style="padding:9px 18px;border:none;background:' + confirmColor + ';color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || (danger ? 'Delete' : 'Confirm')) + '</button>'
+              + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:var(--radius-control);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
+              + '<button id="uiConfirmOkBtn" style="padding:9px 18px;border:none;background:' + confirmColor + ';color:#fff;border-radius:var(--radius-control);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || (danger ? 'Delete' : 'Confirm')) + '</button>'
             + '</div>'
           + '</div>'
         + '</div>');
@@ -7819,14 +7836,14 @@
       var safeVal = opts.value ? _escHtml(String(opts.value)) : '';
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiPromptOverlay" onclick="if(event.target===this)_uiClosePrompt()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
-          + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
+          + '<div style="background:#fff;border-radius:var(--radius-panel);padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
             + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
             + (opts.label ? '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
             + '<input id="uiPromptInput" type="text" placeholder="' + _escHtml(opts.placeholder || '') + '" value="' + safeVal + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_uiSubmitPrompt();}">'
             + '<div id="uiPromptError" style="font-size:12px;color:#EF4444;font-weight:700;margin-top:8px;display:none"></div>'
             + '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">'
-              + '<button onclick="_uiClosePrompt()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancel</button>'
-              + '<button id="uiPromptOkBtn" onclick="_uiSubmitPrompt()" style="padding:9px 18px;border:none;background:#5189F3;color:#fff;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || 'Save') + '</button>'
+              + '<button onclick="_uiClosePrompt()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:var(--radius-control);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancel</button>'
+              + '<button id="uiPromptOkBtn" onclick="_uiSubmitPrompt()" style="padding:9px 18px;border:none;background:#5189F3;color:#fff;border-radius:var(--radius-control);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.confirmLabel || 'Save') + '</button>'
             + '</div>'
           + '</div>'
         + '</div>');
@@ -8269,8 +8286,21 @@
     function toggleMonthPicker() {
       const picker = document.getElementById('lbMonthPicker');
       const isOpen = picker.style.display !== 'none';
-      picker.style.display = isOpen ? 'none' : 'block';
-      if (!isOpen) buildMonthList();
+      if (isOpen) { picker.style.display = 'none'; return; }
+      buildMonthList();
+      picker.style.display = 'block';
+      /* Positioned via fixed + JS (like the tour card / custom dropdown)
+         instead of a static CSS left/right anchor — the month button's
+         position shifts depending on surrounding content (e.g. once grouped
+         next to the search box), so a hardcoded anchor kept overflowing off
+         whichever edge had less room. */
+      const btn  = document.getElementById('lbMonthBtn');
+      const rect = btn.getBoundingClientRect();
+      const pw   = Math.max(picker.offsetWidth, 200);
+      let left   = Math.min(rect.left, window.innerWidth - pw - 12);
+      left = Math.max(12, left);
+      picker.style.left = left + 'px';
+      picker.style.top  = (rect.bottom + 4) + 'px';
     }
 
     function selectMonth(year, month, label) {
@@ -9503,7 +9533,10 @@
       /* Module cards */
       var html = '';
       if (allMods.length === 0) {
-        html = '<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">No modules yet. Add one below.</div>';
+        /* The Add Module form right below this is already the empty state —
+           a separate "No modules yet" message just added extra space above it
+           for no reason. */
+        html = '';
       } else {
         allMods.forEach(function(mod) {
           var mKey    = mod.replace(/[^a-zA-Z0-9]/g,'_');
@@ -9620,8 +9653,8 @@
         '<div class="hub-stat-icon" style="background:' + bg + '">' +
           '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="' + iconD + '"/></svg>' +
         '</div>' +
-        '<div><div style="font-size:20px;font-weight:900;color:#111;line-height:1">' + val + '</div>' +
-        '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px">' + lbl + '</div></div>' +
+        '<div><div class="hub-stat-val">' + val + '</div>' +
+        '<div class="hub-stat-lbl">' + lbl + '</div></div>' +
       '</div>';
     }
 

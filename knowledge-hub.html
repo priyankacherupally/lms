@@ -7,6 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ══════════════════════════════════════════════════════
+       DESIGN TOKENS — same values as admin.html and class-viewer.html, so
+       all three read as one product instead of three. Existing class names
+       are kept; only their CSS definitions converge on these tokens. */
+    :root {
+      --radius-control: 8px;   /* buttons, inputs, filter chips */
+      --radius-card: 10px;     /* stat cards, list-item cards */
+      --radius-panel: 14px;    /* modals, dropdown/notification panels */
+      --radius-pill: 999px;    /* badges, tabs, status pills */
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --shadow-card: 0 1px 3px rgba(20,24,33,0.06), 0 1px 2px rgba(20,24,33,0.04);
+      --shadow-hover: 0 6px 20px rgba(20,24,33,0.10);
+    }
     /* height:100vh on mobile is computed against the LARGEST possible viewport
        (as if the browser's address bar were hidden) — the actually-visible area
        is smaller whenever that bar is showing, so the bottom of the page sat
@@ -89,7 +105,7 @@
 
     /* ── Module progress ── */
     .mod-progress-bar {
-      background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
+      background: #fff; border: 1px solid #DFE2E6; border-radius: var(--radius-card);
       padding: 14px 20px; margin-bottom: 16px;
       display: flex; align-items: center; gap: 16px;
     }
@@ -127,11 +143,11 @@
     .attempt-chip.fail { background: #FEF2F2; color: #EF4444; border: 1px solid #fecaca; }
     /* legacy compat */
     .class-prog-track { height: 5px; background: #F0F0F0; border-radius: 2px; overflow: hidden; }
-    .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: #5189F3; color: #fff; border: none; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: #5189F3; color: #fff; border: none; border-radius: var(--radius-control); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
     .btn-primary:hover { background: #3b6fd4; }
-    .btn-outline { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #fff; color: #555; border: 1px solid #DFE2E6; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: border-color 0.15s, color 0.15s; white-space: nowrap; }
+    .btn-outline { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #fff; color: #555; border: 1px solid #DFE2E6; border-radius: var(--radius-control); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: border-color 0.15s, color 0.15s; white-space: nowrap; }
     .btn-outline:hover { border-color: #5189F3; color: #5189F3; }
-    .btn-disabled { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #F5F5F5; color: #bbb; border: 1px solid #E5E5E5; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: not-allowed; white-space: nowrap; }
+    .btn-disabled { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #F5F5F5; color: #bbb; border: 1px solid #E5E5E5; border-radius: var(--radius-control); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: not-allowed; white-space: nowrap; }
 
     /* ── Notifications ── */
     .notif-item { display:flex; align-items:flex-start; gap:10px; padding:11px 16px; border-bottom:1px solid #F3F4F6; cursor:pointer; transition:background .12s; }
@@ -170,7 +186,7 @@
     }
     #tourCard {
       position: fixed; z-index: 9997; display: none; background: #fff;
-      border-radius: 16px; width: 272px; overflow: visible;
+      border-radius: var(--radius-panel); width: 272px; overflow: visible;
       box-shadow: 0 8px 40px rgba(0,0,0,.22); font-family: 'Nunito', sans-serif;
       transition: top .28s cubic-bezier(.4,0,.2,1), left .28s cubic-bezier(.4,0,.2,1);
     }
@@ -192,7 +208,7 @@
     }
     /* guide shown/hidden via JS style.display */
     .guide-modal {
-      background: #fff; border-radius: 20px; width: 100%; max-width: 540px;
+      background: #fff; border-radius: var(--radius-panel); width: 100%; max-width: 540px;
       box-shadow: 0 32px 80px rgba(0,0,0,0.28); overflow: hidden;
       display: flex; flex-direction: column;
     }
@@ -392,8 +408,8 @@
     .result-status-label { font-size: 16px; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .result-status-msg { font-size: 12px; color: #888; font-weight: 600; line-height: 1.6; }
     .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .result-stat { background: #F8F8F8; border-radius: 2px; padding: 10px 14px; text-align: center; }
-    .result-stat-num { font-size: 20px; font-weight: 900; color: #111; }
+    .result-stat { background: #F8F8F8; border-radius: var(--radius-card); padding: 10px 14px; text-align: center; }
+    .result-stat-num { font-size: 22px; font-weight: 800; color: #111; }
     .result-stat-label { font-size: 10px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
     .result-next { border-radius: 2px; padding: 12px 14px; font-size: 12px; font-weight: 700; line-height: 1.6; }
     .result-foot { padding: 14px 20px; border-top: 1px solid #F0F0F0; display: flex; justify-content: flex-end; gap: 8px; }
@@ -450,7 +466,7 @@
       padding: 14px 22px; border-top: 1px solid #F0F0F0;
       display: flex; justify-content: flex-end; gap: 8px;
     }
-    .btn-amber { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; background: #F59E0B; color: #fff; border: none; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s; white-space: nowrap; }
+    .btn-amber { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; background: #F59E0B; color: #fff; border: none; border-radius: var(--radius-control); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s; white-space: nowrap; }
     .btn-amber:hover { background: #D97706; }
 
     /* ══════════════════
@@ -464,21 +480,22 @@
       gap: 12px; margin-bottom: 22px;
     }
     .lb-stat-card {
-      background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
-      padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+      background: #fff; border: 1px solid #DFE2E6; border-radius: var(--radius-card);
+      padding: var(--space-lg); display: flex; align-items: center; gap: var(--space-md);
+      box-shadow: var(--shadow-card);
     }
     .lb-stat-icon {
-      width: 36px; height: 36px; border-radius: 2px; flex-shrink: 0;
+      width: 38px; height: 38px; border-radius: var(--radius-card); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
     .lb-stat-icon svg { width: 17px; height: 17px; }
-    .lb-stat-val { font-size: 16px; font-weight: 700; color: #111; line-height: 1; }
+    .lb-stat-val { font-size: 22px; font-weight: 800; color: #111; line-height: 1; }
     .lb-stat-lbl { font-size: 11px; color: #888; font-weight: 600; margin-top: 3px; }
     /* Podium */
     .lb-podium {
       display: flex; align-items: flex-end; justify-content: center;
       gap: 6px; margin-bottom: 24px; padding: 20px 20px 0;
-      background: #F8FAFF; border-radius: 2px; border: 1px solid #DFE2E6;
+      background: #F8FAFF; border-radius: var(--radius-card); border: 1px solid #DFE2E6;
     }
     .podium-slot { display: flex; flex-direction: column; align-items: center; }
     .podium-av-wrap { position: relative; margin-bottom: 8px; }
@@ -508,7 +525,7 @@
     .podium-rank { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.88); line-height: 1; }
     .podium-place { font-size: 9px; font-weight: 800; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .07em; }
     /* Table */
-    .lb-table-wrap { background: #fff; border: 1px solid #DFE2E6; border-radius: 2px; overflow: hidden; }
+    .lb-table-wrap { background: #fff; border: 1px solid #DFE2E6; border-radius: var(--radius-card); overflow: hidden; }
     .lb-table-head {
       display: flex; align-items: center; padding: 12px 16px;
       border-bottom: 1px solid #F0F0F0; gap: 10px;
@@ -562,12 +579,15 @@
     }
     /* ── Journey & Certs shared ── */
     .page-header-row { display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px }
-    .j-stat-card { background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:14px 20px;display:flex;align-items:center;gap:12px }
-    .j-stat-icon { width:36px;height:36px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0 }
+    /* Unified stat-card look — same radius/hover/cursor as admin.html's
+       .hub-stat-card/.lb-stat-card, since this is literally the same
+       component pattern shown to users on both sides of the app. */
+    .j-stat-card { background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);padding:var(--space-lg) var(--space-lg);display:flex;align-items:center;gap:var(--space-md);box-shadow:var(--shadow-card) }
+    .j-stat-icon { width:38px;height:38px;border-radius:var(--radius-card);display:flex;align-items:center;justify-content:center;flex-shrink:0 }
     .j-stat-icon svg { width:17px;height:17px }
-    .j-stat-val { font-size:22px;font-weight:900;color:#111;line-height:1 }
+    .j-stat-val { font-size:22px;font-weight:800;color:#111;line-height:1 }
     .j-stat-label { font-size:11px;font-weight:600;color:#888;margin-top:3px }
-    .j-module-section { background:#fff;border:1px solid #DFE2E6;border-radius:2px;margin-bottom:12px;overflow:hidden }
+    .j-module-section { background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);margin-bottom:12px;overflow:hidden }
     .j-module-header { display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;user-select:none; }
     .j-module-header:hover { background:#FAFBFF; }
     .j-module-rows { border-top:1px solid #F0F0F0; }
@@ -606,7 +626,7 @@
     .kb-prog-fill { height:100%; border-radius:2px; }
     .kb-card-footer { display:flex; align-items:center; justify-content:space-between; }
     .kb-score { font-size:11px; font-weight:700; padding:2px 8px; border-radius:2px; }
-    .kb-btn { font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; border:none; cursor:pointer; font-family:inherit; white-space:nowrap; transition:background .15s; }
+    .kb-btn { font-size:12px; font-weight:700; padding:6px 14px; border-radius:var(--radius-control); border:none; cursor:pointer; font-family:inherit; white-space:nowrap; transition:background .15s; }
     .kb-btn:hover { opacity:.85; }
     .kb-btn-green { background:#059669; color:#fff; }
     .kb-btn-green-outline { background:#F0FDF4; color:#16a34a; border:1px solid #bbf7d0; }
@@ -670,7 +690,11 @@
       .main { padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px) + 32px) 16px; min-width: 0; }
       .rg-2, .rg-3, .rg-4 { grid-template-columns: repeat(2, 1fr) !important; }
       .kb-board { grid-template-columns: repeat(2, 1fr); }
-      .lb-table-wrap { overflow-x: auto; }
+      /* Only the table itself scrolls horizontally on a phone — previously
+         .lb-table-wrap (which also contains the sticky "All Learners" search
+         header) was the scroll container, so scrolling the wide table sideways
+         dragged the header along with it. */
+      .lb-table-scroll { overflow-x: auto; }
       .lb-tbl { min-width: 640px; }
     }
     @media (max-width: 560px) {
@@ -775,7 +799,7 @@
     </div>
 
     <!-- Notification panel — anchored to header -->
-    <div id="notifPanel" style="display:none;position:absolute;top:56px;right:16px;width:320px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+    <div id="notifPanel" style="display:none;position:absolute;top:56px;right:16px;width:320px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px">
         <span style="font-size:15px;font-weight:800;color:#111">Notifications</span>
         <button onclick="_markAllNotifsRead()" style="font-size:12px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
@@ -785,7 +809,7 @@
     </div>
 
     <!-- Profile panel — anchored to header -->
-    <div id="profilePanel" style="display:none;position:absolute;top:56px;right:76px;width:260px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+    <div id="profilePanel" style="display:none;position:absolute;top:56px;right:76px;width:260px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
       <div id="profilePanelBody"></div>
       <div style="border-top:1px solid #F3F4F6;padding:10px 12px">
         <button onclick="_switchUser()" style="width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border:none;background:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#374151;border-radius:6px;transition:background .12s" onmouseover="this.style.background='#F5F7FF'" onmouseout="this.style.background='none'">
@@ -897,16 +921,20 @@
             <span class="lb-table-head-title">All Learners</span>
             <input class="lb-search" id="lbSearch" placeholder="Search name or department…" oninput="_renderLbTableDebounced()" />
           </div>
-          <table class="lb-tbl">
-            <thead><tr>
-              <th style="width:6%">Rank</th>
-              <th style="width:30%">Learner</th>
-              <th style="width:18%">Department</th>
-              <th style="width:32%">Completion</th>
-              <th style="width:14%;text-align:center">Certs</th>
-            </tr></thead>
-            <tbody id="lbBody"></tbody>
-          </table>
+          <!-- Only this inner wrapper scrolls horizontally on a phone — the
+               header above stays put instead of dragging sideways with it. -->
+          <div class="lb-table-scroll">
+            <table class="lb-tbl">
+              <thead><tr>
+                <th style="width:6%">Rank</th>
+                <th style="width:30%">Learner</th>
+                <th style="width:18%">Department</th>
+                <th style="width:32%">Completion</th>
+                <th style="width:14%;text-align:center">Certs</th>
+              </tr></thead>
+              <tbody id="lbBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -2290,13 +2318,13 @@
 
       /* Summary strip */
       function sumCard(val, label, valColor, bg, svgPath) {
-        return '<div style="background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:14px 20px;display:flex;align-items:center;gap:12px">'
-          +'<div style="width:36px;height:36px;border-radius:8px;background:'+bg+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+        return '<div class="j-stat-card" style="background:#fff">'
+          +'<div class="j-stat-icon" style="background:'+bg+'">'
             +'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="'+valColor+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+svgPath+'</svg>'
           +'</div>'
           +'<div>'
-            +'<div style="font-size:22px;font-weight:900;color:#111;line-height:1">'+val+'</div>'
-            +'<div style="font-size:11px;font-weight:600;color:#888;margin-top:3px">'+label+'</div>'
+            +'<div class="j-stat-val">'+val+'</div>'
+            +'<div class="j-stat-label">'+label+'</div>'
           +'</div>'
         +'</div>';
       }
@@ -3116,9 +3144,12 @@
     }
 
     function heroCard(bg,color,svgFn,val,lbl){
+      /* Value stays the shared plain-black .lb-stat-val — this was the one
+         stat card colorizing + bolding its number to match the icon, which
+         read as inconsistent next to every other stat card in the app. */
       return '<div class="lb-stat-card">'+
         '<div class="lb-stat-icon" style="background:'+bg+'">'+svgFn(color)+'</div>'+
-        '<div><div class="lb-stat-val" style="color:'+color+'">'+val+'</div><div class="lb-stat-lbl">'+lbl+'</div></div>'+
+        '<div><div class="lb-stat-val">'+val+'</div><div class="lb-stat-lbl">'+lbl+'</div></div>'+
       '</div>';
     }
     function rankSVG(c){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'; }
