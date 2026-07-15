@@ -1974,6 +1974,22 @@
          forces the toggle onto its own line still pinned right instead of flush
          left under the title. Drop the auto-margin only at this width. */
       .qg-view-tabs { margin-left: 0 !important; }
+      /* Navbar on a phone: hamburger + logo + ADMIN badge + avatar + bell + logout
+         all sat edge-to-edge with the same desktop padding/gaps, reading as one
+         solid clump. Trim the side padding a bit, drop the redundant ADMIN label
+         (this whole file only ever is the admin panel), and give the icon
+         buttons a touch more breathing room now that space is freed up. */
+      .navbar { padding: 0 12px; }
+      .admin-badge { display: none; }
+      .nav-icons { gap: 6px; }
+      /* Knowledge Hub toggle+search row: "Admin View"/"User Preview" (fixed width)
+         plus the search box's 110px floor added up to more than a phone screen
+         had room for, pushing the search box past the right edge. Shrink both so
+         they actually fit, with wrap as a fallback for the narrowest devices. */
+      .hub-tab-btn { padding: 6px 10px !important; font-size: 11px !important; }
+      .hub-tab-toggle-wrap { padding: 2px !important; }
+      #hubSearchWrap { min-width: 80px !important; }
+      .hub-toggle-search-row { gap: 6px; flex-wrap: wrap; row-gap: 8px; }
     }
   </style>
 </head>
@@ -2567,9 +2583,9 @@
           </div>
           <!-- Admin/User toggle + Search — kept on one line always; the search box
                shrinks (down to 110px) rather than wrapping onto its own separate line. -->
-          <div style="display:flex;flex-wrap:nowrap;align-items:center;gap:10px">
+          <div class="hub-toggle-search-row" style="display:flex;flex-wrap:nowrap;align-items:center;gap:10px">
             <!-- Admin / User tab toggle -->
-            <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0">
+            <div class="hub-tab-toggle-wrap" style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0">
               <button id="hubTabAdmin" onclick="_switchHubTab('admin')" class="hub-tab-btn hub-tab-active">
                 Admin View
               </button>
@@ -5477,11 +5493,12 @@
       document.getElementById('lbThead').innerHTML = `
         <tr>
           <th style="width:4%">#</th>
-          <th style="width:24%">User</th>
-          <th style="width:13%">Role</th>
-          <th style="width:35%">Progress by Module</th>
-          <th style="width:10%;text-align:center">Certs</th>
-          <th style="width:14%;text-align:center">Status</th>
+          <th style="width:21%">User</th>
+          <th style="width:12%">Role</th>
+          <th style="width:29%">Progress by Module</th>
+          <th style="width:9%;text-align:center">Certs</th>
+          <th style="width:13%;text-align:center">Status</th>
+          <th style="width:12%;text-align:right">Actions</th>
         </tr>`;
 
       if (ranked.length === 0) {
@@ -5489,7 +5506,7 @@
         const msg = q
           ? `No learners match "${_escHtml(q)}".`
           : `No learners have signed up yet. They'll show up here as soon as someone opens the Learner side and signs in.`;
-        document.getElementById('lbBody').innerHTML = `<tr class="empty-row"><td colspan="6">${msg}</td></tr>`;
+        document.getElementById('lbBody').innerHTML = `<tr class="empty-row"><td colspan="7">${msg}</td></tr>`;
         return;
       }
 
@@ -5501,9 +5518,10 @@
         const statusPill = `<span style="display:inline-flex;align-items:center;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;color:${st.color};background:${st.bg};border:1px solid ${st.border}">${st.label}</span>`;
         const certColor  = u.certsEarned >= 3 ? '#16a34a' : u.certsEarned >= 1 ? '#5189F3' : '#9CA3AF';
         const total18    = _totalClasses();
+        const safeName   = u.name.replace(/'/g,"\\'");
 
         return `
-          <tr style="cursor:pointer" onclick="_lbShowUserJourney('${u.name.replace(/'/g,"\\'")}')">
+          <tr style="cursor:pointer" onclick="_lbShowUserJourney('${safeName}')">
             <td><span class="rank-plain">${serial}</span></td>
             <td>
               <div class="user-cell">
@@ -5515,8 +5533,57 @@
             <td>${_buildModuleBars(u.name)}</td>
             <td style="color:${certColor};font-weight:800;text-align:center">${u.certsEarned}<span style="color:#ddd;font-weight:400"> /${total18}</span></td>
             <td style="text-align:center">${statusPill}</td>
+            <td style="text-align:right">
+              <button class="lib-btn del" title="Delete user" onclick="event.stopPropagation();_deleteUser('${safeName}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span class="lib-btn-label">Delete</span>
+              </button>
+            </td>
           </tr>`;
       }).join('');
+    }
+
+    /* Permanently removes a learner: their signup entry, saved progress/quiz
+       results in this browser, and any pending attempt requests tied to them. */
+    function _deleteUser(name) {
+      var user = LB_USERS.find(function(u) { return u.name === name; });
+      if (!user) return;
+      var email = user.email;
+      _uiConfirm({
+        title: 'Delete user?',
+        message: 'Remove "' + name + '" from the platform?\n\nThis permanently deletes their signup, saved progress, quiz results, and any pending attempt requests. This cannot be undone.',
+        danger: true,
+        confirmLabel: 'Delete',
+        onConfirm: function() {
+          LB_USERS = LB_USERS.filter(function(u) { return u.email !== email; });
+          _saveUserDirectory(LB_USERS);
+
+          var suffix = '::' + email;
+          Object.keys(localStorage).filter(function(k) { return k.endsWith(suffix); }).forEach(function(k) {
+            localStorage.removeItem(k);
+          });
+          ['sq_schedule_requests', 'sq_reset_requests'].forEach(function(key) {
+            try {
+              var reqs = JSON.parse(localStorage.getItem(key) || '[]');
+              reqs = reqs.filter(function(r) { return r.userEmail !== email && r.userId !== email; });
+              localStorage.setItem(key, JSON.stringify(reqs));
+            } catch(e) {}
+          });
+          try {
+            var cur = JSON.parse(localStorage.getItem('lms_current_user') || 'null');
+            if (cur && cur.email === email) localStorage.removeItem('lms_current_user');
+          } catch(e) {}
+
+          if (_hubPreviewUser && _hubPreviewUser.email === email) _hubPreviewUser = LB_USERS[0] || { name: 'User', email: '' };
+          if (_ujSelectedUser === name) _ujSelectedUser = LB_USERS[0] ? LB_USERS[0].name : null;
+
+          _refreshLiveUserData();
+          renderLbStats();
+          renderLbTable();
+          if (document.getElementById('lbDashPanel')) _renderLbDashboard();
+          _uiToast('success', '"' + name + '" was removed.');
+        }
+      });
     }
 
     /* ══════════════════════════════════════
