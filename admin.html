@@ -18,14 +18,14 @@
        class-viewer.html so all three read as one product. */
     :root {
       --radius-control: 8px;   /* buttons, inputs, filter chips */
-      --radius-card: 10px;     /* stat cards, list-item cards */
+      --radius-card: 3px;      /* stat cards, list-item cards */
       --radius-panel: 14px;    /* modals, dropdown/notification panels */
       --radius-pill: 999px;    /* badges, tabs, status pills */
       --space-sm: 8px;
       --space-md: 12px;
       --space-lg: 16px;
       --space-xl: 24px;
-      --shadow-card: 0 1px 3px rgba(20,24,33,0.06), 0 1px 2px rgba(20,24,33,0.04);
+      --shadow-card: 0 1px 3px rgba(20,24,33,0.03), 0 1px 2px rgba(20,24,33,0.02);
       --shadow-hover: 0 6px 20px rgba(20,24,33,0.10);
     }
     /* height:100vh on mobile is computed against the LARGEST possible viewport
@@ -83,7 +83,7 @@
     }
     .nav-item:hover { background: #F8FAFF; color: #5189F3; }
     .nav-item.active {
-      background: #EEF3FF; color: #5189F3; font-weight: 800;
+      background: #EEF3FF; color: #5189F3; font-weight: 700;
       border-left-color: #5189F3;
       box-shadow: inset 0 0 0 1px #DCE7FF;
     }
@@ -99,7 +99,7 @@
 
     /* ── Page header ── */
     .page-header { margin-bottom: 28px; }
-    .page-header h1 { font-size: 20px; font-weight: 800; color: #111; margin-bottom: 4px; }
+    .page-header h1 { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 4px; }
     .page-header p  { font-size: 13px; color: #888; }
 
     /* ── Content sections ── */
@@ -169,7 +169,7 @@
     .avatar {
       width: 30px; height: 30px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
+      font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
     }
     .user-name  { font-size: 13px; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
     .user-email { font-size: 11px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
@@ -190,7 +190,7 @@
     .level-dot {
       width: 22px; height: 22px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 800;
+      font-size: 9px; font-weight: 700;
       border: 1.5px solid #DFE2E6; color: #ccc;
       transition: all 0.15s;
     }
@@ -213,7 +213,7 @@
     .lb-month-chip svg{width:14px;height:14px;color:#5189F3;flex-shrink:0}
     .lb-month-opt{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;font-size:13px;font-weight:600;color:#333;cursor:pointer;transition:background 0.1s;font-family:'Nunito',sans-serif}
     .lb-month-opt:hover{background:#F5F8FF}
-    .lb-month-opt.selected{background:#EEF3FF;color:#5189F3;font-weight:800}
+    .lb-month-opt.selected{background:#EEF3FF;color:#5189F3;font-weight:700}
 
     /* ── Upload content-type tabs ── */
     .upload-type-tabs{display:flex;gap:0;border-bottom:2px solid #DFE2E6;flex-shrink:0;background:#fff;margin-bottom:0}
@@ -226,7 +226,7 @@
     .cp-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;padding:12px 0;border-bottom:1px solid #F0F0F0}
     .lib-filt-sel{height:32px;padding:0 28px 0 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;color:#374151;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer;transition:border-color .15s}
     .lib-filt-sel:focus{border-color:#5189F3}
-    .cp-title{font-size:15px;font-weight:800;color:#111}
+    .cp-title{font-size:15px;font-weight:700;color:#111}
     .cp-add-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
     .cp-add-btn:hover{background:#3b6fd4}
     .cp-layout{display:grid;grid-template-columns:1fr 360px;gap:16px;flex:1;min-height:0}
@@ -245,7 +245,7 @@
     .cp-action-btn.del{background:#FEE2E2;color:#EF4444}
     .cp-action-btn:hover{opacity:0.78}
     .cp-form-panel{background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
-    .cp-form-title{font-size:14px;font-weight:800;color:#111;padding-bottom:12px;border-bottom:1px solid #F0F0F0}
+    .cp-form-title{font-size:14px;font-weight:700;color:#111;padding-bottom:12px;border-bottom:1px solid #F0F0F0}
     .cp-field{display:flex;flex-direction:column;gap:4px}
     .cp-field label{font-size:12px;font-weight:700;color:#555;font-family:'Nunito',sans-serif}
     .cp-field input,.cp-field select,.cp-field textarea{width:100%;box-sizing:border-box;padding:8px 11px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;transition:border-color 0.15s;background:#fff}
@@ -264,8 +264,8 @@
     .udm-modal{background:#fff;border-radius:var(--radius-panel);width:480px;max-width:100%;max-height:90vh;box-shadow:0 24px 64px rgba(0,0,0,0.22);display:flex;flex-direction:column;overflow:hidden;font-family:'Nunito',sans-serif}
     .udm-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid #F0F0F0}
     .udm-header-left{display:flex;align-items:center;gap:10px}
-    .udm-type-badge{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#EEF3FF;color:#5189F3;padding:3px 10px;border-radius:999px}
-    .udm-title{font-size:15px;font-weight:800;color:#111}
+    .udm-type-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#EEF3FF;color:#5189F3;padding:3px 10px;border-radius:999px}
+    .udm-title{font-size:15px;font-weight:700;color:#111}
     .udm-close{width:28px;height:28px;border:none;background:none;cursor:pointer;color:#9CA3AF;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;padding:0}
     .udm-close:hover{background:#F3F4F6;color:#374151}
     .udm-file-strip{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#F8FAFF;border-bottom:1px solid #EEF3FF}
@@ -274,7 +274,7 @@
     .udm-body{padding:18px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
     .udm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .udm-field{display:flex;flex-direction:column;gap:5px}
-    .udm-field label{font-size:10px;font-weight:800;color:#374151;letter-spacing:.05em;text-transform:uppercase}
+    .udm-field label{font-size:10px;font-weight:700;color:#374151;letter-spacing:.05em;text-transform:uppercase}
     .udm-field input,.udm-field select,.udm-field textarea{border:1px solid #DFE2E6;border-radius:7px;padding:8px 12px;font-size:13px;font-family:'Nunito',sans-serif;font-weight:600;color:#111;outline:none;transition:border-color .15s;background:#fff;box-sizing:border-box;width:100%}
     .udm-field input:focus,.udm-field select:focus,.udm-field textarea:focus{border-color:#5189F3}
     .udm-field select{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
@@ -282,7 +282,7 @@
     .udm-footer{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid #F0F0F0;flex-shrink:0}
     .udm-btn-cancel{padding:8px 18px;border:1.5px solid #DFE2E6;background:#fff;color:#555;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:border-color .15s,color .15s}
     .udm-btn-cancel:hover{border-color:#5189F3;color:#5189F3}
-    .udm-btn-upload{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s}
+    .udm-btn-upload{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
     .udm-btn-upload:hover{background:#3b6fd4}
     /* ── Grouped library (table layout) ── */
     .lib-group{border:1px solid #E5E7EB;border-radius:0;overflow:hidden;background:#fff}
@@ -290,41 +290,45 @@
     .lib-mod-hdr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 14px;background:#F8F9FB;cursor:pointer;user-select:none;border-bottom:1px solid #EAECF0}
     .lib-mod-hdr:hover{background:#EFF1F5}
     .lib-mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .lib-mod-name{font-size:12px;font-weight:800;color:#111;flex:1}
+    .lib-mod-name{font-size:15px;font-weight:700;color:#111;flex:1}
     .lib-mod-count{font-size:10px;font-weight:700;color:#9CA3AF;background:#EAECF0;padding:2px 8px;border-radius:999px}
     .lib-mod-chev{color:#C4C9D4;transition:transform .2s;flex-shrink:0}
     .lib-mod-hdr.collapsed .lib-mod-chev{transform:rotate(-90deg)}
     .lib-mod-hdr-hidden{opacity:0.6}
-    .lib-mod-actions{display:flex;align-items:center;gap:4px;margin-left:auto;margin-right:6px;flex-shrink:0}
-    .lib-act-btn{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:10px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
+    .lib-mod-actions{display:flex;align-items:center;gap:8px;margin-left:auto;margin-right:6px;flex-shrink:0}
+    .lib-act-btn{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
     .lib-act-btn:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
     .lib-act-btn-hide{color:#F59E0B;border-color:#FDE68A;background:#FFFBEB}
-    .lib-act-btn-show{color:#10B981;border-color:#10B981;background:#F0FDF4}
+    .lib-act-btn.lib-act-btn-show{color:#14B8A6;border-color:#99F6E4;background:#fff}
+    .lib-act-btn.lib-act-btn-show:hover{background:#F0FDFA;border-color:#5EEAD4;color:#0F766E}
     .lib-act-btn-del{color:#EF4444;border-color:#FECACA;background:#FFF5F5}
     .lib-act-btn-del:hover{background:#FEE2E2}
-    .lib-btn-hide{color:#F59E0B;border-color:#FDE68A;background:#FFFBEB;font-size:10px;font-weight:700}
-    .lib-btn-show{color:#10B981;border-color:#10B981;background:#F0FDF4;font-size:10px;font-weight:700}
+    .lib-btn-hide{color:#F59E0B;border-color:#FDE68A;background:#FFFBEB;font-size:12px;font-weight:700}
+    .lib-btn.lib-btn-show{color:#14B8A6;border-color:#99F6E4;background:#fff;font-size:12px;font-weight:600;border-radius:4px}
+    .lib-btn.lib-btn-show:hover{background:#F0FDFA;border-color:#5EEAD4;color:#0F766E}
     /* table */
     .lib-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
-    .lib-tbl-head th{font-size:9px;font-weight:800;color:#B0B5BE;text-transform:uppercase;letter-spacing:.07em;padding:5px 10px;text-align:left;background:#FAFBFC;border-bottom:1px solid #F0F0F0;white-space:nowrap}
-    .lib-tbl-head .lib-th-dur{text-align:right;width:80px}
-    .lib-tbl-head .lib-th-cls{width:120px}
-    .lib-tbl-head .lib-th-status{width:80px;text-align:center}
+    .lib-tbl-head th{font-size:10px;font-weight:700;color:#B0B5BE;text-transform:uppercase;letter-spacing:.07em;padding:5px 10px;text-align:left;background:#FAFBFC;border-bottom:1px solid #F0F0F0;white-space:nowrap}
+    .lib-tbl-head .lib-th-dur{text-align:left;width:70px}
+    .lib-tbl-head .lib-th-cls{width:100px}
+    .lib-tbl-head .lib-th-status{width:70px;text-align:left}
     .lib-tbl-head .lib-th-ico{width:36px}
     .lib-tbl-head .lib-th-act{width:300px;text-align:right}
     .lib-tbl tr{border-bottom:1px solid #F3F4F6}
     .lib-tbl tr:last-child{border-bottom:none}
     .lib-tbl tr:hover td{background:#FAFBFF}
-    .lib-tbl td{padding:6px 10px;vertical-align:middle}
+    .lib-tbl td{padding:6px 12px;vertical-align:middle}
     .lib-td-ico{width:28px}
     .lib-ico{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center}
-    .lib-td-title{font-size:12px;font-weight:700;color:#111;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .lib-cls-chip{display:inline-block;font-size:10.5px;font-weight:800;color:#6B7280;background:#F3F4F6;padding:3px 10px;border-radius:20px;white-space:nowrap;letter-spacing:.02em}
-    .lib-td-dur{font-size:11px;color:#9CA3AF;font-weight:600;white-space:nowrap;text-align:right}
-    .lib-td-status{white-space:nowrap;text-align:center}
+    .lib-td-title{font-size:13px;font-weight:400;color:#111;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lib-cls-chip{display:inline-block;font-size:11px;font-weight:400;color:#6B7280;background:#F3F4F6;padding:3px 10px;border-radius:20px;white-space:nowrap;letter-spacing:.02em}
+    .lib-td-dur{font-size:11px;color:#9CA3AF;font-weight:600;white-space:nowrap;text-align:left}
+    .lib-td-status{white-space:nowrap;text-align:left}
     .lib-status{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px}
     .lib-td-act{text-align:right;white-space:nowrap}
-    .lib-btn{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:10px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
+    .lib-btn{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;margin:2px 3px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
+    .lib-btn:first-child{margin-left:0}
+    .lib-btn:last-child{margin-right:0}
     .lib-btn:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
     .lib-btn.edit{border-color:#E5E7EB;color:#555;background:#fff}
     .lib-btn.edit:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
@@ -344,14 +348,18 @@
     .lb-view-tab{padding:7px 18px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;border-radius:var(--radius-control);transition:all 0.14s;white-space:nowrap}
     .lb-view-tab.active{background:#5189F3;color:#fff;box-shadow:0 2px 6px rgba(81,137,243,0.28)}
     .lb-view-tab:hover:not(.active){background:#EEF3FF;color:#5189F3}
-    .lb-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-    /* Unified stat-card look (shared with .hub-stat-card/.lbd-kpi below) — same
-       radius/hover/cursor everywhere this "icon + big number + label" pattern
-       appears, since users already read it as clickable. */
-    .lb-stat-card{background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);padding:var(--space-lg);display:flex;align-items:center;gap:var(--space-md);box-shadow:var(--shadow-card)}
+    /* Divider-strip stat row (shared with .hub-stat-card/.lbd-kpi below) — one
+       bordered strip per group, items separated by a thin vertical rule instead
+       of each being its own card. Collapses to individual stacked cards under
+       860px, where a row of vertical rules stops reading cleanly once it wraps. */
+    .lb-stats-grid{display:flex;background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:20px;overflow:hidden}
+    .lb-stat-card{flex:1;min-width:0;padding:var(--space-lg);display:flex;align-items:center;gap:var(--space-md);position:relative}
+    /* Divider only covers the middle 70% of the row's height instead of running
+       edge-to-edge, so it reads as a subtle separator rather than a hard wall. */
+    .lb-stat-card:not(:last-child)::after{content:'';position:absolute;top:15%;bottom:15%;right:0;width:1px;background:#EEF0F3}
     .lb-stat-icon{width:38px;height:38px;border-radius:var(--radius-card);display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .lb-stat-icon svg{width:17px;height:17px}
-    .lb-stat-val{font-size:22px;font-weight:800;color:#111;line-height:1}
+    .lb-stat-val{font-size:22px;font-weight:700;color:#111;line-height:1}
     .lb-stat-lbl{font-size:11px;color:#888;font-weight:600;margin-top:3px}
     .lb-monthly-strip{display:flex;align-items:center;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:10px 16px;margin-bottom:14px;font-size:13px;color:#92400E}
     .lb-monthly-strip svg{width:14px;height:14px;color:#D97706;flex-shrink:0}
@@ -362,13 +370,13 @@
     .lbd-back-bar{display:flex;align-items:center;gap:10px;margin-bottom:22px}
     .lbd-back-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid #DFE2E6;border-radius:var(--radius-control);background:#fff;font-size:13px;font-weight:700;color:#374151;cursor:pointer;font-family:inherit;transition:border-color .13s,color .13s}
     .lbd-back-btn:hover{border-color:#5189F3;color:#5189F3}
-    .lbd-title{font-size:17px;font-weight:900;color:#111;letter-spacing:-.01em}
+    .lbd-title{font-size:17px;font-weight:700;color:#111;letter-spacing:-.01em}
     .lbd-sub{font-size:12px;color:#888;font-weight:600;margin-left:auto}
 
-    .lbd-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
-    .lbd-kpi{background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);padding:var(--space-lg);display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
-    .lbd-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--lbd-accent,#5189F3)}
-    .lbd-kpi-val{font-size:28px;font-weight:800;color:#111;line-height:1;letter-spacing:-.02em}
+    .lbd-kpi-grid{display:flex;background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:22px;overflow:hidden}
+    .lbd-kpi{flex:1;min-width:0;padding:var(--space-lg);display:flex;flex-direction:column;gap:4px;position:relative}
+    .lbd-kpi:not(:last-child)::after{content:'';position:absolute;top:15%;bottom:15%;right:0;width:1px;background:#EEF0F3}
+    .lbd-kpi-val{font-size:28px;font-weight:700;color:#111;line-height:1;letter-spacing:-.02em}
     .lbd-kpi-lbl{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em}
     .lbd-kpi-delta{font-size:11px;font-weight:700;margin-top:2px}
     .lbd-kpi-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.1}
@@ -376,58 +384,58 @@
 
     .lbd-mid-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
     .lbd-card{background:#fff;border:1px solid #DFE2E6;border-radius:8px;padding:18px 20px}
-    .lbd-card-title{font-size:12px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+    .lbd-card-title{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;display:flex;align-items:center;gap:7px}
     .lbd-card-title svg{width:13px;height:13px;color:#5189F3}
 
     .lbd-status-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
     .lbd-status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
     .lbd-status-label{font-size:13px;font-weight:700;color:#333;flex:1}
-    .lbd-status-count{font-size:13px;font-weight:900;color:#111}
+    .lbd-status-count{font-size:13px;font-weight:700;color:#111}
     .lbd-status-bar-track{height:5px;background:#F3F4F6;border-radius:99px;margin-top:4px;overflow:hidden}
     .lbd-status-bar-fill{height:100%;border-radius:99px;transition:width .6s}
 
     .lbd-mod-row{display:flex;flex-direction:column;gap:12px}
-    .lbd-mod-name{font-size:12px;font-weight:800;color:#374151;margin-bottom:3px;display:flex;justify-content:space-between}
+    .lbd-mod-name{font-size:12px;font-weight:700;color:#374151;margin-bottom:3px;display:flex;justify-content:space-between}
     .lbd-mod-track{height:8px;background:#F3F4F6;border-radius:99px;overflow:hidden}
     .lbd-mod-fill{height:100%;border-radius:99px;transition:width .8s}
 
     .lbd-lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
     .lbd-lang-card{background:#fff;border:1px solid #DFE2E6;border-radius:8px;padding:16px 18px;display:flex;align-items:center;gap:14px}
-    .lbd-lang-flag{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;flex-shrink:0;border:1px solid #E5E7EB}
-    .lbd-lang-name{font-size:14px;font-weight:800;color:#111}
+    .lbd-lang-flag{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;flex-shrink:0;border:1px solid #E5E7EB}
+    .lbd-lang-name{font-size:14px;font-weight:700;color:#111}
     .lbd-lang-sub{font-size:11px;color:#888;font-weight:600;margin-top:2px}
-    .lbd-lang-learners{font-size:22px;font-weight:900;color:#5189F3;margin-left:auto;line-height:1}
+    .lbd-lang-learners{font-size:22px;font-weight:700;color:#5189F3;margin-left:auto;line-height:1}
     .lbd-lang-learners-lbl{font-size:10px;color:#aaa;font-weight:700;text-align:right}
 
     .lbd-table-wrap{background:#fff;border:1px solid #DFE2E6;border-radius:8px;overflow:hidden}
     .lbd-table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid #F3F4F6}
-    .lbd-table-title{font-size:13px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px}
+    .lbd-table-title{font-size:13px;font-weight:700;color:#111;display:flex;align-items:center;gap:8px}
     .lbd-table-search{padding:6px 12px;border:1px solid #DFE2E6;border-radius:6px;font-size:12px;font-family:inherit;width:200px;outline:none}
     .lbd-table-search:focus{border-color:#5189F3}
     .lbd-ut{width:100%;border-collapse:collapse;font-family:'Nunito',sans-serif}
-    .lbd-ut th{background:#F9FAFB;font-size:10px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;padding:9px 14px;text-align:left;border-bottom:1px solid #F3F4F6;white-space:nowrap}
+    .lbd-ut th{background:#F9FAFB;font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;padding:9px 14px;text-align:left;border-bottom:1px solid #F3F4F6;white-space:nowrap}
     .lbd-ut td{padding:11px 14px;border-bottom:1px solid #F9FAFB;vertical-align:middle;font-size:12.5px}
     .lbd-ut tr:last-child td{border-bottom:none}
     .lbd-ut tr:hover td{background:#FAFBFF}
-    .lbd-uavatar{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+    .lbd-uavatar{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
     .lbd-prog-bar{height:6px;background:#F3F4F6;border-radius:99px;min-width:80px;overflow:hidden}
     .lbd-prog-fill{height:100%;border-radius:99px}
-    .lbd-status-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px;white-space:nowrap}
+    .lbd-status-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;white-space:nowrap}
     .lbd-trend-up,.lbd-trend-dn,.lbd-trend-sm{display:inline-flex;align-items:center;justify-content:center}
 
     /* Podium */
     .lb-podium{display:flex;justify-content:center;align-items:flex-end;gap:4px;margin-bottom:20px;padding:0 20px}
     .podium-slot{display:flex;flex-direction:column;align-items:center;flex:1;max-width:200px}
     .podium-avatar-wrap{margin-bottom:8px;display:flex;flex-direction:column;align-items:center}
-    .podium-avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.18);border:3px solid #fff}
+    .podium-avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.18);border:3px solid #fff}
     .podium-crown{font-size:20px;line-height:1;margin-bottom:4px}
-    .podium-name{font-size:13px;font-weight:800;color:#111;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px;margin-bottom:1px}
+    .podium-name{font-size:13px;font-weight:700;color:#111;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px;margin-bottom:1px}
     .podium-role-tag{font-size:10px;color:#aaa;font-weight:600;text-align:center;margin-bottom:3px}
-    .podium-score{font-size:13px;color:#5189F3;font-weight:800;margin-bottom:6px;text-align:center}
+    .podium-score{font-size:13px;color:#5189F3;font-weight:700;margin-bottom:6px;text-align:center}
     .podium-block{width:100%;display:flex;align-items:center;justify-content:center;border-radius:2px 2px 0 0}
-    .podium-rank-num{font-size:24px;font-weight:900;color:rgba(255,255,255,0.8)}
+    .podium-rank-num{font-size:24px;font-weight:700;color:rgba(255,255,255,0.8)}
     /* Rank cells */
-    .rank-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+    .rank-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
     .rank-badge-1{background:linear-gradient(135deg,#FEF3C7,#F59E0B);color:#78350F}
     .rank-badge-2{background:linear-gradient(135deg,#F1F5F9,#94A3B8);color:#1E293B}
     .rank-badge-3{background:linear-gradient(135deg,#FEF7ED,#F97316);color:#7C2D12}
@@ -436,15 +444,15 @@
     .streak-val{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#EA580C;white-space:nowrap}
     /* Completion mini bar */
     .completion-cell{display:flex;align-items:center;gap:8px;width:100%}
-    .completion-pct{font-size:13px;font-weight:800;color:#111;min-width:36px;flex-shrink:0}
+    .completion-pct{font-size:13px;font-weight:700;color:#111;min-width:36px;flex-shrink:0}
     .mini-bar-wrap{flex:1;height:5px;background:#F0F0F0;border-radius:3px;overflow:hidden}
     .mini-bar-fill{height:100%;border-radius:3px}
     /* Badges */
     .badge-row{display:flex;gap:2px;flex-wrap:wrap}
     .b-chip{font-size:14px;cursor:help;line-height:1}
     /* Trend */
-    .trend-up{color:#16a34a;font-size:11px;font-weight:800;display:flex;align-items:center;gap:1px}
-    .trend-dn{color:#EF4444;font-size:11px;font-weight:800;display:flex;align-items:center;gap:1px}
+    .trend-up{color:#16a34a;font-size:11px;font-weight:700;display:flex;align-items:center;gap:1px}
+    .trend-dn{color:#EF4444;font-size:11px;font-weight:700;display:flex;align-items:center;gap:1px}
     .trend-eq{color:#bbb;font-size:13px;font-weight:700}
     /* Group grid (dept / team) */
     .lb-group-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -452,20 +460,20 @@
     .lb-gc-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #F5F5F5}
     .lb-gc-icon{width:36px;height:36px;border-radius:2px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .lb-gc-icon svg{width:16px;height:16px;color:#5189F3}
-    .lb-gc-name{font-size:14px;font-weight:800;color:#111}
+    .lb-gc-name{font-size:14px;font-weight:700;color:#111}
     .lb-gc-sub{font-size:11px;color:#aaa;margin-top:1px}
     .lb-gc-stats{display:flex;margin-bottom:14px}
     .lb-gc-stat{flex:1;text-align:center;padding:8px 0}
     .lb-gc-stat:not(:last-child){border-right:1px solid #F5F5F5}
-    .lb-gc-stat-val{font-size:18px;font-weight:900;color:#111}
+    .lb-gc-stat-val{font-size:18px;font-weight:700;color:#111}
     .lb-gc-stat-lbl{font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
     .lb-gc-prog-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
     .lb-gc-prog-bar{flex:1;height:6px;background:#F0F0F0;border-radius:3px;overflow:hidden}
     .lb-gc-prog-fill{height:100%;background:#5189F3;border-radius:3px}
-    .lb-gc-prog-pct{font-size:12px;font-weight:800;color:#5189F3;min-width:32px;text-align:right}
+    .lb-gc-prog-pct{font-size:12px;font-weight:700;color:#5189F3;min-width:32px;text-align:right}
     .lb-gc-member{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #F9F9F9}
     .lb-gc-member:last-child{border-bottom:none}
-    .mini-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0}
+    .mini-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0}
     .lb-gc-member-name{font-size:12px;font-weight:700;color:#333;flex:1}
     .lb-gc-member-pts{font-size:11px;color:#5189F3;font-weight:700}
     .lb-section-label{font-size:11px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 12px;display:flex;align-items:center;gap:10px}
@@ -486,7 +494,7 @@
       background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
       padding: 24px; margin-bottom: 20px;
     }
-    .quiz-creator-title { font-size: 14px; font-weight: 800; color: #111; margin-bottom: 18px; }
+    .quiz-creator-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 18px; }
     .qc-row { display: flex; gap: 16px; margin-bottom: 16px; align-items: flex-start; }
     .qc-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; margin-bottom: 16px; }
     .qc-field label { font-size: 12px; font-weight: 700; color: #555; }
@@ -527,7 +535,7 @@
     .qc-divider { height: 1px; background: #F0F0F0; margin: 16px 0 14px; }
     .qmix-section { background:#F8FAFF; border:1px solid #DFE2E6; border-radius:2px; padding:12px 14px; margin-bottom:16px; }
     .qmix-label { font-size:12px; font-weight:700; color:#555; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-    .qmix-badge { background:#5189F3; color:#fff; font-size:10px; font-weight:800; border-radius:999px; padding:2px 8px; letter-spacing:.04em; }
+    .qmix-badge { background:#5189F3; color:#fff; font-size:10px; font-weight:700; border-radius:999px; padding:2px 8px; letter-spacing:.04em; }
     .qmix-row { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
     .qmix-item { display:flex; flex-direction:column; gap:5px; flex:1; min-width:100px; }
     .qmix-item-label { font-size:11px; font-weight:700; color:#666; display:flex; align-items:center; justify-content:space-between; }
@@ -562,13 +570,13 @@
     .q-type-group-hdr {
       display: flex; align-items: center; justify-content: space-between;
       padding: 7px 14px; background: #F0F4FF; border: 1px solid #D8E3FB;
-      border-radius: 2px; margin: 14px 0 6px; font-size: 11px; font-weight: 800;
+      border-radius: 2px; margin: 14px 0 6px; font-size: 11px; font-weight: 700;
       color: #5189F3; text-transform: uppercase; letter-spacing: 0.07em;
     }
     .q-type-group-hdr:first-child { margin-top: 0; }
     .q-group-count { font-weight: 600; color: #9BAFDE; text-transform: none; letter-spacing: 0; }
     .q-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .q-num { font-size: 12px; font-weight: 800; color: #5189F3; min-width: 22px; }
+    .q-num { font-size: 12px; font-weight: 700; color: #5189F3; min-width: 22px; }
     .q-type-tabs { display: flex; gap: 4px; flex: 1; }
     .q-type-tab {
       padding: 4px 10px; font-size: 11px; font-weight: 700;
@@ -636,7 +644,7 @@
       overflow-y: auto;
     }
     .qsugg-header { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .qsugg-title { font-size: 13px; font-weight: 800; color: #111; flex: 1; }
+    .qsugg-title { font-size: 13px; font-weight: 700; color: #111; flex: 1; }
     .qsugg-close { background: none; border: none; color: #bbb; cursor: pointer; font-size: 16px; padding: 0 2px; line-height: 1; }
     .qsugg-close:hover { color: #555; }
     .qsugg-note { font-size: 11px; color: #9BAFDE; font-family: 'Nunito', sans-serif; line-height: 1.45; flex-shrink: 0; }
@@ -673,7 +681,7 @@
       overflow-y: auto;
     }
     .qalts-header { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .qalts-title { font-size: 13px; font-weight: 800; color: #111; flex: 1; }
+    .qalts-title { font-size: 13px; font-weight: 700; color: #111; flex: 1; }
     .qalts-note { font-size: 11px; color: #9BAFDE; font-family: 'Nunito', sans-serif; line-height: 1.45; flex-shrink: 0; }
     .q-alts-list { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
     .q-alt-item {
@@ -689,7 +697,7 @@
     .q-alt-item-body { flex: 1; padding: 10px; min-width: 0; }
     .q-alt-item-row { display: flex; align-items: flex-start; gap: 8px; }
     .q-alt-num {
-      font-size: 10px; font-weight: 800; color: #fff;
+      font-size: 10px; font-weight: 700; color: #fff;
       background: #5189F3; border-radius: 50%;
       width: 18px; height: 18px; display: flex; align-items: center;
       justify-content: center; flex-shrink: 0; margin-top: 1px;
@@ -710,7 +718,7 @@
     .q-alt-icon-btn.remove:hover { background: #EF4444; color: #fff; }
     .q-alt-edited-badge {
       display: inline-flex; align-items: center; gap: 3px;
-      font-size: 9px; font-weight: 800; color: #16a34a;
+      font-size: 9px; font-weight: 700; color: #16a34a;
       background: #F0FDF4; border: 1px solid #bbf7d0;
       padding: 1px 6px; border-radius: 20px; margin-top: 5px; margin-left: 26px;
     }
@@ -735,7 +743,7 @@
     }
     .q-alt-cancel-btn:hover { background: #E5E5E5; }
     .q-alt-editing-label {
-      font-size: 10px; font-weight: 800; color: #5189F3;
+      font-size: 10px; font-weight: 700; color: #5189F3;
       text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
     }
     .qalts-empty { font-size: 12px; color: #bbb; font-family: 'Nunito', sans-serif; text-align: center; padding: 16px 0; line-height: 1.5; }
@@ -774,7 +782,7 @@
     .action-btn svg { width: 15px; height: 15px; }
 
     .quiz-grp-hdr td { background: #F0F4FF; padding: 7px 16px !important; border-top: 2px solid #D8E3FB !important; border-bottom: 1px solid #D8E3FB !important; }
-    .quiz-grp-label { font-size: 11px; font-weight: 800; color: #5189F3; text-transform: uppercase; letter-spacing: 0.07em; }
+    .quiz-grp-label { font-size: 11px; font-weight: 700; color: #5189F3; text-transform: uppercase; letter-spacing: 0.07em; }
     .quiz-grp-count { font-size: 11px; color: #9BAFDE; font-weight: 600; margin-left: 10px; }
     .qle-edit-btn {
       font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 6px;
@@ -792,7 +800,7 @@
       font-size: 13px; color: #333;
     }
     .q-expand-item:last-child { border-bottom: none; }
-    .q-expand-qnum { font-size: 11px; font-weight: 800; color: #5189F3; }
+    .q-expand-qnum { font-size: 11px; font-weight: 700; color: #5189F3; }
     .q-expand-type { font-size: 10px; color: #aaa; font-weight: 700; text-transform: uppercase; margin-left: 8px; }
     .q-expand-opts { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
     .q-expand-opt { font-size: 12px; color: #666; display: flex; align-items: center; gap: 6px; }
@@ -841,7 +849,7 @@
     .qm-reset-btn:hover { border-color: #EF4444; color: #EF4444; }
     .qm-question { padding: 14px 0; border-bottom: 1px solid #F0F0F0; }
     .qm-question:last-child { border-bottom: none; }
-    .qm-q-num { font-size: 11px; font-weight: 800; color: #5189F3; margin-bottom: 5px; }
+    .qm-q-num { font-size: 11px; font-weight: 700; color: #5189F3; margin-bottom: 5px; }
     .qm-q-text { font-size: 14px; font-weight: 600; color: #222; margin-bottom: 10px; line-height: 1.4; }
     .qm-options { display: flex; flex-direction: column; gap: 6px; }
     .qm-option {
@@ -855,14 +863,14 @@
     .qm-result { text-align: center; padding: 24px 0 12px; }
     .qm-result-icon {
       width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 16px;
-      display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700;
     }
     .qm-result-pass .qm-result-icon { background: #F0FDF4; color: #16a34a; }
     .qm-result-fail .qm-result-icon { background: #FEF2F2; color: #DC2626; }
-    .qm-result-verdict { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .qm-result-verdict { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
     .qm-result-pass .qm-result-verdict { color: #16a34a; }
     .qm-result-fail .qm-result-verdict { color: #DC2626; }
-    .qm-result-score { font-size: 40px; font-weight: 800; color: #111; line-height: 1; }
+    .qm-result-score { font-size: 40px; font-weight: 700; color: #111; line-height: 1; }
     .qm-result-pct { font-size: 13px; color: #888; margin: 4px 0 18px; }
     .qm-result-msg {
       font-size: 13px; color: #555; background: #F7F8FA;
@@ -896,10 +904,10 @@
     }
     .sq-head { padding:22px 26px 0;flex-shrink:0; }
     .sq-head-top { display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px; }
-    .sq-title { font-size:16px;font-weight:800;color:#111;line-height:1.3; }
+    .sq-title { font-size:16px;font-weight:700;color:#111;line-height:1.3; }
     .sq-meta  { font-size:11px;color:#aaa;margin-top:2px;font-weight:600; }
     .sq-prog-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:8px; }
-    .sq-prog-label { font-size:12px;font-weight:800;color:#5189F3; }
+    .sq-prog-label { font-size:12px;font-weight:700;color:#5189F3; }
     .sq-prog-frac  { font-size:11px;color:#aaa;font-weight:700; }
     .sq-prog-bar-wrap { height:5px;background:#F0F0F0;border-radius:99px;margin-bottom:0; }
     .sq-prog-bar { height:5px;background:linear-gradient(90deg,#5189F3 0%,#7C3AED 100%);border-radius:99px;transition:width .35s ease; }
@@ -910,7 +918,7 @@
     }
     .sq-foot > div { margin-left:auto; }
     .sq-q-text { font-size:16px;font-weight:700;color:#1a1a1a;line-height:1.6;margin-bottom:22px; }
-    .sq-q-type-tag { display:inline-block;font-size:10px;font-weight:800;background:#EEF3FF;color:#5189F3;border-radius:4px;padding:2px 7px;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase; }
+    .sq-q-type-tag { display:inline-block;font-size:10px;font-weight:700;background:#EEF3FF;color:#5189F3;border-radius:4px;padding:2px 7px;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase; }
     .sq-options { display:flex;flex-direction:column;gap:10px; }
     .sq-option {
       display:flex;align-items:center;gap:14px;padding:13px 16px;
@@ -921,7 +929,7 @@
     .sq-option.selected { border-color:#5189F3;background:#EEF3FF; }
     .sq-opt-letter {
       width:32px;height:32px;border-radius:8px;background:#F3F4F6;flex-shrink:0;
-      display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#555;
+      display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#555;
       transition:background .13s,color .13s;
     }
     .sq-option.selected .sq-opt-letter { background:#5189F3;color:#fff; }
@@ -930,7 +938,7 @@
     .sq-tf-wrap { display:flex;gap:14px;margin-top:8px; }
     .sq-tf-btn {
       flex:1;padding:24px 16px;border-radius:12px;border:2px solid #E5E7EB;cursor:pointer;
-      text-align:center;font-size:18px;font-weight:800;color:#444;
+      text-align:center;font-size:18px;font-weight:700;color:#444;
       display:flex;flex-direction:column;align-items:center;gap:8px;
       transition:border-color .13s,background .13s;user-select:none;
     }
@@ -941,7 +949,7 @@
     /* Result */
     .sq-result { text-align:center;padding:20px 0 20px; }
     .sq-result-ring { margin-bottom:16px; }
-    .sq-result-verdict { font-size:26px;font-weight:900;letter-spacing:.05em;margin-bottom:8px; }
+    .sq-result-verdict { font-size:26px;font-weight:700;letter-spacing:.05em;margin-bottom:8px; }
     .sq-result-fraction { font-size:14px;color:#555;font-weight:700; }
     .sq-result-passmark { font-size:12px;color:#aaa;margin-top:4px;font-weight:600; }
     .sq-result-msg {
@@ -950,11 +958,11 @@
     }
     .sq-result-msg.pass { background:#F0FDF4;color:#15803d; }
     .sq-result-msg.fail { background:#FEF2F2;color:#b91c1c; }
-    .sq-review-hdr { font-size:13px;font-weight:800;color:#111;padding:18px 0 10px;border-top:1.5px solid #F0F0F0;margin-top:10px; }
+    .sq-review-hdr { font-size:13px;font-weight:700;color:#111;padding:18px 0 10px;border-top:1.5px solid #F0F0F0;margin-top:10px; }
     .sq-review-item { padding:10px 0;border-bottom:1px solid #F8F8F8; }
     .sq-review-item:last-child { border-bottom:none; }
     .sq-review-q { font-size:13px;color:#333;margin-bottom:4px;font-weight:600;line-height:1.4; }
-    .sq-review-num { font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-right:4px; }
+    .sq-review-num { font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-right:4px; }
     .sq-review-num.right { background:#F0FDF4;color:#16a34a; }
     .sq-review-num.wrong { background:#FEF2F2;color:#DC2626; }
     .sq-review-ans { font-size:12px;color:#666;margin-top:3px; }
@@ -971,19 +979,19 @@
     .sq-nav-btn:hover { border-color:#5189F3;color:#5189F3; }
     .sq-submit-btn {
       display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;
-      font-size:13px;font-weight:800;cursor:pointer;border:none;
+      font-size:13px;font-weight:700;cursor:pointer;border:none;
       background:#5189F3;color:#fff;font-family:'Nunito',sans-serif;
       transition:background .12s;box-shadow:0 2px 8px rgba(81,137,243,0.35);
     }
     .sq-submit-btn:hover { background:#3a6dd4; }
     .sq-close-btn {
       display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;
-      font-size:13px;font-weight:800;cursor:pointer;border:2px solid #E5E7EB;
+      font-size:13px;font-weight:700;cursor:pointer;border:2px solid #E5E7EB;
       background:#fff;color:#555;font-family:'Nunito',sans-serif;
     }
     .sq-close-btn:hover { border-color:#5189F3;color:#5189F3; }
     .sq-timer {
-      font-size:14px;font-weight:800;color:#5189F3;background:#EEF3FF;
+      font-size:14px;font-weight:700;color:#5189F3;background:#EEF3FF;
       padding:4px 12px;border-radius:7px;letter-spacing:.04em;
       font-variant-numeric:tabular-nums;flex-shrink:0;
     }
@@ -1026,10 +1034,10 @@
     .cert-sm-tier {
       width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 800;
+      font-size: 10px; font-weight: 700;
     }
     .cert-sm-title { flex: 1; min-width: 0; }
-    .cert-sm-name { font-size: 13px; font-weight: 800; color: #111; line-height: 1.3; }
+    .cert-sm-name { font-size: 13px; font-weight: 700; color: #111; line-height: 1.3; }
     .cert-sm-desc { font-size: 11px; color: #bbb; margin-top: 2px; line-height: 1.4; }
     .cert-sm-remove {
       background: none; border: none; cursor: pointer; color: #ddd;
@@ -1075,7 +1083,7 @@
       background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
       padding: 22px; margin-bottom: 16px;
     }
-    .cert-creator-title { font-size: 14px; font-weight: 800; color: #111; margin-bottom: 18px; }
+    .cert-creator-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 18px; }
     .cert-color-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
     .cert-color-swatch {
       width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
@@ -1151,7 +1159,7 @@
       display:flex; align-items:center; gap:10px; margin-bottom:12px;
     }
     .clscert-module-name {
-      font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.07em; padding:3px 10px;
+      font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; padding:3px 10px;
       border-radius:2px;
     }
     .clscert-module-line { flex:1; height:1px; background:#F0F0F0; }
@@ -1169,15 +1177,15 @@
     .clscert-list-title { font-size:13px; font-weight:700; color:#111; line-height:1.35; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .clscert-list-sub { font-size:11px; color:#aaa; font-weight:600; margin-top:2px; }
     .clscert-av-stack { display:flex; align-items:center; flex-shrink:0; }
-    .clscert-av-sm { width:26px; height:26px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#fff; margin-left:-7px; flex-shrink:0; }
+    .clscert-av-sm { width:26px; height:26px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:#fff; margin-left:-7px; flex-shrink:0; }
     .clscert-av-sm:first-child { margin-left:0; }
-    .clscert-av-more { height:26px; padding:0 7px; border-radius:13px; border:2px solid #fff; background:#EEF3FF; color:#5189F3; font-size:9px; font-weight:800; display:flex; align-items:center; margin-left:-7px; white-space:nowrap; flex-shrink:0; }
+    .clscert-av-more { height:26px; padding:0 7px; border-radius:13px; border:2px solid #fff; background:#EEF3FF; color:#5189F3; font-size:9px; font-weight:700; display:flex; align-items:center; margin-left:-7px; white-space:nowrap; flex-shrink:0; }
     .clscert-list-chevron { width:30px; height:30px; border:none; background:none; color:#C4C9D4; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .18s,color .12s; pointer-events:none; margin-right:6px; }
     .clscert-list-row.open .clscert-list-chevron { transform:rotate(180deg); color:#5189F3; }
     .clscert-detail { display:none; border-top:1px solid #ECF0FA; }
     .clscert-detail.open { display:block; }
     .clscert-detail-head { display:grid; grid-template-columns:1fr 120px 110px; gap:10px; padding:8px 16px 8px 73px; background:#F3F5FC; border-bottom:1px solid #E8EBF5; }
-    .clscert-detail-head span { font-size:10px; font-weight:800; color:#aaa; text-transform:uppercase; letter-spacing:.05em; }
+    .clscert-detail-head span { font-size:10px; font-weight:700; color:#aaa; text-transform:uppercase; letter-spacing:.05em; }
     .clscert-detail-row { display:grid; grid-template-columns:1fr 120px 110px; gap:10px; align-items:center; padding:10px 16px 10px 73px; border-bottom:1px solid #F3F5FA; transition:background .08s; }
     .clscert-detail-row:last-child { border-bottom:none; }
     .clscert-detail-row:hover { background:#EEF3FF; }
@@ -1201,7 +1209,7 @@
       display: flex; align-items: center; justify-content: center;
     }
     .clscert-summary-info { flex: 1; min-width: 0; }
-    .clscert-summary-count { font-size: 28px; font-weight: 900; line-height: 1; }
+    .clscert-summary-count { font-size: 28px; font-weight: 700; line-height: 1; }
     .clscert-summary-label { font-size: 11px; font-weight: 700; color: #888; margin-top: 3px; }
     .clscert-summary-sub { font-size: 10px; color: #bbb; font-weight: 600; margin-top: 1px; }
 
@@ -1220,7 +1228,7 @@
       width: 28px; height: 28px; border-radius: 2px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
-    .clscert-col-hdr-name { font-size: 11px; font-weight: 800; letter-spacing: .04em; flex: 1; }
+    .clscert-col-hdr-name { font-size: 11px; font-weight: 700; letter-spacing: .04em; flex: 1; }
     .clscert-col-item {
       display: flex; align-items: center; gap: 10px;
       padding: 9px 14px; border-bottom: 1px solid #F9F9F9;
@@ -1234,7 +1242,7 @@
     }
     .clscert-col-item-name { flex: 1; font-size: 12px; font-weight: 600; color: #333; }
     .clscert-col-item-count {
-      font-size: 13px; font-weight: 900; min-width: 24px; text-align: right;
+      font-size: 13px; font-weight: 700; min-width: 24px; text-align: right;
     }
     .clscert-col-item-eye {
       width: 26px; height: 26px; border-radius: 2px; border: 1px solid #DFE2E6;
@@ -1257,7 +1265,7 @@
     .clscert-holder-av {
       width:28px; height:28px; border-radius:50%; flex-shrink:0;
       display:flex; align-items:center; justify-content:center;
-      font-size:10px; font-weight:800; color:#fff;
+      font-size:10px; font-weight:700; color:#fff;
     }
     .clscert-holder-name { flex:1; font-size:12px; font-weight:700; color:#333; }
     .clscert-holder-date { font-size:11px; color:#aaa; font-weight:600; }
@@ -1291,7 +1299,7 @@
       display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
       padding: 20px 20px 16px; border-bottom: 1px solid #F0F0F0;
     }
-    .issue-cert-title { font-size: 15px; font-weight: 800; color: #111; }
+    .issue-cert-title { font-size: 15px; font-weight: 700; color: #111; }
     .issue-cert-sub { font-size: 12px; color: #888; font-weight: 500; margin-top: 2px; }
     .issue-cert-close {
       width: 28px; height: 28px; border: none; background: #F5F5F5; border-radius: 50%;
@@ -1349,14 +1357,14 @@
     .cert-watermark {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%) rotate(-18deg);
-      font-size: 78px; font-weight: 900; color: rgba(0,0,0,0.028);
+      font-size: 78px; font-weight: 700; color: rgba(0,0,0,0.028);
       letter-spacing: 8px; white-space: nowrap; pointer-events: none;
       text-transform: uppercase; user-select: none; z-index: 0;
     }
     .cert-content { position: relative; z-index: 1; }
     .cert-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
     .cert-brand-block { display: flex; align-items: center; gap: 10px; }
-    .cert-brand-name { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #111; line-height: 1.2; }
+    .cert-brand-name { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #111; line-height: 1.2; }
     .cert-brand-sub { font-size: 9px; color: #bbb; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
     /* Medal */
     .cert-medal-wrap { display: flex; flex-direction: column; align-items: center; }
@@ -1372,18 +1380,18 @@
       width: 60px; height: 60px; border-radius: 50%;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
-    .cert-medal-tier { font-size: 17px; font-weight: 800; line-height: 1; }
+    .cert-medal-tier { font-size: 17px; font-weight: 700; line-height: 1; }
     .cert-medal-word { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
     /* Title */
     .cert-title-block { text-align: center; margin-bottom: 12px; }
-    .cert-title-main { font-size: 32px; font-weight: 900; color: #0A1628; letter-spacing: 5px; text-transform: uppercase; line-height: 1.1; }
+    .cert-title-main { font-size: 32px; font-weight: 700; color: #0A1628; letter-spacing: 5px; text-transform: uppercase; line-height: 1.1; }
     .cert-title-of { font-size: 20px; font-weight: 700; color: #0A1628; letter-spacing: 8px; text-transform: uppercase; }
     .cert-h-divider { height: 1px; margin: 12px 0; }
     .cert-presented-label { text-align: center; font-size: 10px; font-weight: 700; color: #bbb; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
     .cert-user-name { text-align: center; font-size: 28px; font-weight: 700; font-style: italic; margin-bottom: 2px; line-height: 1.2; }
     .cert-user-name-underline { width: 280px; height: 1px; background: #E8EBF2; margin: 0 auto 14px; }
     .cert-completion-label { text-align: center; font-size: 10px; font-weight: 700; color: #bbb; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
-    .cert-course-title { text-align: center; font-size: 17px; font-weight: 800; color: #0A1628; margin-bottom: 12px; }
+    .cert-course-title { text-align: center; font-size: 17px; font-weight: 700; color: #0A1628; margin-bottom: 12px; }
     .cert-tier-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
     .cert-tier-pill, .cert-eligible-pill { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 2px; }
     .cert-footer-divider { height: 1px; margin-bottom: 16px; }
@@ -1424,7 +1432,7 @@
        the rows. The margin-top nudges it to match the 32px input boxes' vertical center. */
     .cert-auth-sig-icon { color: #5189F3; flex-shrink: 0; align-self: flex-start; margin-top: 7px; }
     .cert-auth-sig-icon svg { width: 18px; height: 18px; display: block; }
-    .cert-auth-name-display { font-size: 14px; font-weight: 800; color: #111; font-style: italic; }
+    .cert-auth-name-display { font-size: 14px; font-weight: 700; color: #111; font-style: italic; }
     .cert-auth-title-display { font-size: 11px; color: #888; margin-top: 1px; }
     .cert-auth-note { font-size: 11px; color: #ccc; white-space: nowrap; }
     .cert-auth-edit-btn {
@@ -1462,11 +1470,11 @@
       width: 62px; height: 62px; border-radius: 50%;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
-    .cert-badge-num { font-size: 20px; font-weight: 900; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+    .cert-badge-num { font-size: 20px; font-weight: 700; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.15); }
     .cert-badge-chk { margin-top: 2px; opacity: 0.85; }
     .cert-badge-chk svg { width: 14px; height: 14px; display: block; }
     .cert-badge-labels { text-align: center; }
-    .cert-badge-title { font-size: 12px; font-weight: 800; color: #111; line-height: 1.3; white-space: nowrap; }
+    .cert-badge-title { font-size: 12px; font-weight: 700; color: #111; line-height: 1.3; white-space: nowrap; }
     .cert-badge-roletag {
       display: inline-block; font-size: 10px; font-weight: 700;
       padding: 2px 8px; border-radius: 2px; margin: 5px 0 3px; white-space: nowrap;
@@ -1509,9 +1517,9 @@
     .cert-cp-mini-badge {
       width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800; color: #fff;
+      font-size: 13px; font-weight: 700; color: #fff;
     }
-    .cert-cp-title { font-size: 14px; font-weight: 800; color: #111; }
+    .cert-cp-title { font-size: 14px; font-weight: 700; color: #111; }
     .cert-cp-sub { font-size: 12px; color: #888; margin-top: 2px; display: flex; align-items: center; gap: 8px; }
     .cert-cp-actions { margin-left: auto; display: flex; gap: 8px; flex-shrink: 0; }
     .cert-cp-body { padding: 16px 20px; display: flex; gap: 0; flex-wrap: wrap; }
@@ -1574,22 +1582,23 @@
     .rnk-table td { padding: 11px 16px; border-bottom: 1px solid #F6F7F9; vertical-align: middle; }
     .rnk-table tbody tr:last-child td { border-bottom: none; }
     .rnk-table tbody tr:hover td { background: #FAFBFF; }
-    .rnk-rank-badge { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+    .rnk-rank-badge { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
     .rnk-rank-1 { background: #FEF3C7; color: #B45309; font-size: 18px; }
     .rnk-rank-2 { background: #F1F5F9; color: #475569; font-size: 18px; }
     .rnk-rank-3 { background: #FFF7ED; color: #C2410C; font-size: 18px; }
     .rnk-rank-n { background: #F5F5F5; color: #999; font-size: 12px; }
     .rnk-mini-bar { height: 5px; border-radius: 3px; background: #F0F0F0; margin-top: 5px; overflow: hidden; }
     .rnk-mini-bar-fill { height: 100%; border-radius: 3px; }
-    .rnk-total-pts { font-size: 17px; font-weight: 900; color: #111; line-height: 1; }
+    .rnk-total-pts { font-size: 17px; font-weight: 700; color: #111; line-height: 1; }
     .rnk-pts-lbl { font-size: 10px; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
 
     /* ── Knowledge Hub ── */
-    .hub-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:28px; }
-    .hub-stat-card { background:#fff; border:1px solid #E4E7EC; border-radius:var(--radius-card); padding:var(--space-lg); display:flex; align-items:center; gap:var(--space-md); box-shadow:var(--shadow-card); }
+    .hub-stats { display:flex; background:#fff; border:1px solid #E4E7EC; border-radius:var(--radius-card); box-shadow:var(--shadow-card); margin-bottom:28px; overflow:hidden; }
+    .hub-stat-card { flex:1; min-width:0; padding:var(--space-lg); display:flex; align-items:center; gap:var(--space-md); position:relative; }
+    .hub-stat-card:not(:last-child)::after { content:''; position:absolute; top:15%; bottom:15%; right:0; width:1px; background:#EEF0F3; }
     .hub-stat-icon { width:38px; height:38px; border-radius:var(--radius-card); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .hub-stat-icon svg { width:18px; height:18px; }
-    .hub-stat-val { font-size:22px; font-weight:800; color:#111; line-height:1; }
+    .hub-stat-val { font-size:22px; font-weight:700; color:#111; line-height:1; }
     .hub-stat-lbl { font-size:11px; color:#888; font-weight:600; margin-top:2px; }
 
     .hub-module-block { background:#fff; border:1px solid #DFE2E6; border-radius:var(--radius-card); margin-bottom:20px; overflow:hidden; }
@@ -1597,7 +1606,7 @@
     .hub-module-header:hover { background:#FAFAFA; }
     .hub-module-left { display:flex; align-items:center; gap:12px; }
     .hub-module-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-    .hub-module-name { font-size:15px; font-weight:800; color:#111; }
+    .hub-module-name { font-size:15px; font-weight:700; color:#111; }
     .hub-module-meta { font-size:12px; color:#888; font-weight:600; margin-top:1px; }
     .hub-module-right { display:flex; align-items:center; gap:10px; }
     .hub-cert-pill { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; padding:4px 10px; border-radius:3px; }
@@ -1609,22 +1618,22 @@
 
     .hub-step { display:flex; align-items:center; gap:0; }
     .hub-class-card { width:160px; background:#EEF3FF; border:1.5px solid #BFDBFE; border-radius:6px; padding:12px; flex-shrink:0; }
-    .hub-class-label { font-size:10px; font-weight:800; color:#5189F3; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
-    .hub-class-name { font-size:13px; font-weight:800; color:#111; line-height:1.25; margin-bottom:8px; }
+    .hub-class-label { font-size:10px; font-weight:700; color:#5189F3; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+    .hub-class-name { font-size:13px; font-weight:700; color:#111; line-height:1.25; margin-bottom:8px; }
     .hub-class-videos { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#5189F3; margin-bottom:4px; }
     .hub-class-videos svg { width:13px; height:13px; flex-shrink:0; }
     .hub-class-novideo { font-size:11px; color:#ccc; font-weight:600; }
 
     .hub-quiz-card { width:140px; background:#F5F3FF; border:1.5px solid #DDD6FE; border-radius:6px; padding:12px; flex-shrink:0; }
-    .hub-quiz-label { font-size:10px; font-weight:800; color:#8B5CF6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+    .hub-quiz-label { font-size:10px; font-weight:700; color:#8B5CF6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
     .hub-quiz-title { font-size:12px; font-weight:700; color:#111; line-height:1.3; margin-bottom:6px; }
     .hub-quiz-meta { font-size:11px; color:#888; font-weight:600; }
     .hub-quiz-none { font-size:11px; color:#ccc; font-weight:600; }
 
     .hub-cert-card { width:150px; background:#FFFBEB; border:2px solid #FDE68A; border-radius:6px; padding:12px; flex-shrink:0; text-align:center; }
-    .hub-cert-label { font-size:10px; font-weight:800; color:#D97706; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
+    .hub-cert-label { font-size:10px; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
     .hub-cert-badge { width:48px; height:48px; object-fit:contain; display:block; margin:0 auto 6px; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
-    .hub-cert-name { font-size:11px; font-weight:800; color:#111; line-height:1.3; margin-bottom:2px; }
+    .hub-cert-name { font-size:11px; font-weight:700; color:#111; line-height:1.3; margin-bottom:2px; }
     .hub-cert-role { font-size:10px; color:#D97706; font-weight:700; }
 
     .hub-arrow { display:flex; align-items:center; padding:0 6px; color:#CBD5E1; flex-shrink:0; }
@@ -1651,7 +1660,7 @@
     .hub-row-icon { width:11px; height:11px; flex-shrink:0; }
     .hub-row-title { flex:1; min-width:0; font-weight:600; color:#444; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .hub-row-dur { color:#aaa; font-weight:500; flex-shrink:0; font-size:10px; white-space:nowrap; }
-    .hub-tick { font-size:11px; font-weight:800; color:#16a34a; flex-shrink:0; width:20px; text-align:center; }
+    .hub-tick { font-size:11px; font-weight:700; color:#16a34a; flex-shrink:0; width:20px; text-align:center; }
     .hub-prog-ring { display:inline-flex; align-items:center; flex-shrink:0; gap:1px; }
     .hub-prog-none { font-size:10px; color:#DFE2E6; flex-shrink:0; width:20px; text-align:center; }
     .hub-quiz-passmark { font-size:10px; font-weight:700; color:#5189F3; background:#EEF3FF; padding:1px 5px; border-radius:3px; }
@@ -1671,7 +1680,7 @@
        throw off that centering. */
     .had-mod-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
     .had-mod-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-    .had-mod-name{font-size:15px;font-weight:900;color:#111;flex:1;min-width:80px}
+    .had-mod-name{font-size:15px;font-weight:700;color:#111;flex:1;min-width:80px}
     .had-mod-meta{display:block;font-size:11px;color:#CBD5E1;font-weight:600;margin-top:4px;padding-left:22px}
     .had-mod-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;flex-shrink:0}
     .had-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--radius-control);border:1px solid #E4E7EC;background:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;transition:border-color .12s,color .12s}
@@ -1681,12 +1690,12 @@
     .had-btn-primary{background:#5189F3;color:#fff;border-color:#5189F3}
     .had-btn-primary:hover{background:#3b6fd4;border-color:#3b6fd4;color:#fff}
     .had-cls-table{width:100%;border-collapse:collapse}
-    .had-cls-table th{background:#F9FAFB;font-size:10px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;padding:8px 16px;text-align:left;border-top:1px solid #F3F4F6;border-bottom:1px solid #F3F4F6;white-space:nowrap}
+    .had-cls-table th{background:#F9FAFB;font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;padding:8px 16px;text-align:left;border-top:1px solid #F3F4F6;border-bottom:1px solid #F3F4F6;white-space:nowrap}
     .had-cls-table td{padding:11px 16px;border-bottom:1px solid #F9FAFB;font-size:13px;vertical-align:middle}
     .had-cls-table tr:last-child td{border-bottom:none}
     .had-cls-table tr:hover td{background:#FAFBFF}
-    .had-cls-num{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
-    .had-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px}
+    .had-cls-num{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+    .had-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px}
     .had-chev{transition:transform .2s;flex-shrink:0}
 
     /* ── Hub Redesign: Overview ── */
@@ -1708,7 +1717,7 @@
     .hub-cls-row { display:flex; align-items:center; padding:11px 22px; cursor:pointer; border-bottom:1px solid #F7F8FA; transition:background 0.1s; gap:14px; }
     .hub-cls-row:last-child { border-bottom:none; }
     .hub-cls-row:hover { background:#F5F8FF; }
-    .hub-cls-row-num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
+    .hub-cls-row-num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
     .hub-cls-row-name { flex:1; min-width:0; font-size:13px; font-weight:700; color:#111; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .hub-cls-row-quiz { flex-shrink:0; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; cursor:pointer; }
     .hub-cls-row-quiz.assigned { background:#F0FDF4; color:#16a34a; border:1px solid #BBF7D0; }
@@ -1717,7 +1726,7 @@
     .hub-cls-row-bar-wrap { width:120px; flex-shrink:0; }
     .hub-cls-row-bar { height:4px; background:#F0F2F5; border-radius:2px; overflow:hidden; }
     .hub-cls-row-fill { height:100%; border-radius:2px; }
-    .hub-cls-row-pct { width:44px; text-align:right; font-size:11px; font-weight:800; flex-shrink:0; }
+    .hub-cls-row-pct { width:44px; text-align:right; font-size:11px; font-weight:700; flex-shrink:0; }
     .hub-cls-row-meta { font-size:11px; color:#C4C9D4; font-weight:500; width:110px; text-align:right; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .hub-cls-row-fwd { flex-shrink:0; color:#DDE1E9; transition:color 0.12s; }
     .hub-cls-row:hover .hub-cls-row-fwd { color:#5189F3; }
@@ -1727,9 +1736,9 @@
     .hub-detail-back { display:inline-flex; align-items:center; gap:8px; padding:7px 14px 7px 10px; background:#fff; border:1.5px solid #DFE2E6; border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; color:#555; cursor:pointer; margin-bottom:22px; }
     .hub-detail-back:hover { border-color:#5189F3; color:#5189F3; }
     .hub-detail-breadcrumb { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; margin-bottom:6px; }
-    .hub-detail-title { font-size:24px; font-weight:900; color:#111; line-height:1.2; margin-bottom:6px; }
+    .hub-detail-title { font-size:24px; font-weight:700; color:#111; line-height:1.2; margin-bottom:6px; }
     .hub-detail-desc { font-size:13px; color:#666; line-height:1.55; margin-bottom:6px; }
-    .hub-detail-sec-title { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#bbb; display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+    .hub-detail-sec-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#bbb; display:flex; align-items:center; gap:8px; margin-bottom:12px; }
     .hub-detail-sec-title::after { content:''; flex:1; height:1px; background:#F0F0F0; }
     .hub-ci { display:flex; align-items:center; gap:14px; padding:13px 16px; background:#fff; border:1.5px solid #DFE2E6; border-radius:6px; margin-bottom:8px; transition:border-color 0.12s; }
     .hub-ci:hover { border-color:#5189F3; }
@@ -1751,7 +1760,7 @@
     }
     .hub-ct-tab:hover { color:#5189F3; }
     .hub-ct-tab.active { color:#5189F3; border-bottom-color:#5189F3; }
-    .hub-ct-count { font-size:10px; font-weight:800; background:#EEF3FF; color:#5189F3; padding:1px 6px; border-radius:10px; }
+    .hub-ct-count { font-size:10px; font-weight:700; background:#EEF3FF; color:#5189F3; padding:1px 6px; border-radius:10px; }
     .hub-ct-panel { padding-top:12px; }
     .hub-ct-empty { padding:16px 4px; font-size:13px; color:#bbb; }
 
@@ -1760,14 +1769,14 @@
     .hqv-overlay.open { display:flex; }
     .hqv-modal { background:#fff;border-radius:4px;max-width:620px;width:100%;max-height:88vh;display:flex;flex-direction:column; }
     .hqv-head { display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px 14px;border-bottom:1.5px solid #E8EEFB;gap:12px; }
-    .hqv-title { font-size:15px;font-weight:800;color:#111; }
+    .hqv-title { font-size:15px;font-weight:700;color:#111; }
     .hqv-meta { font-size:11px;color:#9CA3AF;font-weight:600;margin-top:3px; }
     .hqv-close { background:none;border:none;cursor:pointer;color:#aaa;display:flex;align-items:center;padding:2px; }
     .hqv-close:hover { color:#EF4444; }
     .hqv-body { flex:1;overflow-y:auto;padding:14px 22px; }
     .hqv-q-item { border:1px solid #E8EEFB;border-radius:4px;padding:12px 14px;margin-bottom:10px; }
     .hqv-q-hdr { display:flex;align-items:center;gap:8px;margin-bottom:6px; }
-    .hqv-q-num { font-size:11px;font-weight:800;color:#5189F3; }
+    .hqv-q-num { font-size:11px;font-weight:700;color:#5189F3; }
     .hqv-q-type { font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:0.06em; }
     .hqv-q-text { font-size:13px;font-weight:600;color:#111;line-height:1.45;margin-bottom:10px; }
     .hqv-opts { display:flex;flex-direction:column;gap:4px; }
@@ -1792,7 +1801,7 @@
     .cs-expiring .cert-status-icon { background:#FEF3C7; }
     .cs-expired  .cert-status-icon { background:#FEE2E2; }
     .cert-status-body { flex:1; min-width:0; }
-    .cert-status-title { font-size:12px; font-weight:800; margin-bottom:2px; }
+    .cert-status-title { font-size:12px; font-weight:700; margin-bottom:2px; }
     .cs-lifetime .cert-status-title { color:#0369A1; }
     .cs-active   .cert-status-title { color:#166534; }
     .cs-expiring .cert-status-title { color:#92400E; }
@@ -1802,27 +1811,27 @@
     .cs-active   .cert-status-sub { color:#15803D; }
     .cs-expiring .cert-status-sub { color:#78350F; }
     .cs-expired  .cert-status-sub { color:#B91C1C; }
-    .cert-renew-btn { flex-shrink:0; font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; white-space:nowrap; transition:opacity 0.15s; }
+    .cert-renew-btn { flex-shrink:0; font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; white-space:nowrap; transition:opacity 0.15s; }
     .cert-renew-btn:hover { opacity:0.85; }
     .cs-expiring .cert-renew-btn { background:#F59E0B; color:#fff; }
     .cs-expired  .cert-renew-btn { background:#EF4444; color:#fff; }
     /* Attempt history rows */
     .hub-att-history { margin-top:8px; display:flex; flex-direction:column; gap:6px; }
     .hub-att-row { display:flex; align-items:center; gap:12px; padding:10px 16px; border-radius:8px; border:1.5px solid #E5E7EB; background:#FAFAFA; }
-    .hub-att-label { font-size:12px; font-weight:800; color:#666; flex-shrink:0; min-width:76px; }
-    .hub-att-score { font-size:15px; font-weight:900; flex-shrink:0; }
-    .hub-att-verdict { font-size:10px; font-weight:800; padding:3px 9px; border-radius:4px; flex-shrink:0; letter-spacing:.05em; }
+    .hub-att-label { font-size:12px; font-weight:700; color:#666; flex-shrink:0; min-width:76px; }
+    .hub-att-score { font-size:15px; font-weight:700; flex-shrink:0; }
+    .hub-att-verdict { font-size:10px; font-weight:700; padding:3px 9px; border-radius:4px; flex-shrink:0; letter-spacing:.05em; }
     .hub-att-sep { flex:1; }
     .hub-att-date { font-size:11px; color:#aaa; font-weight:600; flex-shrink:0; }
     .hub-att-view-btn { font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; padding:5px 13px; border-radius:6px; border:1.5px solid #DFE2E6; background:#fff; color:#5189F3; cursor:pointer; flex-shrink:0; }
     .hub-att-view-btn:hover { background:#EEF3FF; border-color:#5189F3; }
-    .hub-att2-start { font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; padding:6px 14px; border-radius:6px; border:none; background:#5189F3; color:#fff; cursor:pointer; flex-shrink:0; display:inline-flex; align-items:center; gap:5px; }
+    .hub-att2-start { font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; padding:6px 14px; border-radius:6px; border:none; background:#5189F3; color:#fff; cursor:pointer; flex-shrink:0; display:inline-flex; align-items:center; gap:5px; }
     .hub-att2-start:hover { background:#3a6dd4; }
     .hub-att3-banner { margin-top:10px; background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:8px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
     .hub-att3-banner-text { flex:1; }
-    .hub-att3-banner-title { font-size:13px; font-weight:800; color:#92400E; margin-bottom:3px; }
+    .hub-att3-banner-title { font-size:13px; font-weight:700; color:#92400E; margin-bottom:3px; }
     .hub-att3-banner-sub { font-size:12px; color:#78350F; line-height:1.5; }
-    .hub-att3-req-btn { font-family:'Nunito',sans-serif; font-size:12px; font-weight:800; padding:8px 16px; border-radius:6px; border:none; background:#F59E0B; color:#fff; cursor:pointer; flex-shrink:0; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+    .hub-att3-req-btn { font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; padding:8px 16px; border-radius:6px; border:none; background:#F59E0B; color:#fff; cursor:pointer; flex-shrink:0; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
     .hub-att3-req-btn:hover { background:#D97706; }
     .att3req-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; z-index:9999; padding:20px; box-sizing:border-box; }
     .att3req-overlay.open { display:flex; }
@@ -1830,7 +1839,7 @@
     .att3req-head { padding:22px 24px 0; }
     .att3req-body { padding:18px 24px; max-height:70vh; overflow-y:auto; }
     .att3req-foot { padding:14px 24px 20px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #F3F4F6; }
-    .att3req-label { font-size:11px; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:5px; }
+    .att3req-label { font-size:11px; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:5px; }
     .att3req-input { width:100%; box-sizing:border-box; padding:9px 12px; border:1.5px solid #DFE2E6; border-radius:6px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:500; color:#333; outline:none; transition:border-color .13s; }
     .att3req-input:focus { border-color:#5189F3; }
     .att3req-field { margin-bottom:14px; }
@@ -1842,11 +1851,11 @@
     .dev-panel { margin-top:24px; border:1.5px dashed #FCD34D; border-radius:10px; background:#FFFBEB; overflow:hidden; }
     .dev-panel-hdr { display:flex; align-items:center; gap:10px; padding:10px 16px; cursor:pointer; user-select:none; }
     .dev-panel-hdr:hover { background:#FEF3C7; }
-    .dev-panel-title { font-size:12px; font-weight:800; color:#92400E; flex:1; }
+    .dev-panel-title { font-size:12px; font-weight:700; color:#92400E; flex:1; }
     .dev-panel-note { font-size:10px; font-weight:600; color:#B45309; background:#FEF3C7; border-radius:4px; padding:2px 8px; }
     .dev-panel-body { padding:14px 16px 16px; border-top:1px dashed #FDE68A; display:flex; flex-direction:column; gap:14px; }
     .dev-panel.collapsed .dev-panel-body { display:none; }
-    .dev-group-label { font-size:10px; font-weight:800; color:#B45309; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    .dev-group-label { font-size:10px; font-weight:700; color:#B45309; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
     .dev-btn-row { display:flex; flex-wrap:wrap; gap:6px; }
     .dev-btn { font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; padding:5px 12px; border-radius:6px; border:1.5px solid #FDE68A; background:#fff; color:#92400E; cursor:pointer; transition:background .12s; white-space:nowrap; }
     .dev-btn:hover { background:#FEF3C7; }
@@ -1871,7 +1880,7 @@
     .notif-dot.red { background:#DC2626; }
     .notif-dot.amber { background:#F59E0B; }
     .notif-dot.read { background:#D1D5DB; }
-    .notif-title { font-size:12px; font-weight:800; color:#111; margin-bottom:2px; }
+    .notif-title { font-size:12px; font-weight:700; color:#111; margin-bottom:2px; }
     .notif-sub { font-size:11px; color:#888; line-height:1.4; }
     .notif-time { font-size:10px; color:#C0C0C0; margin-top:3px; }
     .notif-empty { padding:24px 16px; text-align:center; font-size:12px; color:#ccc; }
@@ -1883,7 +1892,7 @@
     .toast.toast-amber { border-left:4px solid #F59E0B; }
     .toast.toast-green { border-left:4px solid #22C55E; }
     .toast.toast-blue   { border-left:4px solid #5189F3; }
-    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:800; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
+    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:700; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
     .toast-action:hover { color:#fff; text-decoration:underline; }
     @keyframes toastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
     #topLoadBar { position:fixed; top:0; left:0; height:3px; width:0%; background:#5189F3; z-index:100000; opacity:1; }
@@ -1944,7 +1953,7 @@
       border-radius: 7px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .csel-item:hover, .csel-item.focused { background: #F5F8FF; }
-    .csel-item.selected { background: #EEF3FF; color: #5189F3; font-weight: 800; }
+    .csel-item.selected { background: #EEF3FF; color: #5189F3; font-weight: 700; }
     .csel-item.disabled { color: #ccc; cursor: default; pointer-events: none; }
     /* Per-context overrides — the base .csel-trigger style matches .qc-field's
        own inputs (2px radius, regular weight), but the app has two other
@@ -2006,12 +2015,19 @@
       .qm-user-bar { flex-wrap: wrap; row-gap: 8px; }
       .qm-user-bar select { min-width: 0; }
       .qm-reset-btn { flex-shrink: 0; }
-      .lb-stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .lbd-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+      /* Below 860px a single divided strip wrapping into multiple rows reads as
+         broken vertical rules rather than a clean grid, so each stat item goes
+         back to being its own bordered card instead. */
+      .lb-stats-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; background:none; border:none; box-shadow:none; border-radius:0; }
+      .lb-stat-card { background:#fff; border:1px solid #DFE2E6; border-radius:var(--radius-card); box-shadow:var(--shadow-card); }
+      .lbd-kpi-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; background:none; border:none; box-shadow:none; border-radius:0; }
+      .lbd-kpi { background:#fff; border:1px solid #DFE2E6; border-radius:var(--radius-card); box-shadow:var(--shadow-card); }
+      .lb-stat-card::after, .lbd-kpi::after, .hub-stat-card::after { content:none; }
       .lbd-lang-grid { grid-template-columns: repeat(2, 1fr); }
       .lb-group-grid { grid-template-columns: 1fr; }
       .cert-cards-grid { grid-template-columns: repeat(2, 1fr); }
-      .hub-stats { grid-template-columns: repeat(2, 1fr); }
+      .hub-stats { display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; background:none; border:none; box-shadow:none; border-radius:0; }
+      .hub-stat-card { background:#fff; border:1px solid #E4E7EC; border-radius:var(--radius-card); box-shadow:var(--shadow-card); }
       /* Quick Guides split panel (Forms/Modules list | content editor) — stacking
          both full-width made the page too tall to scroll through comfortably;
          a 40/60 split keeps both visible together with less total height, weighted
@@ -2128,7 +2144,7 @@
       <span class="admin-badge">Admin</span>
       <div style="position:relative">
         <button id="adminProfileBtn" onclick="_toggleAdminProfilePanel()" title="Admin Profile" aria-label="Admin Profile"
-          style="width:30px;height:30px;border-radius:50%;border:none;background:#5189F3;color:#fff;font-size:12px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Nunito',sans-serif">A</button>
+          style="width:30px;height:30px;border-radius:50%;border:none;background:#5189F3;color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Nunito',sans-serif">A</button>
         <div id="adminProfilePanel" style="display:none;position:absolute;top:40px;right:0;width:250px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
           <div id="adminProfilePanelBody"></div>
         </div>
@@ -2145,7 +2161,7 @@
         <!-- Notification Panel -->
         <div id="notifPanel" style="display:none;position:absolute;top:52px;right:16px;width:340px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid #F3F4F6">
-            <span style="font-size:14px;font-weight:800;color:#111">Notifications</span>
+            <span style="font-size:14px;font-weight:700;color:#111">Notifications</span>
             <button onclick="_markAllNotifsRead()" style="font-size:11px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
           </div>
           <div id="notifList" style="max-height:340px;overflow-y:auto"></div>
@@ -2178,7 +2194,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
         </div>
         <div>
-          <div id="apsTitle" style="font-size:17px;font-weight:900;color:#1E2532">Welcome — who's administering?</div>
+          <div id="apsTitle" style="font-size:17px;font-weight:700;color:#1E2532">Welcome — who's administering?</div>
           <div style="font-size:12px;color:#9CA3AF;margin-top:2px;font-weight:500">Enter your name and email for the admin profile</div>
         </div>
       </div>
@@ -2292,7 +2308,7 @@
                   </svg>
                 </button>
                 <div id="lbMonthPicker" style="display:none;position:fixed;background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:9999;min-width:200px;overflow:hidden">
-                  <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
+                  <div style="padding:10px 14px 6px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
                   <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
                 </div>
               </div>
@@ -2556,8 +2572,8 @@
                 <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
                 <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
-              <span style="font-weight:800;font-size:14px;color:#111">Schedule Requests</span>
-              <span id="schedPendingBadge" style="display:none;background:#F59E0B;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px">0</span>
+              <span style="font-weight:700;font-size:14px;color:#111">Schedule Requests</span>
+              <span id="schedPendingBadge" style="display:none;background:#F59E0B;color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px">0</span>
             </div>
             <span style="display:block;font-size:12px;color:#aaa;margin-top:4px">3rd attempt requests from employees who failed both standard attempts</span>
           </div>
@@ -2571,8 +2587,8 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
-              <span style="font-weight:800;font-size:14px;color:#111">Admin Requests</span>
-              <span id="resetPendingBadge" style="display:none;background:#DC2626;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px">0</span>
+              <span style="font-weight:700;font-size:14px;color:#111">Admin Requests</span>
+              <span id="resetPendingBadge" style="display:none;background:#DC2626;color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px">0</span>
             </div>
             <span style="display:block;font-size:12px;color:#aaa;margin-top:4px">Employees who exhausted all 3 attempts and are requesting a reset</span>
           </div>
@@ -2711,7 +2727,7 @@
         <!-- Hub Header -->
         <div id="hubPageHeader" style="display:flex;flex-wrap:wrap;align-items:center;width:100%;margin-bottom:20px;gap:12px 16px">
           <div style="flex:1;min-width:160px">
-            <h1 style="font-size:20px;font-weight:800;color:#111;margin-bottom:4px">Knowledge Hub</h1>
+            <h1 style="font-size:20px;font-weight:700;color:#111;margin-bottom:4px">Knowledge Hub</h1>
             <p style="font-size:13px;color:#888;margin:0" id="hubSubtitle">Manage modules, classes, content and quizzes</p>
           </div>
           <!-- Admin/User toggle + Search — kept on one line always; the search box
@@ -2762,7 +2778,7 @@
       <div id="section-quickguides" class="section">
         <div style="display:flex;flex-wrap:wrap;align-items:center;width:100%;margin-bottom:22px;gap:12px 16px">
           <div style="flex:1;min-width:160px">
-            <h1 style="font-size:20px;font-weight:800;color:#111;margin:0 0 4px">Quick Guides</h1>
+            <h1 style="font-size:20px;font-weight:700;color:#111;margin:0 0 4px">Quick Guides</h1>
             <p style="font-size:13px;color:#888;margin:0">Upload 2–5 min demos (video, voiceover &amp; document) per form — accessed via the help icon in the platform</p>
           </div>
           <div class="lb-view-tabs qg-view-tabs" style="margin:0;margin-left:auto;flex-shrink:0">
@@ -2778,7 +2794,7 @@
             <!-- Left: Form list -->
             <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow:hidden;flex-shrink:0">
               <div style="padding:11px 14px 10px;border-bottom:1px solid #F0F0F0">
-                <span style="font-size:11px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:0.07em">Forms / Modules</span>
+                <span style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.07em">Forms / Modules</span>
               </div>
               <div id="qgFormList" style="max-height:520px;overflow-y:auto"></div>
             </div>
@@ -2796,7 +2812,7 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                   </div>
                   <div>
-                    <div id="qgEditorTitle" style="font-size:17px;font-weight:900;color:#111"></div>
+                    <div id="qgEditorTitle" style="font-size:17px;font-weight:700;color:#111"></div>
                     <div style="font-size:12px;color:#888;margin-top:1px">Upload video, voiceover and document — one per language</div>
                   </div>
                 </div>
@@ -2811,7 +2827,7 @@
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                         </div>
                         <div style="min-width:0">
-                          <div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Video</div>
+                          <div style="font-size:13px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Video</div>
                           <div style="font-size:10px;color:#aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">2–5 min demo</div>
                         </div>
                       </div>
@@ -2828,7 +2844,7 @@
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
                         </div>
                         <div style="min-width:0">
-                          <div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Voiceover</div>
+                          <div style="font-size:13px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Voiceover</div>
                           <div style="font-size:10px;color:#aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Audio narration</div>
                         </div>
                       </div>
@@ -2845,7 +2861,7 @@
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                         </div>
                         <div style="min-width:0">
-                          <div style="font-size:13px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Document</div>
+                          <div style="font-size:13px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Document</div>
                           <div style="font-size:10px;color:#aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Reference guide / PDF</div>
                         </div>
                       </div>
@@ -2867,7 +2883,7 @@
             <span style="font-size:12px;font-weight:700;color:#374151">User preview — when the help icon is tapped on any form in the platform, users see that form's guide in their preferred language</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap">
-            <span style="font-size:12px;font-weight:800;color:#555">Language:</span>
+            <span style="font-size:12px;font-weight:700;color:#555">Language:</span>
             <div id="qgLangPills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
           </div>
           <div id="qgUserCards" class="rg-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px"></div>
@@ -2880,7 +2896,7 @@
       <div id="qgUploadModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
         <div style="background:#fff;border-radius:8px;width:100%;max-width:460px;box-shadow:0 24px 64px rgba(0,0,0,0.2);overflow:hidden;font-family:'Nunito',sans-serif">
           <div style="padding:16px 20px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
-            <div id="qgModalTitle" style="font-size:15px;font-weight:800;color:#111"></div>
+            <div id="qgModalTitle" style="font-size:15px;font-weight:700;color:#111"></div>
             <button onclick="qgCloseModal()" style="width:28px;height:28px;border:none;background:#F5F5F5;border-radius:50%;cursor:pointer;font-size:16px;color:#555;display:flex;align-items:center;justify-content:center">×</button>
           </div>
           <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
@@ -3201,9 +3217,9 @@
       var avColor  = _avatarColorFor(u.name);
       body.innerHTML =
         '<div style="padding:16px;border-bottom:1px solid #F3F4F6;display:flex;align-items:center;gap:12px">'
-          + '<div style="width:42px;height:42px;border-radius:50%;background:' + avColor + ';color:#fff;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
+          + '<div style="width:42px;height:42px;border-radius:50%;background:' + avColor + ';color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
           + '<div style="min-width:0">'
-            + '<div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name) + '</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name) + '</div>'
             + '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.email) + '</div>'
           + '</div>'
         + '</div>'
@@ -3554,7 +3570,6 @@
         <div class="cp-toolbar">
           <span class="cp-title">Video Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${_videoLibrary.length} video${_videoLibrary.length!==1?'s':''}</span></span>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto">
-            <select class="lib-filt-sel" onchange="_libModFilterChange('video',this.value)">${modOptVid}</select>
             <div style="position:relative;display:flex;align-items:center">
               <svg style="position:absolute;left:9px;color:#9CA3AF;pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input id="_lsInp-video" type="text" value="${q}" oninput="_srchTog('_lsX-video',this);_libSearchChangeDebounced('video',this.value)"
@@ -3563,6 +3578,7 @@
                 onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E5E7EB'">
               <button class="srch-x ${q?'on':''}" id="_lsX-video" onclick="_srchClr('_lsInp-video','_lsX-video')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
+            <select class="lib-filt-sel" onchange="_libModFilterChange('video',this.value)">${modOptVid}</select>
             <button onclick="_libModAddModule('video')"
               style="background:#fff;color:#374151;border:1px solid #DFE2E6;border-radius:7px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:all .15s"
               onmouseover="this.style.borderColor='#5189F3';this.style.color='#5189F3'" onmouseout="this.style.borderColor='#DFE2E6';this.style.color='#374151'">
@@ -3657,7 +3673,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
               Back to Library
             </button>
-            <span style="font-size:15px;font-weight:800;color:#111;flex:1">${item.title}</span>
+            <span style="font-size:15px;font-weight:700;color:#111;flex:1">${item.title}</span>
             <button onclick="saveVideoEditor('${item.id}')" style="display:flex;align-items:center;gap:6px;background:#5189F3;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               Save &amp; Publish
@@ -3729,7 +3745,7 @@
             <!-- Script & Timestamps -->
             <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow:hidden">
               <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #DFE2E6;flex-wrap:wrap;gap:10px">
-                <h3 style="margin:0;font-size:14px;font-weight:800;color:#111">Script &amp; Timestamps</h3>
+                <h3 style="margin:0;font-size:14px;font-weight:700;color:#111">Script &amp; Timestamps</h3>
                 <div style="display:flex;gap:8px;align-items:center">
                   ${['en','hi','te'].map(lg => `<button onclick="vidSetLang('${lg}')" id="vidLangTab-${lg}" style="padding:6px 14px;border-radius:20px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;background:${lg===vidLang?'#5189F3':'#F0F0F0'};color:${lg===vidLang?'#fff':'#666'}">${lg==='en'?'English':lg==='hi'?'हिंदी':'తెలుగు'}</button>`).join('')}
                   <label style="display:flex;align-items:center;gap:6px;padding:6px 14px;border:1.5px solid #DFE2E6;border-radius:6px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#555;background:#fff">
@@ -4424,7 +4440,7 @@
               + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
             + '</button>'
             + '<div style="min-width:0;flex:1">'
-              + '<div style="font-size:14px;font-weight:800;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
+              + '<div style="font-size:14px;font-weight:700;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
               + '<div style="font-size:11px;color:#9CA3AF;margin-top:1px;font-weight:500">' + (item.module || '') + (item.cls ? ' › ' + item.cls : '') + '</div>'
             + '</div>'
             + statusBadge
@@ -4482,7 +4498,7 @@
               + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
             + '</button>'
             + '<div style="min-width:0;flex:1">'
-              + '<div style="font-size:14px;font-weight:800;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
+              + '<div style="font-size:14px;font-weight:700;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
               + '<div style="font-size:11px;color:#9CA3AF;margin-top:1px;font-weight:500">' + typeLabel + '</div>'
             + '</div>'
             + statusBadge
@@ -4540,7 +4556,7 @@
               + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
             + '</button>'
             + '<div style="min-width:0;flex:1">'
-              + '<div style="font-size:14px;font-weight:800;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
+              + '<div style="font-size:14px;font-weight:700;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
               + '<div style="font-size:11px;color:#9CA3AF;margin-top:1px;font-weight:500">' + (item.module || '') + (item.cls ? ' › ' + item.cls : '') + '</div>'
             + '</div>'
             + statusBadge
@@ -4558,14 +4574,14 @@
           /* render sections as a styled document reader */
           var secHtml = item.sections.map(function(s) {
             return '<div style="margin-bottom:24px">'
-              + (s.heading ? '<h3 style="font-size:14px;font-weight:800;color:#1E2532;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid #F0F2F5">' + s.heading + '</h3>' : '')
+              + (s.heading ? '<h3 style="font-size:14px;font-weight:700;color:#1E2532;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid #F0F2F5">' + s.heading + '</h3>' : '')
               + '<p style="font-size:13px;line-height:1.75;color:#374151;margin:0;white-space:pre-wrap">' + (s.body || '<span style="color:#C4C9D4;font-style:italic">No content</span>') + '</p>'
               + '</div>';
           }).join('');
           previewHtml =
             '<div style="width:100%;height:100%;overflow-y:auto;padding:32px 48px;box-sizing:border-box;background:#FAFAFA">'
               + '<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:12px;border:1px solid #F0F2F5;padding:36px 40px;box-shadow:0 2px 12px rgba(0,0,0,.04)">'
-                + '<div style="font-size:20px;font-weight:900;color:#1E2532;margin-bottom:4px">' + (item.title || '') + '</div>'
+                + '<div style="font-size:20px;font-weight:700;color:#1E2532;margin-bottom:4px">' + (item.title || '') + '</div>'
                 + '<div style="font-size:12px;color:#9CA3AF;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #F0F2F5">'
                   + (item.docType || '') + (item.version ? ' · ' + item.version : '') + (item.date ? ' · ' + item.date : '')
                 + '</div>'
@@ -4670,7 +4686,6 @@
         <div class="cp-toolbar">
           <span class="cp-title">${label} Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${allItems.length} file${allItems.length!==1?'s':''}</span></span>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto">
-            <select class="lib-filt-sel" onchange="_libModFilterChange('${type}',this.value)">${modOptCp}</select>
             <div style="position:relative;display:flex;align-items:center">
               <svg style="position:absolute;left:9px;color:#9CA3AF;pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input id="_lsInp-${type}" type="text" value="${qCp}" oninput="_srchTog('_lsX-${type}',this);_libSearchChangeDebounced('${type}',this.value)"
@@ -4679,6 +4694,7 @@
                 onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E5E7EB'">
               <button class="srch-x ${qCp?'on':''}" id="_lsX-${type}" onclick="_srchClr('_lsInp-${type}','_lsX-${type}')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
+            <select class="lib-filt-sel" onchange="_libModFilterChange('${type}',this.value)">${modOptCp}</select>
             <button onclick="_libModAddModule('${type}')"
               style="background:#fff;color:#374151;border:1px solid #DFE2E6;border-radius:7px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:all .15s"
               onmouseover="this.style.borderColor='#5189F3';this.style.color='#5189F3'" onmouseout="this.style.borderColor='#DFE2E6';this.style.color='#374151'">
@@ -4967,7 +4983,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
               Back to Library
             </button>
-            <span style="font-size:15px;font-weight:800;color:#111;flex:1">${item.title}</span>
+            <span style="font-size:15px;font-weight:700;color:#111;flex:1">${item.title}</span>
             <button onclick="saveVoEditor('${item.id}')" style="display:flex;align-items:center;gap:6px;background:#5189F3;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               Save &amp; Publish
@@ -5023,7 +5039,7 @@
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
                       Playback Speed
                     </span>
-                    <span id="voSpeedLabel" style="font-size:12px;font-weight:800;color:#5189F3;font-family:'Nunito',sans-serif">Neutral</span>
+                    <span id="voSpeedLabel" style="font-size:12px;font-weight:700;color:#5189F3;font-family:'Nunito',sans-serif">Neutral</span>
                   </div>
                   <input type="range" id="voSpeedSlider" min="-0.75" max="1" step="0.25" value="0" oninput="voUpdateSpeed(this.value)" style="width:100%;accent-color:#5189F3;cursor:pointer">
                   <div style="display:flex;justify-content:space-between;font-size:10px;color:#aaa;font-family:'Nunito',sans-serif;margin-top:3px"><span>Slower</span><span>Neutral</span><span>Faster</span></div>
@@ -5041,7 +5057,7 @@
             <!-- Script & Timestamps card -->
             <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow:hidden">
               <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #DFE2E6;flex-wrap:wrap;gap:10px">
-                <h3 style="margin:0;font-size:14px;font-weight:800;color:#111">Script &amp; Timestamps</h3>
+                <h3 style="margin:0;font-size:14px;font-weight:700;color:#111">Script &amp; Timestamps</h3>
                 <div style="display:flex;gap:8px;align-items:center">
                   ${['en','hi','te'].map(lg => `<button onclick="voSetLang('${lg}')" id="voLangTab-${lg}" style="padding:6px 14px;border-radius:20px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;background:${lg===voLang?'#5189F3':'#F0F0F0'};color:${lg===voLang?'#fff':'#666'}">${lg==='en'?'English':lg==='hi'?'हिंदी':'తెలుగు'}</button>`).join('')}
                   <label style="display:flex;align-items:center;gap:6px;padding:6px 14px;border:1.5px solid #DFE2E6;border-radius:6px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#555;background:#fff">
@@ -5377,7 +5393,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
               Back to Library
             </button>
-            <span style="font-size:15px;font-weight:800;color:#111;flex:1">${item.title}</span>
+            <span style="font-size:15px;font-weight:700;color:#111;flex:1">${item.title}</span>
             <button onclick="docTogglePreview('${item.id}')" id="docPreviewBtn" style="display:flex;align-items:center;gap:6px;border:1.5px solid #DFE2E6;background:#fff;border-radius:6px;padding:7px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#5189F3;cursor:pointer">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               Preview
@@ -5391,7 +5407,7 @@
           <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
             <!-- Metadata card -->
             <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;padding:20px">
-              <h3 style="margin:0 0 14px;font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.05em">Document Details</h3>
+              <h3 style="margin:0 0 14px;font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.05em">Document Details</h3>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
                 <div class="cp-field" style="grid-column:1/-1"><label>Title</label><input type="text" id="docTitle" value="${item.title.replace(/"/g,'&quot;')}" class="cp-inp"></div>
                 <div class="cp-field"><label>Module</label>${modSel}</div>
@@ -5428,7 +5444,7 @@
             <!-- Content sections card -->
             <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow:hidden">
               <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #DFE2E6">
-                <h3 style="margin:0;font-size:14px;font-weight:800;color:#111">Document Content</h3>
+                <h3 style="margin:0;font-size:14px;font-weight:700;color:#111">Document Content</h3>
                 <div style="font-size:11px;color:#aaa;font-family:'Nunito',sans-serif">${docSections.length} section${docSections.length!==1?'s':''}</div>
               </div>
               <div id="docSectionsContainer" style="padding:20px;display:flex;flex-direction:column;gap:12px">
@@ -5453,7 +5469,7 @@
     function buildDocSectionHtml(s, i) {
       return `<div id="docSection-${i}" style="border:1px solid #DFE2E6;border-radius:4px;overflow:hidden">
         <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#F7F8FA;border-bottom:1px solid #DFE2E6">
-          <span style="font-size:12px;font-weight:800;color:#5189F3;font-family:'Nunito',sans-serif;min-width:20px">${i+1}</span>
+          <span style="font-size:12px;font-weight:700;color:#5189F3;font-family:'Nunito',sans-serif;min-width:20px">${i+1}</span>
           <input type="text" value="${s.heading.replace(/"/g,'&quot;')}" oninput="docUpdateSection(${i},'heading',this.value)" placeholder="Section heading…" style="flex:1;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#111;outline:none">
           <div style="display:flex;gap:4px">
             ${i > 0 ? `<button onclick="docMoveSection(${i},'up')" title="Move up" style="width:26px;height:26px;border:1px solid #DFE2E6;background:#fff;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>` : ''}
@@ -5500,7 +5516,7 @@
         card.style.display = 'block';
         document.getElementById('docPreviewContent').innerHTML = `
           <div style="border-bottom:2px solid #5189F3;padding-bottom:12px;margin-bottom:24px">
-            <h1 style="margin:0 0 6px;font-size:22px;font-weight:800;color:#111">${title}</h1>
+            <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#111">${title}</h1>
             <div style="display:flex;gap:12px;font-size:12px;color:#888;font-weight:600">
               <span>Version: ${version}</span>
               <span>Status: <span style="color:${status==='Published'?'#16A34A':status==='Draft'?'#D97706':'#888'}">${status}</span></span>
@@ -5508,7 +5524,7 @@
           </div>
           ${docSections.map((s,i) => `
             <div style="margin-bottom:20px">
-              <h2 style="font-size:15px;font-weight:800;color:#111;margin:0 0 8px;display:flex;align-items:center;gap:8px">
+              <h2 style="font-size:15px;font-weight:700;color:#111;margin:0 0 8px;display:flex;align-items:center;gap:8px">
                 <span style="width:22px;height:22px;background:#5189F3;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">${i+1}</span>
                 ${s.heading}
               </h2>
@@ -5775,11 +5791,11 @@
         mods.map(function(m) {
           var pct = _computeUserModuleCompletion(userName, m.name);
           return '<div style="display:flex;align-items:center;gap:7px">' +
-            '<span style="font-size:9px;font-weight:800;color:' + m.color + ';width:38px;flex-shrink:0;letter-spacing:.02em">' + m.short + '</span>' +
+            '<span style="font-size:9px;font-weight:700;color:' + m.color + ';width:38px;flex-shrink:0;letter-spacing:.02em">' + m.short + '</span>' +
             '<div style="flex:1;height:5px;background:#F3F4F6;border-radius:3px;overflow:hidden">' +
               '<div style="width:' + pct + '%;height:100%;background:' + m.color + ';border-radius:3px;transition:width .4s"></div>' +
             '</div>' +
-            '<span style="font-size:10px;font-weight:800;color:' + (pct > 0 ? m.color : '#C4C9D4') + ';min-width:28px;text-align:right">' + pct + '%</span>' +
+            '<span style="font-size:10px;font-weight:700;color:' + (pct > 0 ? m.color : '#C4C9D4') + ';min-width:28px;text-align:right">' + pct + '%</span>' +
           '</div>';
         }).join('') +
       '</div>';
@@ -5814,7 +5830,7 @@
         const serial    = i + 1;
         const roleBadge = `<span class="role-badge ${ROLE_CLASS[u.role]}">${ROLE_LABELS[u.role]}</span>`;
         const st        = _getUserStatus(u.completionPct);
-        const statusPill = `<span style="display:inline-flex;align-items:center;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;color:${st.color};background:${st.bg};border:1px solid ${st.border}">${st.label}</span>`;
+        const statusPill = `<span style="display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;color:${st.color};background:${st.bg};border:1px solid ${st.border}">${st.label}</span>`;
         const certColor  = u.certsEarned >= 3 ? '#16a34a' : u.certsEarned >= 1 ? '#5189F3' : '#9CA3AF';
         const total18    = _totalClasses();
         const safeName   = u.name.replace(/'/g,"\\'");
@@ -5830,7 +5846,7 @@
             </td>
             <td>${roleBadge}</td>
             <td>${_buildModuleBars(u.name)}</td>
-            <td style="color:${certColor};font-weight:800;text-align:center">${u.certsEarned}<span style="color:#ddd;font-weight:400"> /${total18}</span></td>
+            <td style="color:${certColor};font-weight:700;text-align:center">${u.certsEarned}<span style="color:#ddd;font-weight:400"> /${total18}</span></td>
             <td style="text-align:center">${statusPill}</td>
             <td style="text-align:right">
               <button class="lib-btn del" title="Delete user" onclick="event.stopPropagation();_deleteUser('${safeName}')">
@@ -5926,7 +5942,7 @@
           /* Left: user list — independent scroll */
           '<div class="uj-list-pane" style="width:270px;flex-shrink:0;border-right:1px solid #F0F0F0;display:flex;flex-direction:column;height:100%;overflow:hidden">' +
             '<div style="padding:14px 14px 10px;border-bottom:1px solid #F0F0F0;flex-shrink:0">' +
-              '<div style="font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Select Employee</div>' +
+              '<div style="font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Select Employee</div>' +
               '<div style="position:relative">' +
                 '<svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
                 '<input id="ujSearch" type="text" placeholder="Search…" oninput="_ujFilter(this.value);_srchTog(\'ujSrchX\',this)" style="width:100%;height:32px;padding:0 28px 0 30px;border:1.5px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;font-weight:600;color:#333;background:#FAFAFA;outline:none;box-sizing:border-box">' +
@@ -5964,12 +5980,12 @@
         var roleLabel = u.role === 'qc' ? 'QC Inspector' : u.role.charAt(0).toUpperCase() + u.role.slice(1);
         return '<div onclick="_ujSelect(\'' + u.name.replace(/'/g,"\\'") + '\')" style="display:flex;align-items:center;gap:9px;padding:9px 8px;border-radius:8px;cursor:pointer;margin-bottom:2px;' +
           (sel ? 'background:#EEF3FF;border:1.5px solid #C7D9FF' : 'background:transparent;border:1.5px solid transparent') + '">' +
-          '<div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;background:' + hue + '">' + inits + '</div>' +
+          '<div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:' + hue + '">' + inits + '</div>' +
           '<div style="flex:1;min-width:0">' +
-            '<div style="font-size:12px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + u.name + '</div>' +
+            '<div style="font-size:12px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + u.name + '</div>' +
             '<div style="display:flex;align-items:center;gap:5px;margin-top:2px">' +
               '<span style="font-size:10px;color:#888;font-weight:600">' + roleLabel + '</span>' +
-              '<span style="font-size:10px;font-weight:800;color:' + st.color + '">' + u.completionPct + '%</span>' +
+              '<span style="font-size:10px;font-weight:700;color:' + st.color + '">' + u.completionPct + '%</span>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -6054,14 +6070,14 @@
         '<span style="color:#DFE2E6">›</span>' +
         '<span>User Journey</span>' +
         '<span style="color:#DFE2E6">›</span>' +
-        '<span style="color:#111;font-weight:800">' + _escHtml(u.name) + '</span>' +
+        '<span style="color:#111;font-weight:700">' + _escHtml(u.name) + '</span>' +
       '</div>';
 
       /* User banner */
       var banner = crumb + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #F0F0F0">' +
-        '<div style="width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;background:' + hue + '">' + inits + '</div>' +
+        '<div style="width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;background:' + hue + '">' + inits + '</div>' +
         '<div style="flex:1">' +
-          '<div style="font-size:17px;font-weight:800;color:#111;margin-bottom:3px">' + u.name + '</div>' +
+          '<div style="font-size:17px;font-weight:700;color:#111;margin-bottom:3px">' + u.name + '</div>' +
           '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
             '<span style="font-size:11px;font-weight:700;color:#888">' + roleLabel + '</span>' +
             '<span style="color:#E5E7EB">·</span>' +
@@ -6070,8 +6086,8 @@
           '</div>' +
         '</div>' +
         '<div style="text-align:right;flex-shrink:0">' +
-          '<div style="font-size:26px;font-weight:900;color:' + st.color + '">' + u.completionPct + '%</div>' +
-          '<span style="font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + '">' + st.label + '</span>' +
+          '<div style="font-size:26px;font-weight:700;color:' + st.color + '">' + u.completionPct + '%</div>' +
+          '<span style="font-size:10px;font-weight:700;padding:2px 10px;border-radius:99px;color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + '">' + st.label + '</span>' +
           '<div style="font-size:10px;color:#aaa;margin-top:4px;font-weight:600">' + u.certsEarned + ' of ' + totalClasses + ' classes certified</div>' +
         '</div>' +
       '</div>';
@@ -6097,11 +6113,11 @@
             '<div style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:' + (done ? m.color : '#E5E7EB') + '">' +
               (done
                 ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-                : '<span style="font-size:9px;font-weight:800;color:#9CA3AF">' + (ci + 1) + '</span>'
+                : '<span style="font-size:9px;font-weight:700;color:#9CA3AF">' + (ci + 1) + '</span>'
               ) +
             '</div>' +
             '<div style="flex:1">' +
-              '<div style="font-size:12px;font-weight:800;color:' + (done ? '#111' : '#9CA3AF') + '">' + cls + '</div>' +
+              '<div style="font-size:12px;font-weight:700;color:' + (done ? '#111' : '#9CA3AF') + '">' + cls + '</div>' +
               (done && info.earnedDate
                 ? '<div style="font-size:10px;font-weight:700;color:' + m.color + ';margin-top:1px">Certified · ' + info.earnedDate + '</div>'
                 : '<div style="font-size:10px;color:#C4C9D4;font-weight:600;margin-top:1px">Not yet completed</div>'
@@ -6114,9 +6130,9 @@
         return '<div style="margin-bottom:20px">' +
           '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
             '<div style="width:8px;height:8px;border-radius:50%;background:' + m.color + ';flex-shrink:0"></div>' +
-            '<div style="font-size:13px;font-weight:800;color:' + m.color + ';flex:1">' + m.name + '</div>' +
+            '<div style="font-size:13px;font-weight:700;color:' + m.color + ';flex:1">' + m.name + '</div>' +
             '<span style="font-size:11px;font-weight:700;color:#888">' + doneCount + '/' + classes.length + ' classes</span>' +
-            '<span style="font-size:14px;font-weight:900;color:' + m.color + ';min-width:38px;text-align:right">' + modPct + '%</span>' +
+            '<span style="font-size:14px;font-weight:700;color:' + m.color + ';min-width:38px;text-align:right">' + modPct + '%</span>' +
           '</div>' +
           '<div style="height:5px;background:#F0F0F0;border-radius:3px;overflow:hidden;margin-bottom:12px">' +
             '<div style="height:100%;width:' + modPct + '%;background:' + m.color + ';border-radius:3px;transition:width .5s"></div>' +
@@ -6129,10 +6145,10 @@
     }
 
     function _kpiCard(label, val, sub, color, iconPath) {
-      return '<div class="lbd-kpi" style="--lbd-accent:' + color + '">' +
-        '<div class="lbd-kpi-val" style="color:' + color + '">' + val + '</div>' +
+      return '<div class="lbd-kpi">' +
+        '<div class="lbd-kpi-val">' + val + '</div>' +
         '<div class="lbd-kpi-lbl">' + label + '</div>' +
-        '<div class="lbd-kpi-delta" style="color:' + color + ';opacity:.65">' + sub + '</div>' +
+        '<div class="lbd-kpi-delta" style="color:#888">' + sub + '</div>' +
         '<div class="lbd-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="' + iconPath + '"/></svg></div>' +
       '</div>';
     }
@@ -6153,8 +6169,8 @@
       var pct = Math.round(count / total * 100);
       return '<div style="background:' + bg + ';border:1.5px solid ' + color + '33;border-radius:8px;padding:12px 14px">' +
         '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px">' +
-          '<div style="font-size:11px;font-weight:800;color:' + color + ';text-transform:uppercase;letter-spacing:.06em">' + label + '</div>' +
-          '<div style="font-size:22px;font-weight:900;color:' + color + ';line-height:1">' + count + '</div>' +
+          '<div style="font-size:11px;font-weight:700;color:' + color + ';text-transform:uppercase;letter-spacing:.06em">' + label + '</div>' +
+          '<div style="font-size:22px;font-weight:700;color:' + color + ';line-height:1">' + count + '</div>' +
         '</div>' +
         '<div style="font-size:10px;color:#9CA3AF;font-weight:600;margin-bottom:7px">' + desc + '</div>' +
         '<div style="height:4px;background:' + color + '22;border-radius:99px;overflow:hidden">' +
@@ -6166,13 +6182,13 @@
 
     function _langRow(code, name, native, count, color, bg) {
       return '<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:' + bg + ';border-radius:7px;border:1px solid ' + color + '22">' +
-        '<div style="width:36px;height:36px;border-radius:7px;background:#fff;border:1px solid ' + color + '33;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:' + color + ';flex-shrink:0">' + code + '</div>' +
+        '<div style="width:36px;height:36px;border-radius:7px;background:#fff;border:1px solid ' + color + '33;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:' + color + ';flex-shrink:0">' + code + '</div>' +
         '<div style="flex:1;min-width:0">' +
-          '<div style="font-size:13px;font-weight:800;color:#111">' + name + '</div>' +
+          '<div style="font-size:13px;font-weight:700;color:#111">' + name + '</div>' +
           '<div style="font-size:11px;color:#888;font-weight:600">' + native + '</div>' +
         '</div>' +
         '<div style="text-align:right;flex-shrink:0">' +
-          '<div style="font-size:20px;font-weight:900;color:' + color + ';line-height:1">' + count + '</div>' +
+          '<div style="font-size:20px;font-weight:700;color:' + color + ';line-height:1">' + count + '</div>' +
           '<div style="font-size:10px;color:#aaa;font-weight:700">learners</div>' +
         '</div>' +
       '</div>';
@@ -7468,7 +7484,7 @@
       var total   = shownQs.length;
 
       var scheduledNote = status.isScheduled
-        ? '<span style="color:#F59E0B;font-weight:800"> · Supervised 3rd attempt</span>' : '';
+        ? '<span style="color:#F59E0B;font-weight:700"> · Supervised 3rd attempt</span>' : '';
 
       var typeMixNote = '';
       if (quiz.typeMix && (quiz.typeMix.mcq || quiz.typeMix.tf || quiz.typeMix.ms)) {
@@ -7613,7 +7629,7 @@
       return '<div class="qm-info-banner warn" style="margin-bottom:0">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">' +
         '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
-        '<div><div style="font-weight:800;margin-bottom:3px">Cooldown — retry not yet available</div>' +
+        '<div><div style="font-weight:700;margin-bottom:3px">Cooldown — retry not yet available</div>' +
         '<div>Attempt 1 was failed. Attempt 2 unlocks in <strong>' + timeLeft + '</strong>.</div></div></div>';
     }
 
@@ -7628,11 +7644,11 @@
         '<div class="qm-info-banner bad" style="margin-bottom:14px">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">' +
         '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' +
-        '<div><div style="font-weight:800;margin-bottom:3px">Both attempts failed</div>' +
+        '<div><div style="font-weight:700;margin-bottom:3px">Both attempts failed</div>' +
         '<div>Standard attempts exhausted. Quiz auto-resets in <strong>' + timeLeft + '</strong>.</div></div></div>' +
         (alreadyRequested ? '' :
           '<div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:4px;padding:14px 16px">' +
-          '<div style="font-weight:800;font-size:13px;color:#92400E;margin-bottom:4px">Request a 3rd Attempt</div>' +
+          '<div style="font-weight:700;font-size:13px;color:#92400E;margin-bottom:4px">Request a 3rd Attempt</div>' +
           '<div style="font-size:12px;color:#78350F;margin-bottom:12px">Instead of waiting, submit a request for a supervised 3rd attempt. An admin will review and approve it.</div>' +
           '<button class="btn-primary" onclick="showRequestScheduleForm()" style="background:#F59E0B;border-color:#F59E0B;font-size:12px;padding:7px 16px">Request 3rd Attempt</button>' +
           '</div>') + '</div>';
@@ -7642,7 +7658,7 @@
       return '<div class="qm-info-banner warn" style="margin-bottom:0">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">' +
         '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
-        '<div><div style="font-weight:800;margin-bottom:3px">3rd Attempt Request — Pending</div>' +
+        '<div><div style="font-weight:700;margin-bottom:3px">3rd Attempt Request — Pending</div>' +
         '<div>Your request has been submitted on <strong>' + _fmtDate(status.req.requestedAt) + '</strong>. Awaiting admin approval.</div>' +
         (status.req.reason ? '<div style="margin-top:6px;font-size:12px;color:#92400E">Your note: "' + _escHtml(status.req.reason) + '"</div>' : '') +
         '</div></div>';
@@ -7653,7 +7669,7 @@
       return '<div class="qm-info-banner bad" style="margin-bottom:0">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">' +
         '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' +
-        '<div><div style="font-weight:800;margin-bottom:3px">3rd Attempt Request — Denied</div>' +
+        '<div><div style="font-weight:700;margin-bottom:3px">3rd Attempt Request — Denied</div>' +
         (status.req.adminNote ? '<div style="margin-bottom:4px">Reason: <em>' + _escHtml(status.req.adminNote) + '</em></div>' : '') +
         '<div>Quiz automatically resets in <strong>' + timeLeft + '</strong>.</div></div></div>';
     }
@@ -7662,7 +7678,7 @@
     function showRequestScheduleForm() {
       document.getElementById('qmBody').innerHTML =
         '<div style="padding:4px 0">' +
-        '<div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px">Request a 3rd Attempt</div>' +
+        '<div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px">Request a 3rd Attempt</div>' +
         '<p style="color:#555;font-size:13px;line-height:1.55;margin-bottom:14px">' +
         'Both standard attempts have been used. Submit a request for a supervised 3rd attempt — an administrator will review and schedule it.</p>' +
         '<label style="font-size:12px;font-weight:700;color:#888;display:block;margin-bottom:5px">Reason / Note <span style="font-weight:400">(optional)</span></label>' +
@@ -7816,7 +7832,7 @@
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiConfirmOverlay" onclick="if(event.target===this)_uiCloseConfirm()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
           + '<div style="background:#fff;border-radius:var(--radius-panel);padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
-            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
+            + '<div style="font-size:16px;font-weight:700;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
             + '<div style="font-size:13px;color:#6B7280;font-weight:600;line-height:1.5;margin-bottom:20px;white-space:pre-line">' + _escHtml(opts.message || '') + '</div>'
             + '<div style="display:flex;justify-content:flex-end;gap:10px">'
               + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:var(--radius-control);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
@@ -7848,8 +7864,8 @@
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiPromptOverlay" onclick="if(event.target===this)_uiClosePrompt()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
           + '<div style="background:#fff;border-radius:var(--radius-panel);padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
-            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
-            + (opts.label ? '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
+            + '<div style="font-size:16px;font-weight:700;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
+            + (opts.label ? '<label style="font-size:11px;font-weight:700;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
             + '<input id="uiPromptInput" type="text" placeholder="' + _escHtml(opts.placeholder || '') + '" value="' + safeVal + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_uiSubmitPrompt();}">'
             + '<div id="uiPromptError" style="font-size:12px;color:#EF4444;font-weight:700;margin-top:8px;display:none"></div>'
             + '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">'
@@ -7949,9 +7965,9 @@
           return '<div style="display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid #F7F7F7;flex-wrap:wrap">' +
             '<div style="flex:1;min-width:160px">' +
               '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
-                '<div style="width:30px;height:30px;border-radius:50%;background:#EEF3FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#5189F3;flex-shrink:0">' + userLabel.charAt(0) + '</div>' +
+                '<div style="width:30px;height:30px;border-radius:50%;background:#EEF3FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5189F3;flex-shrink:0">' + userLabel.charAt(0) + '</div>' +
                 '<div>' +
-                  '<div style="font-weight:800;font-size:13px;color:#111">' + userLabel + '</div>' +
+                  '<div style="font-weight:700;font-size:13px;color:#111">' + userLabel + '</div>' +
                   (emailLabel ? '<div style="font-size:11px;color:#5189F3;font-weight:600">' + emailLabel + '</div>' : '') +
                 '</div>' +
               '</div>' +
@@ -7963,7 +7979,7 @@
             (isPending ?
               '<div style="display:flex;gap:6px;flex-shrink:0">' +
                 '<button onclick="dismissResetRequest(' + r.id + ')" style="font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;border:1.5px solid #DFE2E6;background:#fff;color:#666;cursor:pointer">Dismiss</button>' +
-                '<button onclick="clearResetAttempts(' + r.id + ',' + r.quizId + ')" style="font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:800;padding:6px 14px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer">Clear Attempts</button>' +
+                '<button onclick="clearResetAttempts(' + r.id + ',' + r.quizId + ')" style="font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer">Clear Attempts</button>' +
               '</div>' : '') +
           '</div>';
         }).join('') + '</div>';
@@ -8045,9 +8061,9 @@
           return '<div style="display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid #F7F7F7;flex-wrap:wrap">' +
             '<div style="flex:1;min-width:160px">' +
               '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
-                '<div style="width:30px;height:30px;border-radius:50%;background:#EEF3FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#5189F3;flex-shrink:0">' + (_sUsr.charAt(0)||'?') + '</div>' +
+                '<div style="width:30px;height:30px;border-radius:50%;background:#EEF3FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5189F3;flex-shrink:0">' + (_sUsr.charAt(0)||'?') + '</div>' +
                 '<div>' +
-                  '<div style="font-weight:800;font-size:13px;color:#111">' + _sUsr + '</div>' +
+                  '<div style="font-weight:700;font-size:13px;color:#111">' + _sUsr + '</div>' +
                   (_sEml ? '<div style="font-size:11px;color:#5189F3;font-weight:600">' + _sEml + '</div>' : '') +
                 '</div>' +
               '</div>' +
@@ -8101,7 +8117,7 @@
         '<div class="att3req-head">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">' +
             '<div>' +
-              '<div style="font-size:16px;font-weight:800;color:#111">Request 3rd Attempt</div>' +
+              '<div style="font-size:16px;font-weight:700;color:#111">Request 3rd Attempt</div>' +
               '<div style="font-size:12px;color:#888;margin-top:2px">Submit a supervised attempt request for admin review</div>' +
             '</div>' +
             '<button onclick="_closeAtt3Form()" style="background:none;border:none;cursor:pointer;padding:4px;color:#bbb">' +
@@ -8114,9 +8130,9 @@
           '<div class="att3req-field">' +
             '<label class="att3req-label">Submitting as</label>' +
             '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#F0F5FF;border:1.5px solid #C7D8FB;border-radius:8px">' +
-              '<div style="width:34px;height:34px;border-radius:50%;background:#5189F3;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">' + _escHtml(_puInitial) + '</div>' +
+              '<div style="width:34px;height:34px;border-radius:50%;background:#5189F3;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">' + _escHtml(_puInitial) + '</div>' +
               '<div>' +
-                '<div style="font-size:13px;font-weight:800;color:#111">' + _escHtml(_pu ? _pu.name : '') + '</div>' +
+                '<div style="font-size:13px;font-weight:700;color:#111">' + _escHtml(_pu ? _pu.name : '') + '</div>' +
                 '<div style="font-size:11px;color:#5189F3;font-weight:600">' + _escHtml(_pu ? _pu.email : '') + '</div>' +
               '</div>' +
             '</div>' +
@@ -8390,7 +8406,7 @@
         5: 'Assets/Level 5 - badge.png',
       };
       const src = ASSETS[cert.tier];
-      if (!src) return `<div style="width:120px;height:120px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#6B7280">T${cert.tier}</div>`;
+      if (!src) return `<div style="width:120px;height:120px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#6B7280">T${cert.tier}</div>`;
       return `<img src="${src}" width="120" height="120" style="display:block;object-fit:contain" draggable="false" alt="Level ${cert.tier} Badge"/>`;
     }
 
@@ -8874,7 +8890,7 @@
       return '<div style="margin-top:10px;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>' +
         '<div style="flex:1;min-width:0">' +
-          '<div style="font-size:13px;font-weight:800;color:#166534">Quiz Passed</div>' +
+          '<div style="font-size:13px;font-weight:700;color:#166534">Quiz Passed</div>' +
           (nextCls ? '<div style="font-size:11px;color:#15803D;margin-top:1px">Next: ' + nextCls + '</div>' : '') +
         '</div>' +
         btnHtml +
@@ -8949,24 +8965,24 @@
                 <circle cx="24" cy="24" r="22" fill="none" stroke="#222" stroke-width="2"/>
                 <path d="M9 27c3.2 0 3.2-4 6.4-4s3.2 4 6.4 4 3.2-4 6.4-4 3.2 4 6.4 4 3.2-4 6.4-4" fill="none" stroke="${cfg.color}" stroke-width="2.6" stroke-linecap="round"/>
               </svg>
-              <div style="font-weight:900;font-size:18px;letter-spacing:-.01em"><span style="color:#111">SEA</span><span style="color:${cfg.color}">TRACE</span></div>
+              <div style="font-weight:700;font-size:18px;letter-spacing:-.01em"><span style="color:#111">SEA</span><span style="color:${cfg.color}">TRACE</span></div>
             </div>
             <div style="text-align:right">
-              <div style="font-size:10px;font-weight:800;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Certificate ID</div>
+              <div style="font-size:10px;font-weight:700;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Certificate ID</div>
               <div style="font-size:11px;font-weight:700;color:#888;margin-top:2px">${certId}</div>
             </div>
           </div>
 
           <!-- Title block -->
           <div style="text-align:center;margin-bottom:28px">
-            <div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:${cfg.color};margin-bottom:8px">Certificate of Completion</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${cfg.color};margin-bottom:8px">Certificate of Completion</div>
             <div style="height:1.5px;background:linear-gradient(90deg,transparent,${cfg.color}55,transparent);margin-bottom:16px"></div>
             <div style="font-size:13px;color:#aaa;font-weight:600;margin-bottom:14px">This is to certify that</div>
-            <div style="font-size:32px;font-weight:900;color:${isTemplate ? '#ccc' : cfg.color};letter-spacing:-.01em;line-height:1.1;margin-bottom:${isTemplate ? '4' : '18'}px">${isTemplate ? '[ Employee Name ]' : holderName}</div>
+            <div style="font-size:32px;font-weight:700;color:${isTemplate ? '#ccc' : cfg.color};letter-spacing:-.01em;line-height:1.1;margin-bottom:${isTemplate ? '4' : '18'}px">${isTemplate ? '[ Employee Name ]' : holderName}</div>
             ${isTemplate ? '<div style="font-size:10px;color:#bbb;font-weight:600;margin-bottom:14px;letter-spacing:.04em">TEMPLATE PREVIEW</div>' : ''}
             <div style="font-size:13px;color:#aaa;font-weight:600;margin-bottom:14px">has successfully completed all required training and assessments for</div>
             <div style="display:inline-block;background:${cfg.bg};border:1.5px solid ${cfg.color}33;border-radius:2px;padding:10px 24px;margin-bottom:8px">
-              <div style="font-size:18px;font-weight:900;color:${cfg.color};line-height:1.2">${certTitle}</div>
+              <div style="font-size:18px;font-weight:700;color:${cfg.color};line-height:1.2">${certTitle}</div>
               <div style="font-size:12px;color:#888;font-weight:600;margin-top:4px">${cls} · ${mod}</div>
             </div>
           </div>
@@ -8975,12 +8991,12 @@
           <div style="height:1px;background:#F0F0F0;margin:28px 0 22px"></div>
           <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
             <div>
-              <div style="font-size:10px;font-weight:800;color:#bbb;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Date Issued</div>
+              <div style="font-size:10px;font-weight:700;color:#bbb;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Date Issued</div>
               <div style="font-size:13px;font-weight:700;color:${isTemplate ? '#ccc' : '#333'}">${isTemplate ? '[ Date ]' : date}</div>
             </div>
             <div style="text-align:center">
               <div style="width:130px;height:1px;background:#333;margin:0 auto 6px"></div>
-              <div style="font-size:12px;font-weight:800;color:#333">${authority}</div>
+              <div style="font-size:12px;font-weight:700;color:#333">${authority}</div>
               <div style="font-size:11px;color:#888;font-weight:600">${authTitle}</div>
             </div>
           </div>
@@ -9293,7 +9309,7 @@
         '<circle cx="' + cx + '" cy="' + cx + '" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="3"' +
         ' stroke-dasharray="' + dash + ' ' + circ + '" stroke-linecap="round" transform="rotate(-90 ' + cx + ' ' + cx + ')"/>' +
         (pct >= 80 ? '<text x="' + cx + '" y="' + cx + '" text-anchor="middle" dominant-baseline="central"' +
-          ' font-size="' + fs + '" font-weight="800" fill="#16a34a">✓</text>' : '') +
+          ' font-size="' + fs + '" font-weight="700" fill="#16a34a">✓</text>' : '') +
         '</svg>';
     }
 
@@ -9453,7 +9469,7 @@
             '<div class="hub-module-card-hdr-row">' +
               '<div class="hub-module-card-hdr-l">' +
                 '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></div>' +
-                '<span style="font-size:15px;font-weight:900;color:#111">' + mod + '</span>' +
+                '<span style="font-size:15px;font-weight:700;color:#111">' + mod + '</span>' +
                 (cert ? '<span class="hub-cert-pill" style="background:' + cert.tierBg + ';color:' + cert.tierColor + '">T' + cert.tier + ' · ' + cert.shortName + '</span>' : '') +
               '</div>' +
               '<div class="hub-module-card-hdr-r">' +
@@ -10190,7 +10206,7 @@
           return '<div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:11px">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="flex-shrink:0;margin-top:1px"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>' +
             '<div style="flex:1">' +
-              '<div style="font-size:12px;font-weight:800;color:#92400E;margin-bottom:3px">' +
+              '<div style="font-size:12px;font-weight:700;color:#92400E;margin-bottom:3px">' +
                 (forAtt === 1 ? 'Watch the class video first' : 'Re-watch required before Attempt ' + forAtt) +
               '</div>' +
               '<div style="font-size:11px;color:#78350F;line-height:1.5">Complete at least 90% of the class video to unlock. Current: <strong>' + _vp + '%</strong></div>' +
@@ -10226,7 +10242,7 @@
           headerBtn = _vidGatePassed
             ? '<button class="btn-primary" style="font-size:12px;padding:8px 14px;flex-shrink:0;display:inline-flex;align-items:center;gap:6px" onclick="_startQuizTake(' + quiz.id + ')">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polygon points="5 3 19 12 5 21 5 3"/></svg>Start Quiz</button>'
-            : '<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#D97706;background:#FEF3C7;border:1px solid #FDE68A;border-radius:6px;padding:5px 10px;flex-shrink:0">' +
+            : '<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#D97706;background:#FEF3C7;border:1px solid #FDE68A;border-radius:6px;padding:5px 10px;flex-shrink:0">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
                 'Watch 90% to unlock</span>';
         }
@@ -10246,7 +10262,7 @@
             '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
               '<span class="hub-quiz-passmark">Pass: ' + (quiz.passMark||70) + '%</span>' +
               '<span class="hub-quiz-meta">' + quizQStr + '</span>' +
-              '<span style="font-size:10px;font-weight:800;color:' + (_isStalePass ? '#D97706' : '#6B7280') + ';background:' + (_isStalePass ? '#FEF3C7' : '#F3F4F6') + ';border-radius:4px;padding:2px 7px">v' + _curVer + '</span>' +
+              '<span style="font-size:10px;font-weight:700;color:' + (_isStalePass ? '#D97706' : '#6B7280') + ';background:' + (_isStalePass ? '#FEF3C7' : '#F3F4F6') + ';border-radius:4px;padding:2px 7px">v' + _curVer + '</span>' +
             '</div>' +
           '</div>' +
           headerBtn +
@@ -10258,10 +10274,10 @@
           return '<div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:8px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-top:2px">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="flex-shrink:0;margin-top:1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
             '<div style="flex:1">' +
-              '<div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Quiz Updated — Upgrade Required</div>' +
+              '<div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Quiz Updated — Upgrade Required</div>' +
               '<div style="font-size:12px;color:#78350F;line-height:1.55">The quiz questions have been updated since you last passed (v' + _passedVer + ' → v' + _curVer + '). You need to retake the updated quiz to stay current on the platform.</div>' +
             '</div>' +
-            '<button onclick="_upgradeQuiz(' + quiz.id + ',' + _upgradePassedVer + ')" style="flex-shrink:0;font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:800;padding:8px 14px;border-radius:6px;border:none;background:#F59E0B;color:#fff;cursor:pointer;white-space:nowrap">Upgrade Now</button>' +
+            '<button onclick="_upgradeQuiz(' + quiz.id + ',' + _upgradePassedVer + ')" style="flex-shrink:0;font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:700;padding:8px 14px;border-radius:6px;border:none;background:#F59E0B;color:#fff;cursor:pointer;white-space:nowrap">Upgrade Now</button>' +
           '</div>';
         }
 
@@ -10285,7 +10301,7 @@
               '<div style="display:flex;align-items:flex-start;gap:12px;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;padding:13px 16px;margin-bottom:12px">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="flex-shrink:0;margin-top:1px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' +
                 '<div style="flex:1">' +
-                  '<div style="font-size:13px;font-weight:800;color:#166534;margin-bottom:2px">Admin reset your attempts</div>' +
+                  '<div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:2px">Admin reset your attempts</div>' +
                   '<div style="font-size:12px;color:#15803D;line-height:1.5">Your request was approved on ' + _clearedDateStr + '. Your attempts have been cleared — you can retake the quiz from Attempt 1.</div>' +
                 '</div>' +
               '</div>';
@@ -10335,15 +10351,15 @@
                         (!_existingReq && !_clearedReq
                           ? '<button class="hub-att3-req-btn" style="background:#DC2626" onclick="_showResetRequestForm(' + quiz.id + ')">Request Reset</button>'
                           : _existingReq
-                            ? '<span style="font-size:11px;font-weight:800;color:#DC2626;background:#FEE2E2;border-radius:6px;padding:6px 12px;flex-shrink:0">Request Pending</span>'
-                            : '<span style="font-size:11px;font-weight:800;color:#16a34a;background:#DCFCE7;border-radius:6px;padding:6px 12px;flex-shrink:0">Attempts Cleared ✓</span>') +
+                            ? '<span style="font-size:11px;font-weight:700;color:#DC2626;background:#FEE2E2;border-radius:6px;padding:6px 12px;flex-shrink:0">Request Pending</span>'
+                            : '<span style="font-size:11px;font-weight:700;color:#16a34a;background:#DCFCE7;border-radius:6px;padding:6px 12px;flex-shrink:0">Attempts Cleared ✓</span>') +
                       '</div>' +
                       '<div id="resetReqForm-' + quiz.id + '" style="display:none;margin-top:8px;background:#fff;border:1.5px solid #FECACA;border-radius:8px;padding:14px 16px">' +
-                        '<div style="font-size:12px;font-weight:800;color:#991B1B;margin-bottom:8px">Request Attempt Reset</div>' +
+                        '<div style="font-size:12px;font-weight:700;color:#991B1B;margin-bottom:8px">Request Attempt Reset</div>' +
                         '<textarea id="resetReqReason-' + quiz.id + '" placeholder="Explain why you need another attempt…" style="width:100%;box-sizing:border-box;height:72px;padding:9px 12px;border:1.5px solid #DFE2E6;border-radius:6px;font-family:\'Nunito\',sans-serif;font-size:13px;resize:none;outline:none;color:#333" onfocus="this.style.borderColor=\'#5189F3\'" onblur="this.style.borderColor=\'#DFE2E6\'"></textarea>' +
                         '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">' +
                           '<button onclick="document.getElementById(\'resetReqForm-' + quiz.id + '\').style.display=\'none\'" style="font-family:\'Nunito\',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;border:1.5px solid #DFE2E6;background:#fff;color:#666;cursor:pointer">Cancel</button>' +
-                          '<button onclick="_submitResetRequest(' + quiz.id + ',\'' + quiz.title.replace(/'/g,"\\'") + '\')" style="font-family:\'Nunito\',sans-serif;font-size:12px;font-weight:800;padding:7px 14px;border-radius:6px;border:none;background:#DC2626;color:#fff;cursor:pointer">Submit Request</button>' +
+                          '<button onclick="_submitResetRequest(' + quiz.id + ',\'' + quiz.title.replace(/'/g,"\\'") + '\')" style="font-family:\'Nunito\',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;border:none;background:#DC2626;color:#fff;cursor:pointer">Submit Request</button>' +
                         '</div>' +
                       '</div>';
                   }
@@ -10437,8 +10453,8 @@
       var certHtml = (isLast && cert)
         ? '<div style="margin-top:10px;padding:14px 16px;background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:6px;display:flex;align-items:center;gap:14px">' +
             '<img src="Assets/Level ' + cert.tier + ' - badge.png" style="width:44px;height:44px;object-fit:contain;flex-shrink:0" alt="" onerror="this.style.display=\'none\'"/>' +
-            '<div><div style="font-size:10px;font-weight:800;color:#D97706;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px">Module Certification</div>' +
-            '<div style="font-size:14px;font-weight:800;color:#111">' + cert.shortName + '</div>' +
+            '<div><div style="font-size:10px;font-weight:700;color:#D97706;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px">Module Certification</div>' +
+            '<div style="font-size:14px;font-weight:700;color:#111">' + cert.shortName + '</div>' +
             '<div style="font-size:11px;color:#D97706;font-weight:600">' + cert.roleEligible + '</div></div>' +
           '</div>'
         : '';
@@ -10533,7 +10549,7 @@
           '<div style="width:72px;height:72px;border-radius:50%;background:#EEF3FF;display:flex;align-items:center;justify-content:center;margin:0 auto 18px">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="34" height="34"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
           '</div>' +
-          '<div style="font-size:18px;font-weight:800;color:#111;margin-bottom:6px">' + _escHtml(quiz.title) + '</div>' +
+          '<div style="font-size:18px;font-weight:700;color:#111;margin-bottom:6px">' + _escHtml(quiz.title) + '</div>' +
           '<div style="font-size:13px;color:#888;margin-bottom:20px">' + quiz.module + ' · ' + quiz.cls + '</div>' +
           '<div style="display:inline-flex;flex-direction:column;gap:8px;text-align:left;background:#F8FAFF;border:1.5px solid #E0E9FF;border-radius:10px;padding:14px 22px;min-width:240px">' +
             '<div style="display:flex;justify-content:space-between;gap:24px;font-size:13px"><span style="color:#888;font-weight:600">Questions</span><strong>' + qCount + ' (' + mcqCount + ' MCQ · ' + tfCount + ' T/F)</strong></div>' +
@@ -10639,9 +10655,9 @@
         var d = data[f] || {};
         var isActive = f === _qgSelectedForm;
         var chips = '';
-        if (d.video && d.video.length)         chips += '<span style="font-size:9px;font-weight:800;background:#EEF3FF;color:#5189F3;padding:1px 5px;border-radius:2px">VID</span> ';
-        if (d.voiceover && d.voiceover.length) chips += '<span style="font-size:9px;font-weight:800;background:#F0FDF4;color:#16a34a;padding:1px 5px;border-radius:2px">VO</span> ';
-        if (d.document && d.document.length)   chips += '<span style="font-size:9px;font-weight:800;background:#FFF7ED;color:#ea580c;padding:1px 5px;border-radius:2px">DOC</span>';
+        if (d.video && d.video.length)         chips += '<span style="font-size:9px;font-weight:700;background:#EEF3FF;color:#5189F3;padding:1px 5px;border-radius:2px">VID</span> ';
+        if (d.voiceover && d.voiceover.length) chips += '<span style="font-size:9px;font-weight:700;background:#F0FDF4;color:#16a34a;padding:1px 5px;border-radius:2px">VO</span> ';
+        if (d.document && d.document.length)   chips += '<span style="font-size:9px;font-weight:700;background:#FFF7ED;color:#ea580c;padding:1px 5px;border-radius:2px">DOC</span>';
         return '<button onclick="qgSelectForm(\'' + f.replace(/'/g, "\\'") + '\')" style="' +
           'display:block;width:100%;text-align:left;padding:10px 14px;border:none;border-left:3px solid ' +
           (isActive ? '#5189F3' : 'transparent') + ';background:' + (isActive ? '#EEF3FF' : 'none') + ';' +
@@ -10799,7 +10815,7 @@
             '<div style="width:32px;height:32px;border-radius:5px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
               '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
             '</div>' +
-            '<div style="font-size:13px;font-weight:800;color:#111">' + f + '</div>' +
+            '<div style="font-size:13px;font-weight:700;color:#111">' + f + '</div>' +
           '</div>' +
           '<div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">' +
             mediaRow(vid, 'video') +
@@ -10930,7 +10946,7 @@
             '<div class="dev-group-label">⏱ Time Warp — jump forward in time to test cooldowns &amp; expiry</div>' +
             '<div id="devWarpBar" style="display:flex;align-items:center;gap:10px;background:' + _warpBg + ';border:1.5px solid ' + _warpBorder + ';border-radius:8px;padding:8px 12px;margin-bottom:6px;">' +
               '<span style="font-size:13px">🕐</span>' +
-              '<span id="devWarpLabel" style="font-weight:800;font-size:12px;color:' + _warpTxt + ';min-width:90px;">' + _warpLabel + '</span>' +
+              '<span id="devWarpLabel" style="font-weight:700;font-size:12px;color:' + _warpTxt + ';min-width:90px;">' + _warpLabel + '</span>' +
               '<div style="display:flex;gap:4px;flex-wrap:wrap;">' +
                 b('+1d',   'dev-warp', '_devAddDays(1)') +
                 b('+2d',   'dev-warp', '_devAddDays(2)') +
@@ -11270,11 +11286,11 @@
               ' stroke-dasharray="' + circ + '" stroke-dashoffset="' + dash + '"' +
               ' stroke-linecap="round" transform="rotate(-90 50 50)"' +
               ' style="transition:stroke-dashoffset .8s ease"/>' +
-              '<text x="50" y="45" text-anchor="middle" font-size="21" font-weight="900" fill="' + color + '" font-family="Nunito,sans-serif">' + pct + '%</text>' +
+              '<text x="50" y="45" text-anchor="middle" font-size="21" font-weight="700" fill="' + color + '" font-family="Nunito,sans-serif">' + pct + '%</text>' +
               '<text x="50" y="59" text-anchor="middle" font-size="9" fill="#aaa" font-family="Nunito,sans-serif" font-weight="700">SCORE</text>' +
             '</svg>' +
           '</div>' +
-          '<div style="display:inline-block;background:' + (pass?'#F0FDF4':'#FEF2F2') + ';border-radius:999px;padding:3px 14px;font-size:10px;font-weight:800;color:' + color + ';letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase">' + (_sqIsRenewal ? 'Certificate Renewal' : 'Attempt ' + att + (att < 3 ? ' of 3' : ' — Supervised')) + '</div>' +
+          '<div style="display:inline-block;background:' + (pass?'#F0FDF4':'#FEF2F2') + ';border-radius:999px;padding:3px 14px;font-size:10px;font-weight:700;color:' + color + ';letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase">' + (_sqIsRenewal ? 'Certificate Renewal' : 'Attempt ' + att + (att < 3 ? ' of 3' : ' — Supervised')) + '</div>' +
           '<div class="sq-result-verdict" style="color:' + color + '">' + (pass ? (_sqIsRenewal ? '🏆 RENEWED' : '🎉 PASSED') : 'FAILED') + '</div>' +
           '<div class="sq-result-fraction">' + score + ' correct out of ' + total + ' questions</div>' +
           '<div class="sq-result-passmark">Pass mark: ' + pm + '%</div>' +
@@ -11492,7 +11508,7 @@
       var el = document.getElementById('sqBody');
       if (!el) return;
       var toast = document.createElement('div');
-      toast.style.cssText = 'position:absolute;top:14px;left:50%;transform:translateX(-50%);background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:800;color:#92400E;white-space:nowrap;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.1)';
+      toast.style.cssText = 'position:absolute;top:14px;left:50%;transform:translateX(-50%);background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;color:#92400E;white-space:nowrap;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.1)';
       toast.textContent = '⏰ ' + msg;
       el.parentNode.style.position = 'relative';
       el.parentNode.appendChild(toast);
@@ -11607,7 +11623,7 @@
     <div class="quiz-modal">
       <div class="quiz-modal-head">
         <div style="flex:1;min-width:0">
-          <div id="qmTitle" style="font-size:16px;font-weight:800;color:#111;line-height:1.3"></div>
+          <div id="qmTitle" style="font-size:16px;font-weight:700;color:#111;line-height:1.3"></div>
           <div id="qmMeta" style="font-size:12px;color:#888;margin-top:3px"></div>
         </div>
         <button onclick="closeQuizModal()" style="background:none;border:none;cursor:pointer;padding:4px;color:#bbb;flex-shrink:0">
@@ -11650,7 +11666,7 @@
     padding:8px 14px; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.45);
     font-family:'Nunito',sans-serif; user-select:none;">
     <span style="font-size:13px; opacity:.6;">⏱</span>
-    <span id="floatWarpLabel" style="font-size:12px; font-weight:800; color:#FCD34D; min-width:80px;">Real time</span>
+    <span id="floatWarpLabel" style="font-size:12px; font-weight:700; color:#FCD34D; min-width:80px;">Real time</span>
     <div style="width:1px; height:16px; background:#44403C;"></div>
     <button onclick="_devAddDays(1)"   style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+1d</button>
     <button onclick="_devAddDays(2)"   style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+2d</button>
@@ -11666,24 +11682,24 @@
   <div id="libEditOverlay" class="udm-overlay" style="display:none" onclick="if(event.target===this)_libEditClose()">
     <div class="udm-modal" style="width:420px">
       <div class="udm-modal-head" style="padding:16px 20px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:14px;font-weight:800;color:#111;font-family:'Nunito',sans-serif">Edit Item</span>
+        <span style="font-size:14px;font-weight:700;color:#111;font-family:'Nunito',sans-serif">Edit Item</span>
         <button onclick="_libEditClose()" style="all:unset;cursor:pointer;font-size:18px;color:#9CA3AF;line-height:1">&#x2715;</button>
       </div>
       <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
         <div>
-          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Title</label>
+          <label style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Title</label>
           <input id="libEditTitle" type="text" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#D1D5DB'">
         </div>
         <div>
-          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Module</label>
+          <label style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Module</label>
           <select id="libEditModule" onchange="_libEditModuleChange()" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:#fff"></select>
         </div>
         <div>
-          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Class</label>
+          <label style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Class</label>
           <select id="libEditClass" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:#fff"></select>
         </div>
         <div id="libEditStatusWrap">
-          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Status</label>
+          <label style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Status</label>
           <select id="libEditStatus" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:#fff">
             <option value="live">Live</option>
             <option value="draft">Draft</option>
@@ -11692,7 +11708,7 @@
       </div>
       <div style="padding:12px 20px;border-top:1px solid #F0F0F0;display:flex;justify-content:flex-end;gap:8px">
         <button onclick="_libEditClose()" style="padding:7px 16px;border-radius:6px;border:1px solid #D1D5DB;background:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;color:#555">Cancel</button>
-        <button onclick="_libEditSave()" style="padding:7px 18px;border-radius:6px;border:none;background:#5189F3;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Save Changes</button>
+        <button onclick="_libEditSave()" style="padding:7px 18px;border-radius:6px;border:none;background:#5189F3;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">Save Changes</button>
       </div>
     </div>
   </div>

@@ -13,14 +13,14 @@
        are kept; only their CSS definitions converge on these tokens. */
     :root {
       --radius-control: 8px;   /* buttons, inputs, filter chips */
-      --radius-card: 10px;     /* stat cards, list-item cards */
+      --radius-card: 3px;      /* stat cards, list-item cards */
       --radius-panel: 14px;    /* modals, dropdown/notification panels */
       --radius-pill: 999px;    /* badges, tabs, status pills */
       --space-sm: 8px;
       --space-md: 12px;
       --space-lg: 16px;
       --space-xl: 24px;
-      --shadow-card: 0 1px 3px rgba(20,24,33,0.06), 0 1px 2px rgba(20,24,33,0.04);
+      --shadow-card: 0 1px 3px rgba(20,24,33,0.03), 0 1px 2px rgba(20,24,33,0.02);
       --shadow-hover: 0 6px 20px rgba(20,24,33,0.10);
     }
     /* height:100vh on mobile is computed against the LARGEST possible viewport
@@ -37,7 +37,7 @@
     .tour-arr-l{position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:8px solid #fff;filter:drop-shadow(-1px 0 1px rgba(0,0,0,.1))}
     .tour-arr-r{position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:8px solid #fff;filter:drop-shadow(1px 0 1px rgba(0,0,0,.1))}
     .tour-arr-t{position:absolute;top:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #fff;filter:drop-shadow(0 -1px 1px rgba(0,0,0,.1))}
-    #tourBtnBack,#tourBtnNext,#tourBtnDone{display:none;align-items:center;justify-content:center;height:32px;padding:0 14px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;border:none}
+    #tourBtnBack,#tourBtnNext,#tourBtnDone{display:none;align-items:center;justify-content:center;height:32px;padding:0 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none}
     #tourBtnBack{background:#F3F4F6;color:#555;border:1.5px solid #E5E7EB}
     #tourBtnNext{background:#5189F3;color:#fff}
     #tourBtnDone{background:#059669;color:#fff}
@@ -65,7 +65,7 @@
     /* ── Navbar ── */
     .topbar{position:relative;z-index:100;background:#fff;border-bottom:1px solid #DFE2E6;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;flex-shrink:0}
     .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .brand-name-cv{font-size:15px;font-weight:900;letter-spacing:.01em}
+    .brand-name-cv{font-size:15px;font-weight:700;letter-spacing:.01em}
     .brand-name-cv .sea{color:#5189F3}
     .brand-name-cv .trace{color:#111}
     .nav-sep{width:1px;height:22px;background:#DFE2E6;margin:0 14px;flex-shrink:0}
@@ -83,7 +83,7 @@
     .notif-dot.red{background:#DC2626}
     .notif-dot.amber{background:#F59E0B}
     .notif-dot.read{background:#D1D5DB}
-    .notif-title{font-size:12px;font-weight:800;color:#111;margin-bottom:2px}
+    .notif-title{font-size:12px;font-weight:700;color:#111;margin-bottom:2px}
     .notif-sub{font-size:11px;color:#888;line-height:1.4}
     .notif-time{font-size:10px;color:#C0C0C0;margin-top:3px}
     .notif-empty{padding:32px 16px;text-align:center;font-size:13px;color:#B0B7C3;font-weight:600}
@@ -124,7 +124,7 @@
     .hero-desc{font-size:14px;color:#6B7280;font-weight:600;line-height:1.5}
     .hero-status{position:absolute;top:28px;right:32px;display:flex;flex-direction:column;align-items:center;gap:6px}
     .status-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-    .status-label{font-size:11px;font-weight:800;letter-spacing:.02em}
+    .status-label{font-size:11px;font-weight:700;letter-spacing:.02em}
 
     /* ── Page body ── */
     .page-body{max-width:900px;width:100%;margin:0 auto;padding:28px 32px;display:flex;flex-direction:column;gap:32px;flex:1}
@@ -136,7 +136,7 @@
     .tab-bar{display:flex;align-items:center;gap:0;border-bottom:1px solid #DFE2E6;margin-bottom:16px}
     .tab-btn{background:none;border:none;padding:10px 16px;font-size:13px;font-weight:700;color:#9CA3AF;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px;font-family:inherit;transition:color .15s}
     .tab-btn.active{color:#111;border-bottom-color:var(--col)}
-    .tab-count{font-size:11px;font-weight:800;background:#F0F2F5;color:#6B7280;border-radius:10px;padding:1px 7px}
+    .tab-count{font-size:11px;font-weight:700;background:#F0F2F5;color:#6B7280;border-radius:10px;padding:1px 7px}
     .tab-btn.active .tab-count{background:var(--col-light);color:var(--col)}
 
     /* ── Content item ── */
@@ -144,7 +144,7 @@
     .content-item:hover{border-color:#B0BEFF;box-shadow:0 2px 8px rgba(81,137,243,.08)}
     .content-icon{width:44px;height:44px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .content-info{flex:1;min-width:0}
-    .content-title{font-size:14px;font-weight:800;color:#111;margin-bottom:3px}
+    .content-title{font-size:14px;font-weight:700;color:#111;margin-bottom:3px}
     .content-meta{font-size:12px;color:#9CA3AF;font-weight:600}
     .content-status{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
     .done-circle{width:36px;height:36px;border-radius:50%;background:#ECFDF5;border:2px solid #16a34a;display:flex;align-items:center;justify-content:center}
@@ -156,7 +156,7 @@
     .section-subtitle{font-size:13px;color:#6B7280;font-weight:600;margin-bottom:14px}
     .terms-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .term-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:14px 16px}
-    .term-title{font-size:13px;font-weight:800;margin-bottom:4px}
+    .term-title{font-size:13px;font-weight:700;margin-bottom:4px}
     .term-def{font-size:12px;color:#6B7280;font-weight:600;line-height:1.5}
 
     /* ── Assessment ── */
@@ -165,9 +165,9 @@
     .assessment-locked-icon{width:40px;height:40px;border-radius:2px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .assessment-ready{background:#EEF3FF;border:1px solid #C7D7FD;border-radius:2px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
     .assessment-meta{flex:1}
-    .assessment-title{font-size:14px;font-weight:800;color:#111;margin-bottom:3px}
+    .assessment-title{font-size:14px;font-weight:700;color:#111;margin-bottom:3px}
     .assessment-sub{font-size:12px;color:#6B7280;font-weight:600}
-    .btn-start-quiz{background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);padding:10px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap}
+    .btn-start-quiz{background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap}
     .btn-start-quiz:hover{background:#3b6fd4}
 
     /* ── Quiz ── */
@@ -177,7 +177,7 @@
     .quiz-prog-label{font-size:11px;font-weight:700;color:#9CA3AF;white-space:nowrap}
     .quiz-q-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:22px 24px}
     .quiz-q-type{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9CA3AF;margin-bottom:10px}
-    .quiz-q-text{font-size:15px;font-weight:800;color:#111;line-height:1.45;margin-bottom:20px}
+    .quiz-q-text{font-size:15px;font-weight:700;color:#111;line-height:1.45;margin-bottom:20px}
     .quiz-options{display:flex;flex-direction:column;gap:8px}
     .quiz-option{background:#F9FAFB;border:1.5px solid #DFE2E6;border-radius:2px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;text-align:left;font-family:inherit;color:#111;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:10px}
     .quiz-option:hover{border-color:#5189F3;background:#EEF3FF}
@@ -190,23 +190,23 @@
     .quiz-option.correct .quiz-opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#16a34a}
     .quiz-option.wrong .quiz-opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#EF4444}
     .quiz-tf-wrap{display:flex;gap:10px}
-    .quiz-tf-btn{flex:1;border:1.5px solid #DFE2E6;border-radius:2px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;background:#F9FAFB;font-family:inherit;color:#111;transition:all .15s}
+    .quiz-tf-btn{flex:1;border:1.5px solid #DFE2E6;border-radius:2px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;background:#F9FAFB;font-family:inherit;color:#111;transition:all .15s}
     .quiz-tf-btn:hover{border-color:#5189F3}
     .quiz-tf-btn.selected{border-color:#5189F3;background:#EEF3FF;color:#5189F3}
     .quiz-tf-btn.correct{border-color:#16a34a;background:#ECFDF5;color:#16a34a}
     .quiz-tf-btn.wrong{border-color:#EF4444;background:#FEF2F2;color:#EF4444}
     .quiz-nav{display:flex;justify-content:flex-end;margin-top:14px}
-    .btn-next-q{background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);padding:9px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+    .btn-next-q{background:#5189F3;color:#fff;border:none;border-radius:var(--radius-control);padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
     .btn-next-q:disabled{background:#E5E7EB;color:#9CA3AF;cursor:default}
 
     /* ── Results ── */
     .result-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:28px 24px;text-align:center}
-    .result-circle{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;font-weight:900}
-    .result-title{font-size:18px;font-weight:900;margin-bottom:6px}
+    .result-circle{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;font-weight:700}
+    .result-title{font-size:18px;font-weight:700;margin-bottom:6px}
     .result-sub{font-size:13px;color:#6B7280;font-weight:600;margin-bottom:20px}
     .result-stats{display:flex;justify-content:center;gap:24px;margin-bottom:20px}
     .result-stat{text-align:center}
-    .result-stat-num{font-size:22px;font-weight:800}
+    .result-stat-num{font-size:22px;font-weight:700}
     .result-stat-label{font-size:11px;font-weight:700;color:#9CA3AF;letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
     .result-actions{display:flex;gap:10px;justify-content:center}
     .btn-outline{border:1px solid #DFE2E6;background:#fff;color:#555;border-radius:var(--radius-control);padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
@@ -229,7 +229,7 @@
     .vbox-header-left{display:flex;align-items:flex-start;gap:10px;min-width:0}
     .vbox-close{flex-shrink:0;width:28px;height:28px;border:1px solid #DFE2E6;background:#F9FAFB;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6B7280;font-family:inherit;margin-top:1px}
     .vbox-close:hover{background:#F3F4F6;color:#111}
-    .vbox-title-block .vt{font-size:14px;font-weight:800;color:#111;line-height:1.25}
+    .vbox-title-block .vt{font-size:14px;font-weight:700;color:#111;line-height:1.25}
     .vbox-title-block .vb{font-size:11px;color:#9CA3AF;font-weight:600;margin-top:2px}
     .vbox-live{font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:2px;border:1.5px solid #16a34a;color:#16a34a;text-transform:uppercase;flex-shrink:0;margin-top:2px}
     .vbox-video{flex:1;min-height:280px;background:#F0F2F5;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
@@ -238,7 +238,7 @@
     .vbox-fs{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(0,0,0,.15);border:none;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff}
     .vbox-fs:hover{background:rgba(0,0,0,.28)}
     .vbox-footer{padding:14px 20px;border-top:1px solid #DFE2E6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#fff}
-    .vbox-mark-btn{background:#16a34a;color:#fff;border:none;border-radius:var(--radius-control);padding:9px 20px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+    .vbox-mark-btn{background:#16a34a;color:#fff;border:none;border-radius:var(--radius-control);padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
     .vbox-mark-btn:hover{background:#15803d}
     .vbox-mark-btn:disabled{background:#9CA3AF;cursor:default}
     .vbox-done-tag{font-size:12px;font-weight:700;color:#16a34a;display:flex;align-items:center;gap:6px}
@@ -261,7 +261,7 @@
     .toast.toast-red   { border-left:4px solid #DC2626; }
     .toast.toast-green { border-left:4px solid #22C55E; }
     .toast.toast-blue  { border-left:4px solid #5189F3; }
-    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:800; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
+    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:700; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
     .toast-action:hover { color:#fff; text-decoration:underline; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .ui-spin { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; vertical-align: middle; margin-right: 6px; }
@@ -344,7 +344,7 @@
     <!-- Notification panel -->
     <div id="notifPanel" style="display:none;position:absolute;top:52px;right:76px;width:320px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px">
-        <span style="font-size:15px;font-weight:800;color:#111">Notifications</span>
+        <span style="font-size:15px;font-weight:700;color:#111">Notifications</span>
         <button onclick="_markAllNotifsRead()" style="font-size:12px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
       </div>
       <div style="height:1px;background:#F3F4F6"></div>
@@ -478,10 +478,10 @@
     <div id="tourArrow"></div>
     <div style="padding:18px 20px 12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <span id="tourStepLabel" style="font-size:10px;font-weight:800;color:#5189F3;text-transform:uppercase;letter-spacing:.1em"></span>
+        <span id="tourStepLabel" style="font-size:10px;font-weight:700;color:#5189F3;text-transform:uppercase;letter-spacing:.1em"></span>
         <button onclick="_tourClose()" style="width:22px;height:22px;border-radius:50%;border:none;background:#F3F4F6;color:#888;font-size:11px;cursor:pointer;font-family:inherit;line-height:1">&#10005;</button>
       </div>
-      <div id="tourTitle" style="font-size:15px;font-weight:900;color:#111;margin-bottom:5px"></div>
+      <div id="tourTitle" style="font-size:15px;font-weight:700;color:#111;margin-bottom:5px"></div>
       <div id="tourBody" style="font-size:12px;font-weight:600;color:#555;line-height:1.6"></div>
     </div>
     <div style="padding:10px 16px 14px;border-top:1px solid #F3F4F6;display:flex;align-items:center;justify-content:space-between">
@@ -532,13 +532,13 @@
               <path d="M9 27c3.2 0 3.2-4 6.4-4s3.2 4 6.4 4 3.2-4 6.4-4 3.2 4 6.4 4 3.2-4 6.4-4" fill="none" stroke="#5189F3" stroke-width="2.6" stroke-linecap="round"/>
             </svg>
             <div>
-              <div style="font-size:15px;font-weight:900;letter-spacing:.01em;line-height:1"><span style="color:#5189F3">SEA</span><span style="color:#111">TRACE</span></div>
+              <div style="font-size:15px;font-weight:700;letter-spacing:.01em;line-height:1"><span style="color:#5189F3">SEA</span><span style="color:#111">TRACE</span></div>
               <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-top:2px">Seafood Processing</div>
             </div>
           </div>
           <div style="text-align:right">
             <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">Certificate ID</div>
-            <div id="certId" style="font-size:12px;font-weight:800;color:#111;font-family:monospace"></div>
+            <div id="certId" style="font-size:12px;font-weight:700;color:#111;font-family:monospace"></div>
           </div>
         </div>
 
@@ -547,7 +547,7 @@
 
         <!-- Title -->
         <div style="text-align:center;margin-bottom:14px">
-          <span style="font-size:10px;font-weight:800;color:#5189F3;letter-spacing:.08em;text-transform:uppercase">Certificate of Completion</span>
+          <span style="font-size:10px;font-weight:700;color:#5189F3;letter-spacing:.08em;text-transform:uppercase">Certificate of Completion</span>
         </div>
 
         <!-- Rule -->
@@ -556,18 +556,18 @@
         <!-- Recipient -->
         <div style="text-align:center;margin-bottom:18px">
           <div style="font-size:11px;color:#B0B7C3;font-weight:600;margin-bottom:12px">This is to certify that</div>
-          <div id="certUserName" style="font-size:26px;font-weight:900;color:#111;letter-spacing:-.01em;line-height:1.15;margin-bottom:4px"></div>
+          <div id="certUserName" style="font-size:26px;font-weight:700;color:#111;letter-spacing:-.01em;line-height:1.15;margin-bottom:4px"></div>
           <div id="certUserRole" style="font-size:9px;font-weight:700;color:#B0B7C3;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px"></div>
           <div style="font-size:12px;color:#888;font-weight:600">has successfully completed all required training and assessments for</div>
         </div>
 
         <!-- Course box -->
         <div id="certCourseBox" style="border:1px solid #DDE6FF;border-radius:2px;padding:13px 18px;text-align:center;margin-bottom:24px;background:#F0F5FF">
-          <div id="certClassName" style="font-size:15px;font-weight:800;color:#5189F3;margin-bottom:3px"></div>
+          <div id="certClassName" style="font-size:15px;font-weight:700;color:#5189F3;margin-bottom:3px"></div>
           <div style="font-size:11px;color:#888;font-weight:600"><span id="certModName"></span></div>
           <div id="certScoreWrap" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:#ECFDF5;border:1px solid #bbf7d0;border-radius:2px;padding:3px 10px">
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-            <span style="font-size:10px;font-weight:800;color:#15803d">Score: <span id="certScore"></span></span>
+            <span style="font-size:10px;font-weight:700;color:#15803d">Score: <span id="certScore"></span></span>
           </div>
         </div>
 
@@ -582,7 +582,7 @@
           </div>
           <div style="text-align:right">
             <div style="width:140px;height:1px;background:#111;margin-bottom:6px;margin-left:auto"></div>
-            <div style="font-size:13px;font-weight:800;color:#9CA3AF;font-style:italic;margin-bottom:1px">Not yet configured</div>
+            <div style="font-size:13px;font-weight:700;color:#9CA3AF;font-style:italic;margin-bottom:1px">Not yet configured</div>
             <div style="font-size:10px;color:#888;font-weight:600"></div>
           </div>
         </div>
@@ -685,7 +685,7 @@
 
         var offset = getOffset();
         var label = document.createElement('span');
-        label.style.cssText = 'font-size:12px;font-weight:800;color:#F59E0B;white-space:nowrap;display:flex;align-items:center;gap:5px';
+        label.style.cssText = 'font-size:12px;font-weight:700;color:#F59E0B;white-space:nowrap;display:flex;align-items:center;gap:5px';
         label.innerHTML = '⏱ ' + (offset ? '+' + Math.round(offset/86400000) + 'd (simulated)' : 'Real time');
         bar.appendChild(label);
 
@@ -772,7 +772,7 @@
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiConfirmOverlay" onclick="if(event.target===this)_uiCloseConfirm()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
           + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
-            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
+            + '<div style="font-size:16px;font-weight:700;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
             + '<div style="font-size:13px;color:#6B7280;font-weight:600;line-height:1.5;margin-bottom:20px;white-space:pre-line">' + _escHtml(opts.message || '') + '</div>'
             + '<div style="display:flex;justify-content:flex-end;gap:10px">'
               + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
@@ -804,8 +804,8 @@
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiPromptOverlay" onclick="if(event.target===this)_uiClosePrompt()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
           + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
-            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
-            + (opts.label ? '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
+            + '<div style="font-size:16px;font-weight:700;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
+            + (opts.label ? '<label style="font-size:11px;font-weight:700;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
             + (opts.multiline
                 ? '<textarea id="uiPromptInput" rows="3" placeholder="' + _escHtml(opts.placeholder || '') + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box;resize:vertical">' + safeVal + '</textarea>'
                 : '<input id="uiPromptInput" type="text" placeholder="' + _escHtml(opts.placeholder || '') + '" value="' + safeVal + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_uiSubmitPrompt();}">')
@@ -1033,9 +1033,9 @@
       var initials = (u.name || 'Learner').split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
       body.innerHTML =
         '<div style="padding:16px;display:flex;align-items:center;gap:12px">'
-          + '<div style="width:42px;height:42px;border-radius:50%;background:' + _avColorCv(u.name || 'Learner') + ';color:#fff;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
+          + '<div style="width:42px;height:42px;border-radius:50%;background:' + _avColorCv(u.name || 'Learner') + ';color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
           + '<div style="min-width:0">'
-            + '<div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name || 'Learner') + '</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name || 'Learner') + '</div>'
             + '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.email || '') + '</div>'
           + '</div>'
         + '</div>';
@@ -1259,7 +1259,7 @@
       } else if (_vp >= 90) {
         el.innerHTML = '<div class="status-circle" style="background:' + col + '18;border:2px solid ' + col + '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="' + col + '" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="status-label" style="color:' + col + '">Quiz Ready</div>';
       } else if (_vp > 0) {
-        el.innerHTML = '<div class="status-circle" style="background:' + col + '18;border:2px solid ' + col + '"><span style="font-size:14px;font-weight:900;color:' + col + '">' + _vp + '%</span></div><div class="status-label" style="color:' + col + '">In Progress</div>';
+        el.innerHTML = '<div class="status-circle" style="background:' + col + '18;border:2px solid ' + col + '"><span style="font-size:14px;font-weight:700;color:' + col + '">' + _vp + '%</span></div><div class="status-label" style="color:' + col + '">In Progress</div>';
       } else {
         el.innerHTML = '<div class="status-circle" style="background:#F3F4F6;border:2px solid #DFE2E6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="status-label" style="color:#9CA3AF">Not Started</div>';
       }
@@ -1432,14 +1432,14 @@
       }
 
       if (as.status === 'sched-pending') {
-        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 3 request pending</div><div style="font-size:12px;color:#B45309;font-weight:600">An admin is reviewing your request.</div></div></div>';
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div><div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Attempt 3 request pending</div><div style="font-size:12px;color:#B45309;font-weight:600">An admin is reviewing your request.</div></div></div>';
         return;
       }
 
       if (as.status === 'exhausted' || as.status === 'sched-denied') {
         var att3Target = as.r.att2.ts + 7*24*3600000;
         el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div>'
-          + '<div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">' + (as.status==='sched-denied' ? 'Request denied' : 'Attempt 3 locked') + '</div>'
+          + '<div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">' + (as.status==='sched-denied' ? 'Request denied' : 'Attempt 3 locked') + '</div>'
           + '<div style="font-size:12px;color:#B45309;font-weight:600;margin-bottom:8px">Automatically unlocks in <span id="cvCountdownLabel"></span>, or request early access below.</div>'
           + '<button class="btn-outline" onclick="cvRequestAtt3()">' + (as.status==='sched-denied'?'Re-request':'Request Early Unlock') + '</button>'
           + '</div></div>';
@@ -1453,7 +1453,7 @@
       if (as.status === 'cooldown') {
         var cdEnd = as.legacyCd ? new Date(as.legacyCd).getTime()+24*3600000 : as.r.att1.ts + 24*3600000;
         var scoreShown = as.legacyCd ? as.legacyScore : as.r.att1.pct;
-        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + scoreShown + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in <span id="cvCountdownLabel"></span></div></div></div>';
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + clockIcon + '</div><div><div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Attempt 1 score: ' + scoreShown + '% — did not pass (' + D.passMark + '% required)</div><div style="font-size:12px;color:#B45309;font-weight:600">Retry in <span id="cvCountdownLabel"></span></div></div></div>';
         _cvStartCountdown(cdEnd, function(remMs){
           var h=Math.floor(remMs/3600000), m=Math.floor((remMs%3600000)/60000);
           return (h ? h+'h ' : '') + m + 'm';
@@ -1462,7 +1462,7 @@
       }
 
       if (as.status === 'locked') {
-        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + lockIcon + '</div><div><div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Watch video to unlock assessment</div><div style="font-size:12px;color:#B45309;font-weight:600">Complete at least 90% of the video content to enable the quiz.</div></div></div>';
+        el.innerHTML = '<div class="assessment-locked"><div class="assessment-locked-icon">' + lockIcon + '</div><div><div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Watch video to unlock assessment</div><div style="font-size:12px;color:#B45309;font-weight:600">Complete at least 90% of the video content to enable the quiz.</div></div></div>';
         return;
       }
 

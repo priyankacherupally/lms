@@ -13,14 +13,14 @@
        are kept; only their CSS definitions converge on these tokens. */
     :root {
       --radius-control: 8px;   /* buttons, inputs, filter chips */
-      --radius-card: 10px;     /* stat cards, list-item cards */
+      --radius-card: 3px;      /* stat cards, list-item cards */
       --radius-panel: 14px;    /* modals, dropdown/notification panels */
       --radius-pill: 999px;    /* badges, tabs, status pills */
       --space-sm: 8px;
       --space-md: 12px;
       --space-lg: 16px;
       --space-xl: 24px;
-      --shadow-card: 0 1px 3px rgba(20,24,33,0.06), 0 1px 2px rgba(20,24,33,0.04);
+      --shadow-card: 0 1px 3px rgba(20,24,33,0.03), 0 1px 2px rgba(20,24,33,0.02);
       --shadow-hover: 0 6px 20px rgba(20,24,33,0.10);
     }
     /* height:100vh on mobile is computed against the LARGEST possible viewport
@@ -38,7 +38,7 @@
       border-bottom: 1px solid #DFE2E6; position: sticky; top: 0; z-index: 200; flex-shrink: 0;
     }
     .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .brand-name { font-size: 15px; font-weight: 900; letter-spacing: .01em; }
+    .brand-name { font-size: 15px; font-weight: 700; letter-spacing: .01em; }
     .brand-name .sea { color: #5189F3; } /* fallback if image fails */
     .nav-right { display: flex; align-items: center; gap: 12px; }
     .nav-role-badge {
@@ -100,7 +100,7 @@
 
     /* ── Main ── */
     .main { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; }
-    .main-title { font-size: 20px; font-weight: 800; color: #111; margin-bottom: 4px; }
+    .main-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 4px; }
     .main-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
 
     /* ── Module progress ── */
@@ -112,7 +112,7 @@
     .mod-prog-label { font-size: 12px; font-weight: 700; color: #888; white-space: nowrap; }
     .mod-prog-track { flex: 1; height: 5px; background: #F0F0F0; border-radius: 2px; overflow: hidden; }
     .mod-prog-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
-    .mod-prog-pct { font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .mod-prog-pct { font-size: 12px; font-weight: 700; white-space: nowrap; }
     .mod-prog-certs { font-size: 11px; font-weight: 700; color: #888; white-space: nowrap; }
 
     /* ── Module header ── */
@@ -121,7 +121,7 @@
       border: 1px solid #DFE2E6; border-radius: 2px 2px 0 0; border-bottom: none;
     }
     .mod-section-row { display: flex; align-items: center; gap: 12px; }
-    .mod-section-name { font-size: 15px; font-weight: 800; color: #111; line-height: 1.1; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mod-section-name { font-size: 15px; font-weight: 700; color: #111; line-height: 1.1; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .mod-section-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: -3px; padding-left: 22px; }
     .mod-section-meta { font-size: 12px; font-weight: 600; color: #888; white-space: nowrap; }
     .mod-role-pill {
@@ -158,7 +158,7 @@
     .notif-dot.red { background:#DC2626; }
     .notif-dot.amber { background:#F59E0B; }
     .notif-dot.read { background:#D1D5DB; }
-    .notif-title { font-size:12px; font-weight:800; color:#111; margin-bottom:2px; }
+    .notif-title { font-size:12px; font-weight:700; color:#111; margin-bottom:2px; }
     .notif-sub { font-size:11px; color:#888; line-height:1.4; }
     .notif-time { font-size:10px; color:#C0C0C0; margin-top:3px; }
     .notif-empty { padding:32px 16px; text-align:center; font-size:13px; color:#B0B7C3; font-weight:600; }
@@ -172,7 +172,7 @@
     .toast.toast-amber { border-left:4px solid #F59E0B; }
     .toast.toast-green { border-left:4px solid #22C55E; }
     .toast.toast-blue   { border-left:4px solid #5189F3; }
-    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:800; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
+    .toast-action { margin-left:auto; background:none; border:none; color:#93C5FD; font-weight:700; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
     .toast-action:hover { color:#fff; text-decoration:underline; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .ui-spin { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; vertical-align: middle; margin-right: 6px; }
@@ -193,7 +193,7 @@
     .tour-arr-l { position:absolute; left:-8px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:8px solid transparent; border-bottom:8px solid transparent; border-right:8px solid #fff; filter:drop-shadow(-1px 0 1px rgba(0,0,0,.1)); }
     .tour-arr-r { position:absolute; right:-8px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:8px solid transparent; border-bottom:8px solid transparent; border-left:8px solid #fff; filter:drop-shadow(1px 0 1px rgba(0,0,0,.1)); }
     .tour-arr-t { position:absolute; top:-8px; width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-bottom:8px solid #fff; filter:drop-shadow(0 -1px 1px rgba(0,0,0,.1)); }
-    #tourBtnBack, #tourBtnNext, #tourBtnDone { display:none; align-items:center; justify-content:center; height:32px; padding:0 14px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; font-family:inherit; border:none; }
+    #tourBtnBack, #tourBtnNext, #tourBtnDone { display:none; align-items:center; justify-content:center; height:32px; padding:0 14px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; border:none; }
     #tourBtnBack { background:#F3F4F6; color:#555; border:1.5px solid #E5E7EB; }
     #tourBtnNext { background:#5189F3; color:#fff; }
     #tourBtnDone { background:#059669; color:#fff; }
@@ -225,7 +225,7 @@
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 20px; flex-shrink: 0;
     }
-    .guide-step-title { font-size: 22px; font-weight: 900; color: #111; margin-bottom: 6px; line-height: 1.25; }
+    .guide-step-title { font-size: 22px; font-weight: 700; color: #111; margin-bottom: 6px; line-height: 1.25; }
     .guide-step-sub   { font-size: 14px; color: #888; font-weight: 600; margin-bottom: 24px; line-height: 1.5; }
     .guide-flow-row   { display: flex; align-items: center; gap: 0; margin-bottom: 24px; }
     .guide-flow-node  {
@@ -233,7 +233,7 @@
       border-radius: 10px; border: 1.5px solid #E5E7EB;
     }
     .guide-flow-node-icon { font-size: 22px; margin-bottom: 4px; }
-    .guide-flow-node-label { font-size: 11px; font-weight: 800; color: #111; }
+    .guide-flow-node-label { font-size: 11px; font-weight: 700; color: #111; }
     .guide-flow-node-sub   { font-size: 10px; font-weight: 600; color: #aaa; margin-top: 2px; }
     .guide-flow-arrow { font-size: 16px; color: #DFE2E6; padding: 0 4px; flex-shrink: 0; }
     .guide-mod-card {
@@ -242,27 +242,27 @@
       margin-bottom: 8px;
     }
     .guide-mod-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .guide-mod-name { font-size: 13px; font-weight: 800; color: #111; flex: 1; }
+    .guide-mod-name { font-size: 13px; font-weight: 700; color: #111; flex: 1; }
     .guide-mod-cls  { font-size: 11px; font-weight: 700; color: #888; }
-    .guide-mod-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; }
+    .guide-mod-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
     .guide-att-row { display: flex; align-items: center; gap: 0; margin-bottom: 20px; }
     .guide-att-node {
       flex: 1; text-align: center; padding: 10px 6px; border-radius: 8px;
     }
-    .guide-att-label { font-size: 11px; font-weight: 800; color: #fff; }
+    .guide-att-label { font-size: 11px; font-weight: 700; color: #fff; }
     .guide-att-sub   { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.75); margin-top: 2px; }
     .guide-att-arrow { font-size: 13px; color: #DFE2E6; padding: 0 3px; flex-shrink: 0; }
     .guide-qtypes { display: flex; gap: 8px; margin-bottom: 20px; }
     .guide-qtype-chip {
       flex: 1; text-align: center; padding: 8px 6px;
-      border-radius: 8px; font-size: 11px; font-weight: 800;
+      border-radius: 8px; font-size: 11px; font-weight: 700;
     }
     .guide-cert-card {
       display: flex; align-items: center; gap: 12px;
       padding: 12px 14px; border-radius: 10px; margin-bottom: 8px;
     }
     .guide-cert-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .guide-cert-name { font-size: 13px; font-weight: 800; color: #111; }
+    .guide-cert-name { font-size: 13px; font-weight: 700; color: #111; }
     .guide-cert-sub  { font-size: 11px; font-weight: 600; color: #888; margin-top: 1px; }
     .guide-tip-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
     .guide-tip-check { width: 20px; height: 20px; border-radius: 50%; background: #EEF3FF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
@@ -279,9 +279,9 @@
     .guide-btn-skip:hover { color: #555; }
     .guide-btn-back { background: none; border: 1.5px solid #E5E7EB; font-family: 'Nunito',sans-serif; font-size: 13px; font-weight: 700; color: #555; cursor: pointer; padding: 9px 18px; border-radius: 8px; transition: border-color .15s; }
     .guide-btn-back:hover { border-color: #5189F3; color: #5189F3; }
-    .guide-btn-next { background: #5189F3; border: none; font-family: 'Nunito',sans-serif; font-size: 13px; font-weight: 800; color: #fff; cursor: pointer; padding: 9px 22px; border-radius: 8px; transition: background .15s; }
+    .guide-btn-next { background: #5189F3; border: none; font-family: 'Nunito',sans-serif; font-size: 13px; font-weight: 700; color: #fff; cursor: pointer; padding: 9px 22px; border-radius: 8px; transition: background .15s; }
     .guide-btn-next:hover { background: #3b6fd4; }
-    .guide-btn-start { background: linear-gradient(135deg,#5189F3,#7C3AED); border: none; font-family: 'Nunito',sans-serif; font-size: 14px; font-weight: 800; color: #fff; cursor: pointer; padding: 11px 28px; border-radius: 8px; transition: opacity .15s; }
+    .guide-btn-start { background: linear-gradient(135deg,#5189F3,#7C3AED); border: none; font-family: 'Nunito',sans-serif; font-size: 14px; font-weight: 700; color: #fff; cursor: pointer; padding: 11px 28px; border-radius: 8px; transition: opacity .15s; }
     .guide-btn-start:hover { opacity: .88; }
 
     /* ══════════════════
@@ -303,11 +303,11 @@
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 12px; margin-bottom: 12px;
     }
-    .quiz-head-title { font-size: 16px; font-weight: 800; color: #111; line-height: 1.3; }
+    .quiz-head-title { font-size: 16px; font-weight: 700; color: #111; line-height: 1.3; }
     .quiz-head-meta  { font-size: 11px; color: #aaa; margin-top: 2px; font-weight: 600; }
     /* Timer — replaces X close button */
     .quiz-timer {
-      font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums;
+      font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;
       padding: 6px 14px; border-radius: 8px; background: #F3F4F6; color: #555;
       letter-spacing: .04em; flex-shrink: 0; white-space: nowrap;
     }
@@ -316,13 +316,13 @@
     @keyframes quiz-pulse { 0%,100%{ opacity:1; } 50%{ opacity:.55; } }
     /* Progress */
     .quiz-prog-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .quiz-prog-label { font-size: 12px; font-weight: 800; color: #5189F3; }
+    .quiz-prog-label { font-size: 12px; font-weight: 700; color: #5189F3; }
     .quiz-prog-frac  { font-size: 11px; font-weight: 700; color: #aaa; }
     .quiz-prog-bar-wrap { height: 5px; background: #F0F0F0; border-radius: 99px; margin-bottom: 0; }
     .quiz-prog-bar { height: 5px; background: linear-gradient(90deg,#5189F3 0%,#7C3AED 100%); border-radius: 99px; transition: width .35s ease; }
     .quiz-body { flex: 1; overflow-y: auto; padding: 26px; }
     /* Type tag */
-    .quiz-q-type-tag { display: inline-block; font-size: 10px; font-weight: 800; background: #EEF3FF; color: #5189F3; border-radius: 4px; padding: 2px 7px; margin-bottom: 10px; letter-spacing: .04em; text-transform: uppercase; }
+    .quiz-q-type-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #EEF3FF; color: #5189F3; border-radius: 4px; padding: 2px 7px; margin-bottom: 10px; letter-spacing: .04em; text-transform: uppercase; }
     .quiz-q-text { font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.6; margin-bottom: 22px; }
     /* MCQ & MS options */
     .quiz-options { display: flex; flex-direction: column; gap: 10px; }
@@ -337,7 +337,7 @@
     .quiz-opt-letter {
       width: 32px; height: 32px; border-radius: 8px; background: #F3F4F6; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800; color: #555;
+      font-size: 13px; font-weight: 700; color: #555;
       transition: background .13s, color .13s;
     }
     .quiz-opt.selected .quiz-opt-letter { background: #5189F3; color: #fff; }
@@ -347,7 +347,7 @@
     .tf-wrap { display: flex; gap: 14px; margin-top: 8px; }
     .tf-btn {
       flex: 1; padding: 24px 16px; border-radius: 12px; border: 2px solid #E5E7EB; cursor: pointer;
-      text-align: center; font-size: 18px; font-weight: 800; color: #444;
+      text-align: center; font-size: 18px; font-weight: 700; color: #444;
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       transition: border-color .13s, background .13s; user-select: none;
       font-family: 'Nunito', sans-serif; background: #fff;
@@ -370,7 +370,7 @@
     .quiz-nav-btn:hover { border-color: #5189F3; color: #5189F3; }
     .quiz-submit-btn {
       display: inline-flex; align-items: center; gap: 7px; padding: 10px 22px; border-radius: 8px;
-      font-size: 13px; font-weight: 800; cursor: pointer; border: none;
+      font-size: 13px; font-weight: 700; cursor: pointer; border: none;
       background: #5189F3; color: #fff; font-family: 'Nunito', sans-serif;
       transition: background .12s; box-shadow: 0 2px 8px rgba(81,137,243,0.35);
     }
@@ -400,16 +400,16 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 20px; border-bottom: 1px solid #F0F0F0;
     }
-    .result-head-title { font-size: 14px; font-weight: 800; color: #111; }
+    .result-head-title { font-size: 14px; font-weight: 700; color: #111; }
     .result-close { width: 28px; height: 28px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: grid; place-items: center; color: #666; font-size: 14px; }
     .result-body { padding: 24px 22px 18px; }
     .result-ring { display: flex; justify-content: center; margin-bottom: 16px; }
     .result-status { text-align: center; margin-bottom: 18px; }
-    .result-status-label { font-size: 16px; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .result-status-label { font-size: 16px; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .result-status-msg { font-size: 12px; color: #888; font-weight: 600; line-height: 1.6; }
     .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
     .result-stat { background: #F8F8F8; border-radius: var(--radius-card); padding: 10px 14px; text-align: center; }
-    .result-stat-num { font-size: 22px; font-weight: 800; color: #111; }
+    .result-stat-num { font-size: 22px; font-weight: 700; color: #111; }
     .result-stat-label { font-size: 10px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
     .result-next { border-radius: 2px; padding: 12px 14px; font-size: 12px; font-weight: 700; line-height: 1.6; }
     .result-foot { padding: 14px 20px; border-top: 1px solid #F0F0F0; display: flex; justify-content: flex-end; gap: 8px; }
@@ -440,7 +440,7 @@
       width: 38px; height: 38px; border-radius: 2px; background: #FFF7ED;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;
     }
-    .att3-head-title { font-size: 15px; font-weight: 800; color: #111; margin-bottom: 2px; }
+    .att3-head-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 2px; }
     .att3-head-sub   { font-size: 12px; color: #888; font-weight: 600; }
     .att3-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
     .att3-quiz-info {
@@ -452,9 +452,9 @@
     .att3-quiz-meta { font-size: 11px; color: #888; font-weight: 600; margin-top: 2px; }
     .att3-score-row { display: flex; gap: 10px; }
     .att3-score-chip {
-      padding: 5px 12px; border-radius: 2px; font-size: 12px; font-weight: 800;
+      padding: 5px 12px; border-radius: 2px; font-size: 12px; font-weight: 700;
     }
-    .att3-field label { display: block; font-size: 11px; font-weight: 800; color: #888; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+    .att3-field label { display: block; font-size: 11px; font-weight: 700; color: #888; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
     .att3-field textarea {
       width: 100%; box-sizing: border-box; padding: 10px 12px;
       border: 1.5px solid #DFE2E6; border-radius: 2px;
@@ -475,21 +475,22 @@
     .sidebar-divider { height: 1px; background: #F0F0F0; margin: 10px 16px; }
     .lb-section { display: none; padding: 0; }
     .lb-section.active { display: block; }
+    /* Divider-strip stat row — one bordered strip, items separated by a thin
+       vertical rule instead of each being its own card. Collapses to individual
+       stacked cards under 860px (see media queries below). */
     .lb-hero {
-      display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
-      gap: 12px; margin-bottom: 22px;
+      display: flex; background: #fff; border: 1px solid #DFE2E6; border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card); margin-bottom: 22px; overflow: hidden;
     }
     .lb-stat-card {
-      background: #fff; border: 1px solid #DFE2E6; border-radius: var(--radius-card);
-      padding: var(--space-lg); display: flex; align-items: center; gap: var(--space-md);
-      box-shadow: var(--shadow-card);
+      flex: 1; min-width: 0; padding: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); position: relative;
     }
-    .lb-stat-icon {
-      width: 38px; height: 38px; border-radius: var(--radius-card); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
+    /* Divider only covers the middle 70% of the row's height instead of running
+       edge-to-edge, so it reads as a subtle separator rather than a hard wall. */
+    .lb-stat-card:not(:last-child)::after { content:''; position:absolute; top:15%; bottom:15%; right:0; width:1px; background:#EEF0F3; }
+    .lb-stat-icon { width: 38px; height: 38px; border-radius: var(--radius-card); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .lb-stat-icon svg { width: 17px; height: 17px; }
-    .lb-stat-val { font-size: 22px; font-weight: 800; color: #111; line-height: 1; }
+    .lb-stat-val { font-size: 22px; font-weight: 700; color: #111; line-height: 1; }
     .lb-stat-lbl { font-size: 11px; color: #888; font-weight: 600; margin-top: 3px; }
     /* Podium */
     .lb-podium {
@@ -500,7 +501,7 @@
     .podium-slot { display: flex; flex-direction: column; align-items: center; }
     .podium-av-wrap { position: relative; margin-bottom: 8px; }
     .podium-av {
-      border-radius: 50%; font-weight: 900; color: #fff;
+      border-radius: 50%; font-weight: 700; color: #fff;
       display: flex; align-items: center; justify-content: center;
       border: 3px solid #fff;
     }
@@ -512,18 +513,18 @@
     .podium-badge {
       position: absolute; bottom: -3px; right: -3px;
       width: 20px; height: 20px; border-radius: 50%;
-      font-size: 10px; font-weight: 900; color: #fff;
+      font-size: 10px; font-weight: 700; color: #fff;
       display: flex; align-items: center; justify-content: center;
       border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.18);
     }
-    .podium-name { font-size: 12px; font-weight: 800; color: #1E2532; text-align: center; max-width: 88px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .podium-name { font-size: 12px; font-weight: 700; color: #1E2532; text-align: center; max-width: 88px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .podium-cert { font-size: 10px; font-weight: 700; color: #9CA3AF; margin-top: 2px; margin-bottom: 12px; }
     .podium-block {
       border-radius: 2px 2px 0 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
     }
-    .podium-rank { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.88); line-height: 1; }
-    .podium-place { font-size: 9px; font-weight: 800; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .07em; }
+    .podium-rank { font-size: 28px; font-weight: 700; color: rgba(255,255,255,.88); line-height: 1; }
+    .podium-place { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .07em; }
     /* Table */
     .lb-table-wrap { background: #fff; border: 1px solid #DFE2E6; border-radius: var(--radius-card); overflow: hidden; }
     .lb-table-head {
@@ -531,7 +532,7 @@
       border-bottom: 1px solid #F0F0F0; gap: 10px;
       position: sticky; top: 0; z-index: 3; background: #fff;
     }
-    .lb-table-head-title { font-size: 13px; font-weight: 800; color: #111; flex: 1; }
+    .lb-table-head-title { font-size: 13px; font-weight: 700; color: #111; flex: 1; }
     .lb-search {
       padding: 6px 12px; border: 1px solid #DFE2E6; border-radius: 2px;
       font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600;
@@ -540,7 +541,7 @@
     .lb-search:focus { border-color: #5189F3; }
     table.lb-tbl { width: 100%; border-collapse: collapse; }
     table.lb-tbl th {
-      padding: 10px 14px; font-size: 10px; font-weight: 800; color: #aaa;
+      padding: 10px 14px; font-size: 10px; font-weight: 700; color: #aaa;
       text-transform: uppercase; letter-spacing: .05em; background: #FAFAFA;
       border-bottom: 1px solid #F0F0F0; text-align: left;
       position: sticky; top: 52px; z-index: 2;
@@ -549,28 +550,28 @@
     table.lb-tbl tr:last-child td { border-bottom: none; }
     table.lb-tbl tr.is-me td { background: #F5F9FF; }
     table.lb-tbl tr.is-me td:first-child { border-left: 3px solid #5189F3; }
-    .lb-rank-num { font-size: 13px; font-weight: 900; color: #bbb; }
+    .lb-rank-num { font-size: 13px; font-weight: 700; color: #bbb; }
     .lb-rank-num.top1 { color: #F59E0B; }
     .lb-rank-num.top2 { color: #94A3B8; }
     .lb-rank-num.top3 { color: #F97316; }
     .lb-user-cell { display: flex; align-items: center; gap: 10px; }
     .lb-av {
       width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-      font-size: 11px; font-weight: 900; color: #fff;
+      font-size: 11px; font-weight: 700; color: #fff;
       display: flex; align-items: center; justify-content: center;
     }
     .lb-av.me { outline: 2px solid #5189F3; outline-offset: 2px; }
-    .lb-user-name { font-size: 13px; font-weight: 800; color: #111; }
+    .lb-user-name { font-size: 13px; font-weight: 700; color: #111; }
     .lb-user-role { font-size: 10px; font-weight: 700; color: #aaa; margin-top: 1px; }
     .lb-you-tag {
-      font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 2px;
+      font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 2px;
       background: #EEF3FF; color: #5189F3; vertical-align: middle; margin-left: 4px;
     }
     .lb-bar-wrap { display: flex; align-items: center; gap: 8px; }
     .lb-bar-track { flex: 1; height: 5px; background: #F0F0F0; border-radius: 3px; overflow: hidden; min-width: 60px; }
     .lb-bar-fill { height: 100%; border-radius: 3px; }
-    .lb-bar-pct { font-size: 11px; font-weight: 800; white-space: nowrap; }
-    .lb-cert-count { font-size: 14px; font-weight: 900; color: #7C3AED; }
+    .lb-bar-pct { font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .lb-cert-count { font-size: 14px; font-weight: 700; color: #7C3AED; }
     .lb-cert-total { font-size: 10px; font-weight: 700; color: #bbb; }
     .lb-sync-note { font-size: 11px; color: #aaa; font-weight: 600; text-align: right; margin-bottom: 10px; }
     .lb-no-sync {
@@ -582,10 +583,11 @@
     /* Unified stat-card look — same radius/hover/cursor as admin.html's
        .hub-stat-card/.lb-stat-card, since this is literally the same
        component pattern shown to users on both sides of the app. */
-    .j-stat-card { background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);padding:var(--space-lg) var(--space-lg);display:flex;align-items:center;gap:var(--space-md);box-shadow:var(--shadow-card) }
+    .j-stat-card { flex:1;min-width:0;padding:var(--space-lg);border-radius:var(--radius-card);display:flex;align-items:center;gap:var(--space-md);position:relative }
+    .j-stat-card:not(:last-child)::after { content:'';position:absolute;top:15%;bottom:15%;right:0;width:1px;background:#EEF0F3 }
     .j-stat-icon { width:38px;height:38px;border-radius:var(--radius-card);display:flex;align-items:center;justify-content:center;flex-shrink:0 }
     .j-stat-icon svg { width:17px;height:17px }
-    .j-stat-val { font-size:22px;font-weight:800;color:#111;line-height:1 }
+    .j-stat-val { font-size:22px;font-weight:700;color:#111;line-height:1 }
     .j-stat-label { font-size:11px;font-weight:600;color:#888;margin-top:3px }
     .j-module-section { background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);margin-bottom:12px;overflow:hidden }
     .j-module-header { display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;user-select:none; }
@@ -688,7 +690,14 @@
          scrollable content reads as cut off even though it's technically reachable
          by scrolling further. */
       .main { padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px) + 32px) 16px; min-width: 0; }
-      .rg-2, .rg-3, .rg-4 { grid-template-columns: repeat(2, 1fr) !important; }
+      .rg-2, .rg-3 { grid-template-columns: repeat(2, 1fr) !important; }
+      /* Below 860px a single divided strip wrapping into multiple rows reads as
+         broken vertical rules rather than a clean grid, so each stat item goes
+         back to being its own bordered card instead. */
+      #jStatsGrid, #certsSummary { display:grid !important; grid-template-columns:repeat(2,1fr) !important; gap:12px !important; background:none !important; border:none !important; box-shadow:none !important; }
+      .lb-hero { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; background:none; border:none; box-shadow:none; }
+      .j-stat-card, .lb-stat-card { background:#fff; border:1px solid #DFE2E6; box-shadow:var(--shadow-card); }
+      .j-stat-card::after, .lb-stat-card::after { content:none; }
       .kb-board { grid-template-columns: repeat(2, 1fr); }
       /* Only the table itself scrolls horizontally on a phone — previously
          .lb-table-wrap (which also contains the sticky "All Learners" search
@@ -698,7 +707,9 @@
       .lb-tbl { min-width: 640px; }
     }
     @media (max-width: 560px) {
-      .rg-2, .rg-3, .rg-4 { grid-template-columns: 1fr !important; }
+      .rg-2, .rg-3 { grid-template-columns: 1fr !important; }
+      #jStatsGrid, #certsSummary { grid-template-columns: 1fr !important; }
+      .lb-hero { grid-template-columns: 1fr; }
       .kb-board { grid-template-columns: 1fr; }
       .lb-podium { flex-wrap: wrap; }
       /* Navbar on a phone: hamburger + logo + Learner badge + avatar + bell +
@@ -801,7 +812,7 @@
     <!-- Notification panel — anchored to header -->
     <div id="notifPanel" style="display:none;position:absolute;top:56px;right:16px;width:320px;background:#fff;border:1px solid #E5E7EB;border-radius:var(--radius-panel);box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px">
-        <span style="font-size:15px;font-weight:800;color:#111">Notifications</span>
+        <span style="font-size:15px;font-weight:700;color:#111">Notifications</span>
         <button onclick="_markAllNotifsRead()" style="font-size:12px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
       </div>
       <div style="height:1px;background:#F3F4F6;margin:0 0 0 0"></div>
@@ -876,7 +887,7 @@
         </div>
 
         <!-- Stats row -->
-        <div id="jStatsGrid" class="rg-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+        <div id="jStatsGrid" style="display:flex;background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden">
         </div>
 
         <!-- Module progress bars -->
@@ -906,7 +917,7 @@
             <p class="main-sub" style="margin-bottom:0" id="certSubtitle"></p>
           </div>
         </div>
-        <div id="certsSummary" class="rg-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px"></div>
+        <div id="certsSummary" style="display:flex;background:#fff;border:1px solid #DFE2E6;border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden"></div>
         <div id="certsGrid"></div>
       </div>
 
@@ -958,7 +969,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
         </div>
         <div>
-          <div style="font-size:17px;font-weight:900;color:#1E2532">Welcome — who's learning?</div>
+          <div style="font-size:17px;font-weight:700;color:#1E2532">Welcome — who's learning?</div>
           <div style="font-size:12px;color:#9CA3AF;margin-top:2px;font-weight:500">Enter your name and email to start tracking your progress</div>
         </div>
       </div>
@@ -985,10 +996,10 @@
     <div id="tourArrow"></div>
     <div style="padding:18px 20px 12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <span id="tourStepLabel" style="font-size:10px;font-weight:800;color:#5189F3;text-transform:uppercase;letter-spacing:.1em"></span>
+        <span id="tourStepLabel" style="font-size:10px;font-weight:700;color:#5189F3;text-transform:uppercase;letter-spacing:.1em"></span>
         <button onclick="_tourClose()" style="width:22px;height:22px;border-radius:50%;border:none;background:#F3F4F6;color:#888;font-size:11px;cursor:pointer;font-family:inherit;line-height:1">&#10005;</button>
       </div>
-      <div id="tourTitle" style="font-size:15px;font-weight:900;color:#111;margin-bottom:5px"></div>
+      <div id="tourTitle" style="font-size:15px;font-weight:700;color:#111;margin-bottom:5px"></div>
       <div id="tourBody" style="font-size:12px;font-weight:600;color:#555;line-height:1.6"></div>
     </div>
     <div style="padding:10px 16px 14px;border-top:1px solid #F3F4F6;display:flex;align-items:center;justify-content:space-between">
@@ -1027,7 +1038,7 @@
         <div style="display:flex;align-items:flex-start;gap:12px;min-width:0">
           <button onclick="closeClassView()" style="flex-shrink:0;margin-top:1px;width:26px;height:26px;border:1px solid #DFE2E6;background:#F9FAFB;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888;font-family:inherit;font-size:12px;padding:0">✕</button>
           <div style="min-width:0">
-            <div id="cvTitle" style="font-size:15px;font-weight:800;color:#111;letter-spacing:-.01em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+            <div id="cvTitle" style="font-size:15px;font-weight:700;color:#111;letter-spacing:-.01em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
             <div id="cvBreadcrumb" style="font-size:12px;color:#9CA3AF;margin-top:3px"></div>
           </div>
         </div>
@@ -1111,13 +1122,13 @@
               <path d="M9 27c3.2 0 3.2-4 6.4-4s3.2 4 6.4 4 3.2-4 6.4-4 3.2 4 6.4 4 3.2-4 6.4-4" fill="none" stroke="#5189F3" stroke-width="2.6" stroke-linecap="round"/>
             </svg>
             <div>
-              <div style="font-size:15px;font-weight:900;letter-spacing:.01em;line-height:1"><span style="color:#5189F3">SEA</span><span style="color:#111">TRACE</span></div>
+              <div style="font-size:15px;font-weight:700;letter-spacing:.01em;line-height:1"><span style="color:#5189F3">SEA</span><span style="color:#111">TRACE</span></div>
               <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-top:2px">Seafood Processing</div>
             </div>
           </div>
           <div style="text-align:right">
             <div style="font-size:9px;font-weight:700;color:#B0B7C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">Certificate ID</div>
-            <div id="certId" style="font-size:12px;font-weight:800;color:#111;font-family:monospace"></div>
+            <div id="certId" style="font-size:12px;font-weight:700;color:#111;font-family:monospace"></div>
           </div>
         </div>
 
@@ -1126,7 +1137,7 @@
 
         <!-- Title -->
         <div style="text-align:center;margin-bottom:14px">
-          <span style="font-size:10px;font-weight:800;color:#5189F3;letter-spacing:.08em;text-transform:uppercase">Certificate of Completion</span>
+          <span style="font-size:10px;font-weight:700;color:#5189F3;letter-spacing:.08em;text-transform:uppercase">Certificate of Completion</span>
         </div>
 
         <!-- Rule -->
@@ -1135,18 +1146,18 @@
         <!-- Recipient -->
         <div style="text-align:center;margin-bottom:18px">
           <div style="font-size:11px;color:#B0B7C3;font-weight:600;margin-bottom:12px">This is to certify that</div>
-          <div id="certUserName" style="font-size:26px;font-weight:900;color:#111;letter-spacing:-.01em;line-height:1.15;margin-bottom:4px"></div>
+          <div id="certUserName" style="font-size:26px;font-weight:700;color:#111;letter-spacing:-.01em;line-height:1.15;margin-bottom:4px"></div>
           <div id="certUserRole" style="font-size:9px;font-weight:700;color:#B0B7C3;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px"></div>
           <div style="font-size:12px;color:#888;font-weight:600">has successfully completed all required training and assessments for</div>
         </div>
 
         <!-- Course box -->
         <div id="certCourseBox" style="border:1px solid #DDE6FF;border-radius:2px;padding:13px 18px;text-align:center;margin-bottom:24px;background:#F0F5FF">
-          <div id="certClassName" style="font-size:15px;font-weight:800;color:#5189F3;margin-bottom:3px"></div>
+          <div id="certClassName" style="font-size:15px;font-weight:700;color:#5189F3;margin-bottom:3px"></div>
           <div style="font-size:11px;color:#888;font-weight:600"><span id="certModName"></span></div>
           <div id="certScoreWrap" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:#ECFDF5;border:1px solid #bbf7d0;border-radius:2px;padding:3px 10px">
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-            <span style="font-size:10px;font-weight:800;color:#15803d">Score: <span id="certScore"></span></span>
+            <span style="font-size:10px;font-weight:700;color:#15803d">Score: <span id="certScore"></span></span>
           </div>
         </div>
 
@@ -1161,7 +1172,7 @@
           </div>
           <div style="text-align:right">
             <div style="width:140px;height:1px;background:#111;margin-bottom:6px;margin-left:auto"></div>
-            <div style="font-size:13px;font-weight:800;color:#9CA3AF;font-style:italic;margin-bottom:1px">Not yet configured</div>
+            <div style="font-size:13px;font-weight:700;color:#9CA3AF;font-style:italic;margin-bottom:1px">Not yet configured</div>
             <div style="font-size:10px;color:#888;font-weight:600"></div>
           </div>
         </div>
@@ -1349,7 +1360,7 @@
 
         var offset = getOffset();
         var label = document.createElement('span');
-        label.style.cssText = 'font-size:12px;font-weight:800;color:#F59E0B;white-space:nowrap;display:flex;align-items:center;gap:5px';
+        label.style.cssText = 'font-size:12px;font-weight:700;color:#F59E0B;white-space:nowrap;display:flex;align-items:center;gap:5px';
         label.innerHTML = '⏱ ' + (offset ? '+' + Math.round(offset/86400000) + 'd (simulated)' : 'Real time');
         bar.appendChild(label);
 
@@ -1802,7 +1813,7 @@
         ' stroke-dasharray="'+(score/100*c)+' '+c+'" stroke-linecap="round"'+
         ' transform="rotate(-90 '+(s/2)+' '+(s/2)+')"/>'+
         '<text x="'+(s/2)+'" y="'+(s/2+6)+'" text-anchor="middle"'+
-        ' font-family="Nunito,sans-serif" font-weight="900" font-size="18" fill="'+col+'">'+score+'%</text></svg>';
+        ' font-family="Nunito,sans-serif" font-weight="700" font-size="18" fill="'+col+'">'+score+'%</text></svg>';
     }
 
     function _initUser() {
@@ -2056,19 +2067,19 @@
 
       /* Banner */
       document.getElementById('jUserBanner').innerHTML =
-        '<div style="width:56px;height:56px;border-radius:50%;background:#5189F3;color:#fff;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
+        '<div style="width:56px;height:56px;border-radius:50%;background:#5189F3;color:#fff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
         + '<div style="flex:1;min-width:0">'
-          + '<div style="font-size:18px;font-weight:900;color:#1E2532">' + u.name + '</div>'
+          + '<div style="font-size:18px;font-weight:700;color:#1E2532">' + u.name + '</div>'
           + '<div style="font-size:12px;color:#9CA3AF;font-weight:600;margin-top:2px">' + (u.role||'Learner') + ' · ' + (u.dept||'—') + ' · ' + (u.team||'—') + '</div>'
           + '<div style="margin-top:10px;display:flex;align-items:center;gap:10px">'
             + '<div style="flex:1;max-width:260px;height:5px;background:#F0F0F0;border-radius:2px;overflow:hidden">'
               + '<div style="height:100%;width:' + overallPct + '%;background:#5189F3;border-radius:2px"></div>'
             + '</div>'
-            + '<span style="font-size:12px;font-weight:800;color:#5189F3">' + overallPct + '% overall</span>'
+            + '<span style="font-size:12px;font-weight:700;color:#5189F3">' + overallPct + '% overall</span>'
           + '</div>'
         + '</div>'
         + '<div style="text-align:right;flex-shrink:0">'
-          + '<div style="font-size:28px;font-weight:900;color:#1E2532;line-height:1">' + totalCerts + '<span style="font-size:16px;font-weight:700;color:#C4C9D4"> / ' + Object.keys(MODULES).reduce(function(s,m){ return s + MODULES[m].classes.length; }, 0) + '</span></div>'
+          + '<div style="font-size:28px;font-weight:700;color:#1E2532;line-height:1">' + totalCerts + '<span style="font-size:16px;font-weight:700;color:#C4C9D4"> / ' + Object.keys(MODULES).reduce(function(s,m){ return s + MODULES[m].classes.length; }, 0) + '</span></div>'
           + '<div style="font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-top:3px">Certs Achieved</div>'
         + '</div>';
 
@@ -2106,7 +2117,7 @@
           + '<div style="flex:1;height:5px;background:#F0F0F0;border-radius:2px;overflow:hidden">'
             + '<div style="height:100%;width:' + pct + '%;background:' + col + ';border-radius:2px;transition:width .4s"></div>'
           + '</div>'
-          + '<span style="font-size:12px;font-weight:800;color:' + col + ';min-width:36px;text-align:right">' + pct + '%</span>'
+          + '<span style="font-size:12px;font-weight:700;color:' + col + ';min-width:36px;text-align:right">' + pct + '%</span>'
           + '<span class="jmb-count" style="font-size:11px;color:#9CA3AF;font-weight:600;min-width:70px">' + cert + ' / ' + total + ' classes</span>'
         + '</div>';
       }).join('') + '</div>';
@@ -2154,7 +2165,7 @@
           +'</div>'
           +'<div style="flex:1;min-width:0">'
             +'<div style="font-size:10px;font-weight:700;color:#5189F3;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;white-space:nowrap">Continue Learning</div>'
-            +'<div style="font-size:14px;font-weight:800;color:#111;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nextUp.cls+'</div>'
+            +'<div style="font-size:14px;font-weight:700;color:#111;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nextUp.cls+'</div>'
             +'<div style="font-size:11px;font-weight:600;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nextUp.mod+' · Class '+String(nextUp.idx+1).padStart(2,'0')+'</div>'
             +'<div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap">'
               +'<div style="width:120px;height:4px;background:#c7d7fd;border-radius:2px;overflow:hidden">'
@@ -2234,9 +2245,9 @@
             jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
               +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
           }else if(st==='locked'){
-            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
+            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
           }else{
-            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
+            jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
           }
           var vp=s.vp||0; var vpColor=vp===100?'#16a34a':vp>0?col:'#C4C9D4'; var vpLabel=vp===100?'Done':vp>0?vp+'%':'—';
           var statusLabel = sc.label;
@@ -2248,7 +2259,7 @@
               + '<div class="j-prog-bar" style="width:72px;height:4px;background:#F0F0F0;border-radius:3px;overflow:hidden">'
                 + '<div style="height:100%;width:' + vp + '%;background:' + vpColor + ';border-radius:3px"></div>'
               + '</div>'
-              + '<span class="j-prog-pct" style="font-size:11px;font-weight:800;color:' + vpColor + ';min-width:32px;text-align:right">' + vpLabel + '</span>'
+              + '<span class="j-prog-pct" style="font-size:11px;font-weight:700;color:' + vpColor + ';min-width:32px;text-align:right">' + vpLabel + '</span>'
             + '</div>'
             + '<span class="j-status-pill" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + sc.bg + ';color:' + sc.color + ';flex-shrink:0;white-space:nowrap">' + statusLabel + '</span>'
             + (ctaBtn ? '<div class="j-cta-wrap" style="margin-left:4px">'+ctaBtn+'</div>' : '<div class="j-cta-wrap" style="width:70px;flex-shrink:0"></div>')
@@ -2259,7 +2270,7 @@
         return '<div class="j-module-section">'
           + '<div class="j-module-header" onclick="_jToggle(\''+mod.replace(/'/g,"\\'")+'\')">'
             + '<div style="width:10px;height:10px;border-radius:50%;background:' + col + ';flex-shrink:0"></div>'
-            + '<span style="font-size:14px;font-weight:800;color:#111;flex:1">' + mod + '</span>'
+            + '<span style="font-size:14px;font-weight:700;color:#111;flex:1">' + mod + '</span>'
             + '<span style="font-size:11px;font-weight:700;color:' + col + ';background:' + bg + ';padding:3px 12px;border-radius:999px;border:1px solid '+col+'33">' + cert + ' / ' + total + ' certified</span>'
             + '<svg id="jchev_'+key+'" class="j-chevron'+(collapsed?'':' open')+'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>'
           + '</div>'
@@ -2275,14 +2286,14 @@
         var isMe = u.name === colleague.name;
         var ini = colleague.name.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
         return '<div class="j-colleague-row' + (isMe ? ' me' : '') + '">'
-          + '<span style="font-size:12px;font-weight:800;color:#9CA3AF;width:24px;text-align:center;flex-shrink:0">' + (idx+1) + '</span>'
-          + '<div style="width:32px;height:32px;border-radius:50%;background:' + (isMe?'#5189F3':'#F0F2F5') + ';color:' + (isMe?'#fff':'#6B7280') + ';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + ini + '</div>'
+          + '<span style="font-size:12px;font-weight:700;color:#9CA3AF;width:24px;text-align:center;flex-shrink:0">' + (idx+1) + '</span>'
+          + '<div style="width:32px;height:32px;border-radius:50%;background:' + (isMe?'#5189F3':'#F0F2F5') + ';color:' + (isMe?'#fff':'#6B7280') + ';font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + ini + '</div>'
           + '<div style="flex:1;min-width:0">'
             + '<div style="font-size:13px;font-weight:' + (isMe?'800':'600') + ';color:#111">' + colleague.name + (isMe ? ' <span style="font-size:9px;font-weight:700;color:#5189F3;background:#EEF3FF;padding:1px 6px;border-radius:2px">You</span>' : '') + '</div>'
             + '<div style="font-size:11px;color:#9CA3AF;font-weight:600">' + (colleague.role||'Learner') + ' · ' + (colleague.dept||'—') + '</div>'
           + '</div>'
           + '<div style="text-align:right;flex-shrink:0">'
-            + '<div style="font-size:14px;font-weight:800;color:#1E2532">' + colleague.certsEarned + ' certs</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#1E2532">' + colleague.certsEarned + ' certs</div>'
             + '<div style="font-size:11px;color:#9CA3AF;font-weight:600">' + colleague.completionPct + '%</div>'
           + '</div>'
         + '</div>';
@@ -2318,7 +2329,7 @@
 
       /* Summary strip */
       function sumCard(val, label, valColor, bg, svgPath) {
-        return '<div class="j-stat-card" style="background:#fff">'
+        return '<div class="j-stat-card">'
           +'<div class="j-stat-icon" style="background:'+bg+'">'
             +'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="'+valColor+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+svgPath+'</svg>'
           +'</div>'
@@ -2346,7 +2357,7 @@
             +' stroke-linecap="round" transform="rotate(-90 18 18)"/>'
           +(isCert
             ? '<path d="M12 18l3 3 7-7" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
-            : '<text x="18" y="22" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="800" fill="'+ringCol+'">'+pct+'%</text>')
+            : '<text x="18" y="22" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="700" fill="'+ringCol+'">'+pct+'%</text>')
           +'</svg>';
       }
 
@@ -2364,10 +2375,10 @@
 
         /* Module header */
         html += '<div style="padding:12px 14px 10px;background:'+bg+';border-bottom:2px solid '+col+'">'
-          +'<div style="font-size:11px;font-weight:800;color:'+col+';text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">'+mod+'</div>'
+          +'<div style="font-size:11px;font-weight:700;color:'+col+';text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">'+mod+'</div>'
           +'<div style="display:flex;align-items:center;justify-content:space-between">'
             +'<span style="font-size:10px;font-weight:600;color:'+col+'99">'+modEarned+' earned by you</span>'
-            +'<span style="font-size:11px;font-weight:800;color:#fff;background:'+col+';padding:2px 9px;border-radius:2px">'+m.classes.length+' classes</span>'
+            +'<span style="font-size:11px;font-weight:700;color:#fff;background:'+col+';padding:2px 9px;border-radius:2px">'+m.classes.length+' classes</span>'
           +'</div>'
         +'</div>';
 
@@ -2433,7 +2444,7 @@
         +'<circle cx="'+(rs/2)+'" cy="'+(rs/2)+'" r="'+rr+'" fill="none" stroke="'+col+'" stroke-width="5"'
         +' stroke-dasharray="'+(pct/100*rc)+' '+rc+'" stroke-linecap="round"'
         +' transform="rotate(-90 '+(rs/2)+' '+(rs/2)+')"/>'
-        +'<text x="'+(rs/2)+'" y="'+(rs/2+5)+'" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="11" fill="'+col+'">'+pct+'%</text>'
+        +'<text x="'+(rs/2)+'" y="'+(rs/2+5)+'" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="11" fill="'+col+'">'+pct+'%</text>'
         +'</svg>';
 
       document.getElementById('moduleHeader').innerHTML=
@@ -2467,9 +2478,9 @@
         jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
           +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
       }else if(locked){
-        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(idx+1)+'</div>';
+        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid #DFE2E6;background:#F8F8F8;color:#C4C9D4;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(idx+1)+'</div>';
       }else{
-        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(idx+1)+'</div>';
+        jCircle='<div class="j-circle" style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(idx+1)+'</div>';
       }
 
       /* Progress */
@@ -2543,7 +2554,7 @@
           + '<div class="j-prog-bar" style="width:72px;height:4px;background:#F0F0F0;border-radius:3px;overflow:hidden">'
             + '<div style="height:100%;width:' + vp + '%;background:' + pctColor + ';border-radius:3px"></div>'
           + '</div>'
-          + '<span class="j-prog-pct" style="font-size:11px;font-weight:800;color:' + pctColor + ';min-width:32px;text-align:right">' + pctLabel + '</span>'
+          + '<span class="j-prog-pct" style="font-size:11px;font-weight:700;color:' + pctColor + ';min-width:32px;text-align:right">' + pctLabel + '</span>'
         + '</div>'
         + '<span class="j-status-pill" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + scPill.bg + ';color:' + scPill.color + ';flex-shrink:0;white-space:nowrap">' + scPill.label + '</span>'
         + (actionBtn ? '<div class="j-cta-wrap" style="margin-left:4px">'+actionBtn+'</div>' : '<div class="j-cta-wrap" style="width:70px;flex-shrink:0"></div>')
@@ -2650,7 +2661,7 @@
     function _qFlashWarning(msg){
       var body=document.getElementById('quizBody'); if(!body) return;
       var t=document.createElement('div');
-      t.style.cssText='position:absolute;top:14px;left:50%;transform:translateX(-50%);background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:800;color:#92400E;white-space:nowrap;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.1)';
+      t.style.cssText='position:absolute;top:14px;left:50%;transform:translateX(-50%);background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;color:#92400E;white-space:nowrap;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.1)';
       t.textContent='⏰ '+msg;
       body.parentNode.style.position='relative'; body.parentNode.appendChild(t);
       setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},3000);
@@ -2772,7 +2783,7 @@
       if(unanswered>0){
         /* Flash warning in body */
         var wEl=document.createElement('div');
-        wEl.style.cssText='margin-top:14px;background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:800;color:#92400E;text-align:center';
+        wEl.style.cssText='margin-top:14px;background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:700;color:#92400E;text-align:center';
         wEl.textContent='Please answer all '+unanswered+' remaining question(s) before submitting.';
         var body=document.getElementById('quizBody');
         var existing=body.querySelector('.quiz-warn-msg');
@@ -3148,9 +3159,6 @@
     }
 
     function heroCard(bg,color,svgFn,val,lbl){
-      /* Value stays the shared plain-black .lb-stat-val — this was the one
-         stat card colorizing + bolding its number to match the icon, which
-         read as inconsistent next to every other stat card in the app. */
       return '<div class="lb-stat-card">'+
         '<div class="lb-stat-icon" style="background:'+bg+'">'+svgFn(color)+'</div>'+
         '<div><div class="lb-stat-val">'+val+'</div><div class="lb-stat-lbl">'+lbl+'</div></div>'+
@@ -3361,7 +3369,7 @@
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiConfirmOverlay" onclick="if(event.target===this)_uiCloseConfirm()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
           + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
-            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
+            + '<div style="font-size:16px;font-weight:700;color:#1E2532;margin-bottom:8px">' + _escHtml(opts.title || (danger ? 'Are you sure?' : 'Confirm')) + '</div>'
             + '<div style="font-size:13px;color:#6B7280;font-weight:600;line-height:1.5;margin-bottom:20px;white-space:pre-line">' + _escHtml(opts.message || '') + '</div>'
             + '<div style="display:flex;justify-content:flex-end;gap:10px">'
               + '<button onclick="_uiCloseConfirm()" style="padding:9px 16px;border:1px solid #DFE2E6;background:#fff;color:#374151;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + _escHtml(opts.cancelLabel || 'Cancel') + '</button>'
@@ -3393,8 +3401,8 @@
       document.body.insertAdjacentHTML('beforeend',
         '<div id="uiPromptOverlay" onclick="if(event.target===this)_uiClosePrompt()" style="position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;z-index:99997">'
           + '<div style="background:#fff;border-radius:14px;padding:22px 24px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
-            + '<div style="font-size:16px;font-weight:900;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
-            + (opts.label ? '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
+            + '<div style="font-size:16px;font-weight:700;color:#1E2532;margin-bottom:14px">' + _escHtml(opts.title || 'Enter a value') + '</div>'
+            + (opts.label ? '<label style="font-size:11px;font-weight:700;color:#888;display:block;margin-bottom:5px">' + _escHtml(opts.label) + '</label>' : '')
             + (opts.multiline
                 ? '<textarea id="uiPromptInput" rows="3" placeholder="' + _escHtml(opts.placeholder || '') + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box;resize:vertical">' + safeVal + '</textarea>'
                 : '<input id="uiPromptInput" type="text" placeholder="' + _escHtml(opts.placeholder || '') + '" value="' + safeVal + '" style="width:100%;padding:9px 12px;border:1px solid #DFE2E6;border-radius:7px;font-size:13px;font-weight:600;font-family:inherit;color:#111;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_uiSubmitPrompt();}">')
@@ -3462,9 +3470,9 @@
       var initials = u.name.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
       body.innerHTML =
         '<div style="padding:16px;border-bottom:1px solid #F3F4F6;display:flex;align-items:center;gap:12px">'
-          + '<div style="width:42px;height:42px;border-radius:50%;background:#5189F3;color:#fff;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
+          + '<div style="width:42px;height:42px;border-radius:50%;background:#5189F3;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + initials + '</div>'
           + '<div style="min-width:0">'
-            + '<div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name) + '</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.name) + '</div>'
             + '<div style="font-size:11px;color:#888;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escHtml(u.email||'') + '</div>'
           + '</div>'
         + '</div>'
@@ -3508,7 +3516,7 @@
         '<div id="mpfOverlay" onclick="if(event.target===this)_closeMyProfile()" style="position:fixed;inset:0;background:rgba(17,24,39,.55);display:flex;align-items:center;justify-content:center;z-index:9998">'
           + '<div style="background:#fff;border-radius:14px;padding:24px 26px;width:480px;max-width:94vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:\'Nunito\',sans-serif">'
             + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">'
-              + '<div style="font-size:17px;font-weight:900;color:#1E2532">My Profile</div>'
+              + '<div style="font-size:17px;font-weight:700;color:#1E2532">My Profile</div>'
               + '<button onclick="_closeMyProfile()" style="border:none;background:none;cursor:pointer;color:#9CA3AF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
             + '</div>'
             + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px">'
@@ -3530,7 +3538,7 @@
     }
 
     function _mpLabel(text) {
-      return '<label style="font-size:11px;font-weight:800;color:#888;display:block;margin-bottom:5px">' + text + '</label>';
+      return '<label style="font-size:11px;font-weight:700;color:#888;display:block;margin-bottom:5px">' + text + '</label>';
     }
     function _mpInputStyle(readonly) {
       return 'width:100%;padding:8px 11px;border:1px solid ' + (readonly ? '#E5E7EB' : '#DFE2E6') + ';border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;color:' + (readonly ? '#9CA3AF' : '#111') + ';background:' + (readonly ? '#F3F4F6' : '#fff') + ';box-sizing:border-box;outline:none;transition:border-color .15s';
@@ -3757,13 +3765,13 @@
             + _gProcessStep('3', '#059669', '#ECFDF5', 'Earn Your Certificate', 'Complete all classes in a module and your certificate is issued instantly — printable and permanently on your profile.')
           + '</div>'
           + '<div class="guide-flow-strip" style="display:flex;align-items:center;justify-content:center;gap:16px;padding:10px;background:#F8FAFF;border-radius:10px">'
-            + '<span style="font-size:12px;font-weight:800;color:#5189F3">Watch</span>'
+            + '<span style="font-size:12px;font-weight:700;color:#5189F3">Watch</span>'
             + '<span style="color:#DFE2E6;font-size:16px">&#8594;</span>'
-            + '<span style="font-size:12px;font-weight:800;color:#D97706">Quiz</span>'
+            + '<span style="font-size:12px;font-weight:700;color:#D97706">Quiz</span>'
             + '<span style="color:#DFE2E6;font-size:16px">&#8594;</span>'
-            + '<span style="font-size:12px;font-weight:800;color:#059669">Certify</span>'
+            + '<span style="font-size:12px;font-weight:700;color:#059669">Certify</span>'
             + '<span style="color:#DFE2E6;font-size:16px">&#8594;</span>'
-            + '<span style="font-size:12px;font-weight:800;color:#7C3AED">Next Class</span>'
+            + '<span style="font-size:12px;font-weight:700;color:#7C3AED">Next Class</span>'
           + '</div>';
 
       } else if (_guideStep === 3) {
@@ -3780,7 +3788,7 @@
             + _gTip('Failed Attempt 1? Use the 24h break to review, then retry.')
           + '</div>'
           + '<div style="background:linear-gradient(135deg,#5189F3,#7C3AED);border-radius:12px;padding:16px 20px;text-align:center">'
-            + '<div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:4px">Good luck on your first class!</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Good luck on your first class!</div>'
             + '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.8)">Your progress, scores and certificates are all saved here automatically.</div>'
           + '</div>';
       }
@@ -3828,7 +3836,7 @@
       return '<div style="display:flex;align-items:flex-start;gap:12px;padding:11px 14px;background:' + bg + ';border-radius:10px">'
         + '<div style="width:8px;height:8px;border-radius:50%;background:' + color + ';flex-shrink:0;margin-top:4px"></div>'
         + '<div>'
-          + '<div style="font-size:13px;font-weight:800;color:#111;margin-bottom:2px">' + title + '</div>'
+          + '<div style="font-size:13px;font-weight:700;color:#111;margin-bottom:2px">' + title + '</div>'
           + '<div style="font-size:12px;font-weight:600;color:#666;line-height:1.5">' + desc + '</div>'
         + '</div>'
       + '</div>';
@@ -3837,16 +3845,16 @@
       return '<div class="guide-gain-card" style="background:' + bg + ';border-radius:10px;padding:12px;text-align:center">'
         + '<div class="guide-gain-icon" style="font-size:22px;margin-bottom:6px">' + icon + '</div>'
         + '<div class="guide-gain-text">'
-          + '<div class="guide-gain-title" style="font-size:12px;font-weight:800;color:' + color + ';margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + title + '</div>'
+          + '<div class="guide-gain-title" style="font-size:12px;font-weight:700;color:' + color + ';margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + title + '</div>'
           + '<div class="guide-gain-desc" style="font-size:10px;font-weight:600;color:#888;line-height:1.45">' + desc + '</div>'
         + '</div>'
       + '</div>';
     }
     function _gProcessStep(num, color, bg, title, desc) {
       return '<div style="display:flex;align-items:flex-start;gap:12px">'
-        + '<div style="width:38px;height:38px;border-radius:50%;background:' + color + ';color:#fff;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + num + '</div>'
+        + '<div style="width:38px;height:38px;border-radius:50%;background:' + color + ';color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + num + '</div>'
         + '<div style="flex:1;padding:8px 0">'
-          + '<div style="font-size:13px;font-weight:800;color:#111;margin-bottom:3px">' + title + '</div>'
+          + '<div style="font-size:13px;font-weight:700;color:#111;margin-bottom:3px">' + title + '</div>'
           + '<div style="font-size:11px;font-weight:600;color:#666;line-height:1.5">' + desc + '</div>'
         + '</div>'
       + '</div>';
