@@ -544,7 +544,7 @@
       padding: 10px 14px; font-size: 10px; font-weight: 700; color: #aaa;
       text-transform: uppercase; letter-spacing: .05em; background: #FAFAFA;
       border-bottom: 1px solid #F0F0F0; text-align: left;
-      position: sticky; top: 52px; z-index: 2;
+      position: sticky; top: var(--lb-thead-h, 52px); z-index: 2;
     }
     table.lb-tbl td { padding: 12px 14px; border-bottom: 1px solid #F5F5F5; vertical-align: middle; }
     table.lb-tbl tr:last-child td { border-bottom: none; }
@@ -3106,6 +3106,7 @@
         document.getElementById('lbHero').innerHTML = '';
         document.getElementById('lbPodium').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9CA3AF;font-size:13px;font-weight:600;padding:24px 0">No leaderboard data yet.</div>';
         renderLbTable(ranked);
+        _syncLbTheadOffset();
         return;
       }
 
@@ -3156,7 +3157,23 @@
       document.getElementById('lbPodium').style.display = podiumSlots.length ? 'flex' : 'none';
 
       renderLbTable(ranked);
+      _syncLbTheadOffset();
     }
+
+    /* The table's own column-header row is sticky just below the "All Learners"
+       search bar, which is also sticky — its offset was a hardcoded 52px guess
+       at the search bar's height, so any font/wrap difference (mobile in
+       particular) left a gap between the two sticky layers that the podium's
+       colorful avatars would scroll past and peek through. Measure the real
+       height instead. */
+    function _syncLbTheadOffset() {
+      var head = document.querySelector('#lbView .lb-table-head');
+      if (!head || head.offsetParent === null) return;
+      document.getElementById('lbView').style.setProperty('--lb-thead-h', head.getBoundingClientRect().height + 'px');
+    }
+    window.addEventListener('resize', function() {
+      if (_curSection === 'lb') _syncLbTheadOffset();
+    });
 
     function heroCard(bg,color,svgFn,val,lbl){
       return '<div class="lb-stat-card">'+
